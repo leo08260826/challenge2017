@@ -4,7 +4,7 @@ import random
 from EventManager import *
 from Model.GameObject import *
 from Model.StateMachine import *
-from MainConst import *
+from const_main import *
 
 class GameEngine(object):
     """
@@ -36,11 +36,7 @@ class GameEngine(object):
         """
         Called by an event in the message queue. 
         """
-        if isinstance(event, Event_Initialize):
-            self.SetPlayer()
-        elif isinstance(event, Event_Quit):
-            self.running = False
-        elif isinstance(event, Event_StateChange):
+        if isinstance(event, Event_StateChange):
             # pop request
             if not event.state:
                 # false if no more states are left
@@ -49,9 +45,21 @@ class GameEngine(object):
             else:
                 # push a new state on the stack
                 self.state.push(event.state)
+        elif isinstance(event, Event_Quit):
+            self.running = False
+        elif isinstance(event, Event_Initialize):
+            self.SetPlayer()
+
 
     def SetPlayer(self):
-        pass
+        for i in range(PlayerNum):
+            if self.AIList[i] != None:
+                Tmp_P = player(self.AIList[i])
+                Tmp_P.IS_AI = True
+            else:
+                Tmp_P = player("Default")
+                Tmp_P.IS_AI = False
+            self.player.append(Tmp_P)
 
     def run(self):
         """

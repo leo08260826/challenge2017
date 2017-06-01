@@ -2,7 +2,7 @@ import pygame as pg
 
 import Model.main as model
 from EventManager import *
-from MainConst import *
+from const_main import *
 from View.const import *
 
 class GraphicalView(object):
@@ -27,12 +27,6 @@ class GraphicalView(object):
         """
         Receive events posted to the message queue. 
         """
-        if isinstance(event, Event_Initialize):
-            self.initialize()
-        if isinstance(event, Event_Quit):
-            # shut down the pygame graphics
-            self.isinitialized = False
-            pg.quit()
         if isinstance(event, Event_EveryTick) and self.isinitialized:
             cur_state = self.model.state.peek()
             if cur_state == model.STATE_MENU:
@@ -45,6 +39,12 @@ class GraphicalView(object):
             self.display_fps()
             # limit the redraw speed to 30 frames per second
             self.clock.tick(FramePerSec)
+        elif isinstance(event, Event_Quit):
+            # shut down the pygame graphics
+            self.isinitialized = False
+            pg.quit()
+        elif isinstance(event, Event_Initialize):
+            self.initialize()
     
     def render_menu(self):
         """

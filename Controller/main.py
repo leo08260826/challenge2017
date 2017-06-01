@@ -2,7 +2,7 @@ import pygame as pg
 
 import Model.main as model
 from EventManager import *
-from MainConst import *
+from const_main import *
 from Controller.const import *
 
 class Control(object):
@@ -28,9 +28,6 @@ class Control(object):
                 # handle window manager closing our window
                 if event.type == pg.QUIT:
                     self.evManager.Post(Event_Quit())
-                # handle key down events
-                if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                    self.evManager.Post(Event_StateChange(None))
                 else:
                     cur_state = self.model.state.peek()
                     if cur_state == model.STATE_MENU:
