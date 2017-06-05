@@ -2,9 +2,9 @@ import time
 import random
 
 from EventManager import *
-from Model.GameObject import *
-from Model.StateMachine import *
 from const_main import *
+from Model.StateMachine import *
+from Model.GameObject.Player import *
 
 class GameEngine(object):
     """
@@ -37,7 +37,7 @@ class GameEngine(object):
         Called by an event in the message queue. 
         """
         if isinstance(event, Event_StateChange):
-            # pop request
+            # if event.state is None >> pop state.
             if not event.state:
                 # false if no more states are left
                 if not self.state.pop():
