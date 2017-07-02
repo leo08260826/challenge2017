@@ -3,7 +3,7 @@ class player(object):
     def __init__(self, name, index, is_AI, AI = None):
         self.name = name        
         self.index = index
-		self.position = player_init_pos[index]
+		self.position = playerInitPos[index]
 		self.direction = 0
 		self.mode = 1
 		self.is_freeze = False
@@ -19,22 +19,38 @@ class player(object):
 		self.is_freeze = True
 		self.freeze_timer = freezeTime
 
-	def set_barrier(self):
+	def setBarrier(self):
 
-	def attack(self):
+	def changeDirection(self, direction):
+		self.direction = direction
 
-	def move(self, direction):
 
-	def tick_check(self):
-		if self.is_freeze == True:
-			self.freeze_timer = self.freeze_timer - 1
+	def tickCheck(self):
+		if self.isFreeze == True:
+			self.freezeTimer = self.freezeTimer - 1
 			self.direction = 0
-			if self.freeze_timer == 0:
-				self.is_freeze = False
-		if self.power <= power_max:
+			if self.freezeTimer == 0:
+				self.isFreeze = False
+		if self.power <= powerMax:
 			#add power
+		self.position[0] += dirConst[self.direction][0]
+		self.position[1] += dirConst[self.direction][1]
 
 	def shot(self):
-		ball_index = self.takeball
+		ballIndex = self.takeball
 		self.takeball = -1
-		return ball_index
+		return ballIndex
+
+	def bump(self, target):
+		if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance :
+			if self.mode == target.mode :
+				self.freeze
+				target.freeze
+			elif self.mode == 0:
+				self.freeze
+			else
+				target.freeze
+
+
+
+
