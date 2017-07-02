@@ -6,8 +6,8 @@ class player(object):
 		self.position = playerInitPos[index]
 		self.direction = 0
 		self.mode = 1
-		self.is_freeze = False
-		self.freeze_timer = 0
+		self.isFreeze = False
+		self.freezeTimer = 0
 		self.modeTimer = 0
 		self.power = 30
 		self.score = 0
@@ -19,8 +19,8 @@ class player(object):
 		self.invisibleTime = 0
 
 	def freeze(self, freezeTime):
-		self.is_freeze = True
-		self.freeze_timer = freezeTime
+		self.isFreeze = True
+		self.freezeTimer = freezeTime
 		self.direction = 0
 
 	def setBarrier(self):
