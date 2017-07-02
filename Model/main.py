@@ -4,7 +4,10 @@ import random
 from EventManager import *
 from const_main import *
 from Model.StateMachine import *
+
 from Model.GameObject.Player import *
+from Model.GameObject.Ball import *
+from Model.GameObject.Barrier import *
 
 class GameEngine(object):
     """
@@ -37,7 +40,7 @@ class GameEngine(object):
 
     def notify(self, event):
         """
-        Called by an event in the message queue. 
+        Called by an event in the message queue.
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
@@ -53,6 +56,12 @@ class GameEngine(object):
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
             self.SetQuaffle()
+            self.SetGoldenSnitch()
+        elif isinstance(event, Event_EvertTick):
+            self.UpdatePlayers()
+            self.UpdateQuaffles()
+            self.UpdateGoldenSnitch()
+            self.UpdateBarriers()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
@@ -63,13 +72,12 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard()
+            self.ApplySkillCard(event.playerIndex, event.skillIndex)
         elif isinstance(event, Event_Action):
             self.ApplyAction()
-            pass
         elif isinstance(event, Event_Tick):
             pass
-
+            
     def SetPlayer(self):
         for i in range(PlayerNum):
             if self.AIList[i] != None:
@@ -78,12 +86,28 @@ class GameEngine(object):
             else:
                 Tmp_P = player("Default")
                 Tmp_P.IS_AI = False
-            self.player.append(Tmp_P)
+            self.players.append(Tmp_P)
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
             quaffleTemp = quaffles(quaffleId)
             quaffles.push(quaffleTemp)
+
+    def SetGoldenSnitch(self):
+        goldenSnitch = GoldenSnitch()
+
+    def UpdatePlayers(self):
+        for i in range(PlayerNum):
+            self.players[i].tickCheck()
+
+    def UpdateQuaffles(self):
+        pass
+
+    def UpdateGoldenSnitch(self):
+        pass
+
+    def UpdateBarriers(self):
+        pass
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
@@ -104,7 +128,13 @@ class GameEngine(object):
                 self.balls[ballID].state = 2
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        pass
+        if event.SkillIndex == 0:
+            # invisible
+            player[event.playerIndex].hide()
+        if event.SkillIndex == 1:
+            # Dementor
+            player[event.target].power *= dementorAttackFactor
+
 
     def ApplyAct(self, playerIndex, actionIndex):
         pass
@@ -114,7 +144,7 @@ class GameEngine(object):
         Starts the game engine loop.
 
         This pumps a Tick event into the message queue for each loop.
-        The loop ends when this object hears a QuitEvent in notify(). 
+        The loop ends when this object hears a QuitEvent in notify().
         """
         self.running = True
         self.evManager.Post(Event_Initialize())
