@@ -27,13 +27,9 @@ class GameEngine(object):
         self.running = False
         self.state = StateMachine()
         self.AIList = AIList
-        self.player = []
+        self.players = []
+        self.balls   = []
         self.quaffles = []
-        # initialize quaffles
-        for quaffleId in range(0, numberOfQuaffles):
-            quaffleTemp = quaffles(quaffleId)
-            quaffles.push(quaffleTemp)
-
         self.barriers = []
         self.TurnTo = 0
 
@@ -56,6 +52,7 @@ class GameEngine(object):
             self.running = False
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
+            self.SetQuaffle()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
@@ -66,8 +63,9 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            pass
+            self.ApplySkillCard()
         elif isinstance(event, Event_Action):
+            self.ApplyAction()
             pass
         elif isinstance(event, Event_Tick):
             pass
@@ -82,21 +80,34 @@ class GameEngine(object):
                 Tmp_P.IS_AI = False
             self.player.append(Tmp_P)
 
+    def SetQuaffle(self):
+        for quaffleId in range(0, numberOfQuaffles):
+            quaffleTemp = quaffles(quaffleId)
+            quaffles.push(quaffleTemp)
+
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
     def PlayerShot(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             ballID = player.shot()
+            if ballID != -1:
+                self.balls[ballID].state = 2
+
+    def ApplySkillCard(self, playerIndex, skillIndex):
+        pass
+
+    def ApplyAct(self, playerIndex, actionIndex):
+        pass
 
     def run(self):
         """
