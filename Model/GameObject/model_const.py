@@ -17,10 +17,10 @@ gameRangeUpper = gameRangeLower + gameRange
 
 #player const
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
-powerMax = 1000
+powerMax = 100
 freezeTime = 60
 playerBumpDistance = 25
-barrierPowerCost = 180
+barrierPowerCost = 18
 PlayerNum = 4
 MaxManualPlayer = 2
 playerSpeed = 4
@@ -48,3 +48,5 @@ barrierWidth = 180
 reachNothing = -1
 reachCornerGoal = 4
 reachWall = 10
+
+ticktime = 30
