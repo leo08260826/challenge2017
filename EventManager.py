@@ -15,6 +15,21 @@ class Event_Quit(BaseEvent):
     def __init__ (self):
         self.name = "Quit event"
 
+class Event_Initialize(BaseEvent):
+    """
+    Initialize all object/player
+    """
+    def __init__(self):
+        self.name = "Initialize game"
+
+class Event_StateChange(BaseEvent):
+    """
+    change game state
+    """
+    def __init__(self,state):
+        self.name = "StateChangingEvent"
+        self.state = state    
+
 class Event_EveryTick(BaseEvent):
     """
     Tick event.
@@ -59,16 +74,8 @@ class Event_Move(BaseEvent):
     """
     def __init__(self, player, direction):
         self.name = "Move event"
-        self.playerIndex = player
-        self.Direction = direction
-
-class Event_PlaterShot(BaseEvent):
-    """
-    Shot event.
-    """
-    def __init__(self, player):
-        self.name = "Shot event"
         self.PlayerIndex = player
+        self.Direction = direction
 
 class Event_PlayerModeChange(BaseEvent):
     """
