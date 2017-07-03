@@ -165,7 +165,7 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].modeTimer <= 0:
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
@@ -190,7 +190,8 @@ class GameEngine(object):
                 if players[playerIndex].mode == 0:
                      players[playerIndex].
                 elif players[playerIndex].mode == 1:
-
+                    players[playerIndex].isMask = True
+                    players[playerIndex].maskTimer = maskTime
             elif  actionIndex == 2:
                 player = self.players[playerIndex]
                 ballID = player.shot()
