@@ -28,6 +28,7 @@ class GameEngine(object):
         self.state = StateMachine()
         self.AIList = AIList
         self.player = []
+        self.ball   = []
         self.TurnTo = 0
 
         random.seed(time.time())
@@ -59,9 +60,9 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            pass
+            self.ApplySkillCard()
         elif isinstance(event, Event_Action):
-            pass
+            self.ApplyAction()
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -74,20 +75,28 @@ class GameEngine(object):
             self.player.append(Tmp_P)
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.player[playerIndex] != None:
+            player = self.player[playerIndex]
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.player[playerIndex] != None:
+            player = self.player[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
     def PlayerShot(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.player[playerIndex] != None:
+            player = self.player[playerIndex]
             ballID = player.shot()
+            if ballID != -1:
+                self.ball[ballID].state = 2
+
+    def ApplySkillCard(self, playerIndex, skillIndex):
+        pass
+
+    def ApplyAct(self, playerIndex, actionIndex):
+        pass
 
     def run(self):
         """
