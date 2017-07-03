@@ -1,8 +1,8 @@
-from model_const import *
+from Model.GameObject.model_const import *
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
-        self.name = nam
+        self.name = name
         self.index = index
         self.mode = 1
         self.modeTimer = 0
@@ -13,7 +13,11 @@ class player(object):
         self.score = 0
         self.skillcard = None
         self.takeball = -1
-        self.is_AI = is_AI
+        if AI == None:
+        	self.is_AI = False
+        else:
+        	self.is_AI = True
+
         self.AI = AI
 
         # move data

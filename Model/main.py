@@ -35,6 +35,7 @@ class GameEngine(object):
         self.players = []
         self.quaffles = []
         self.barriers = []
+        self.timer = 0
         self.TurnTo = 0
 
         random.seed(time.time())
@@ -58,11 +59,12 @@ class GameEngine(object):
             self.SetPlayer()
             self.SetQuaffle()
             self.SetGoldenSnitch()
+            self.timer = initTime
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
         elif isinstance(event, Event_EverySec):
-            pass
+            self.timer -= 1
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
@@ -98,10 +100,10 @@ class GameEngine(object):
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
             quaffleTemp = Quaffle(quaffleId)
-            self.quaffles.push(quaffleTemp)
+            self.quaffles.append(quaffleTemp)
 
     def SetGoldenSnitch(self):
-        self.goldenSnitch = GoldenSnitch()
+        self.goldenSnitch = GoldenSnitch(0)
 
     def UpdateObjects(self):
         # Update players
@@ -110,7 +112,7 @@ class GameEngine(object):
         # Update quaffles
         for quaffle in self.quaffles:
             score, playerIndex = quaffle.tickCheck()
-            if playerIndex in range(PlayeNum):
+            if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
         # Update golden snitch
         self.goldenSnitch.tickCheck()

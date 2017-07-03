@@ -1,5 +1,5 @@
 import random
-import model_const as mc
+import Model.GameObject.model_const as mc
 
 class OriginalBall(object):
     def __init__(self, index):
@@ -20,39 +20,41 @@ class OriginalBall(object):
         self.speed = mc.shotSpeed
         
     def tickCheck(self):
+        tmpScore = 0
+        tmpPlayerIndex = self.playerIndex
         if self.state in (0, 2):
             
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
-            self.position[1] += mc.dirConst[self.direction][1] * self.speed            
+            self.position[1] += mc.dirConst[self.direction][1] * self.speed
+            checkGoal = self.checkWhoseGoal(self.position)
             
-            tmpPosition = self.position
-            for index, element in enumerate(self.position):
-                if element < mc.gameRangeLower:
-                    self.position[index] = mc.gameRangeLower * 2 - element 
-                    self.direction = mc.dirBounce[index][self.direction]
-                    
-                if element > mc.gameRangeUpper:
-                    self.position[index] = mc.gameRangeUpper * 2 - element
-                    self.direction = mc.dirBounce[index][self.direction]
-            
-            checkGoal = self.checkWhoseGoal(self, tmpPosition)
-            tmpScore = 0
             if checkGoal != mc.reachNothing:
-                self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
-                                 random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
-                self.direction = random.randrange(1, 9)
                 self.playerIndex = -1
                 self.state = 0
                 self.isStrengthened = False
+                self.speed = mc.quaffleSpeed
                 if checkGoal == self.playerIndex:
                     tmpScore = 0
                 elif checkGoal == mc.reachCornerGoal:
                     tmpScore = mc.scoreOfQuaffles[5]
                 elif (checkGoal - self.playerIndex) in (-2, 2):
-                    tmpScore = mc.scoreofQuaffles[4]
+                    tmpScore = mc.scoreOfQuaffles[4]
                 else:
-                    tmpScore = mc.scoreofQuaffles[3]
-            return (tmpScore, self.playerIndex)
+                    tmpScore = mc.scoreOfQuaffles[3]
+                if checkGoal == mc.reachWall:
+                    for index, element in enumerate(self.position):
+                        if element < mc.gameRangeLower:
+                            self.position[index] = mc.gameRangeLower * 2 - element 
+                            self.direction = mc.dirBounce[index][self.direction]
+                        if element > mc.gameRangeUpper:
+                            self.position[index] = mc.gameRangeUpper * 2 - element
+                            self.direction = mc.dirBounce[index][self.direction]
+                else:
+                    self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
+                                     random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
+                    self.direction = random.randrange(1, 9)
+
+        return (tmpScore, tmpPlayerIndex)
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
@@ -88,7 +90,7 @@ class OriginalBall(object):
 
 class Quaffle(OriginalBall):
     def __init__(self, index):
-        super(Quaffle, self).__init__(id, index)
+        super(Quaffle, self).__init__(index)
         self.speed = mc.quaffleSpeed
         self.ballsize = mc.quaffleSize / 2
 
@@ -101,13 +103,11 @@ class Quaffle(OriginalBall):
         self.state = 0
         self.isStrengtheend = False
         self.direction = direction
-
-    def tickCheck(self):
-        super(Quaffle, self).tickCheck(self)
+        self.speed = mc.depriveSpeed
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
-        super(GoldenSnitch, self).__init__(id, index)    
+        super(GoldenSnitch, self).__init__(index)    
         self.speed = mc.goldenSnitchSpeed
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
 

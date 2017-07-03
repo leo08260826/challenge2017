@@ -1,4 +1,4 @@
-from model_const import *
+from Model.GameObject.model_const import *
 
 def cross(a, b):
     return a[0] * b[1] - a[1] * b[0]
