@@ -57,19 +57,18 @@ class GameEngine(object):
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
-        # leave the parameter lists blank until event specs are stable
+        elif isinstance(event, Event_EverySec):
+            pass
         elif isinstance(event, Event_PlayerMove):
-            self.SetPlayerDirection()
+            self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
-            self.ChangePlayerMode()
+            self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_PlayerTimeup):
-            pass
+            self.state.push(STATE_RECORD)
         elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard()
+            self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
-            self.ApplyAction()
-        elif isinstance(event, Event_Tick):
-            pass
+            self.ApplyAction(event.PlayerIndex, event.ActionIndex)
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -96,7 +95,8 @@ class GameEngine(object):
         # Update quaffles
         for quaffle in self.quaffles:
             score, playerIndex = quaffle.tickCheck()
-            self.players[playerIndex].score += score
+            if playerIndex in range(PlayeNum):
+                self.players[playerIndex].score += score
         # Update golden snitch
         self.goldenSnitch.tickCheck()
         # Update barriers
@@ -112,22 +112,24 @@ class GameEngine(object):
         # player to golden snitch
         distToGoldenSnitch = []
         for player in self.players:
-            if player.takeball == -1:
+            if player.takeball == -1 and not player.isFreeze:
                 distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
                              (player.position[1] - goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
-        if distToGoldenSnitch:
-            dist = min(distToGoldenSnitch)
-            playerIndex = distToGoldenSnitch.index(dist)
-            if dist < distToCatchGoldenSnitch:
+        
+        distToGoldenSnitch.sort()
+        for dist in distToGoldenSnitch:
+            if dist[0] < distToCatchGoldenSnitch && not self.players[dist[1]].isFreeze:
                 self.players[playerIndex].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_Timeup)
+                break
+
         # player to quaffle
         for quaffle in self.quaffles:
             if quaffle.state != 1:
                 distToQuaffle = []
                 for player in self.players:
-                    if player.takeball == -1:
+                    if player.takeball == -1 and not player.isFreeze:
                         distSquare = (player.position[0] - quaffle.position[0]) ** 2 + \
                                      (player.position[1] - quaffle.position[1]) ** 2
                         distToQuaffle.append((distSquare ** (1/2), player.index))
@@ -151,13 +153,13 @@ class GameEngine(object):
                     if quaffle.isStrengthened:
                         barriers.revmoe(barrier)
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirConst[0][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (2,6):
-                        quaffle.direction = dirConst[2][quaffle.direction]
+                        quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirConst[1][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (4,8):
-                        quaffle.direction = dirConst[3][quaffle.direction]
+                        quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
@@ -169,7 +171,14 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
-    
+
+    def PlayerShot(self, playerIndex, isStrengthened):
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
+            ballID = player.shot()
+            if ballID != -1:
+                self.quaffles[ballID].throw(player.direction, isStrengthened)
+
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
 
@@ -187,8 +196,17 @@ class GameEngine(object):
                     barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
-                if players[playerIndex].mode == 0:
-                     players[playerIndex].
+                if self.players[playerIndex].mode == 0:
+                     for 
+                     player in self.players:
+                        if player == self.players[playerIndex]:
+                            continue
+                        else:
+                            distSquare = (player.position[0] - players[playerIndex].position[0]) ** 2 + \
+                                    player.position[1] - players[playerIndex].position[1]) ** 2
+                            if (distSquare < (2 * mc.playerBumpDistance) ** 2):
+                                player.freeze(mc.stunFreezeTime)
+
                 elif players[playerIndex].mode == 1:
                     players[playerIndex].isMask = True
                     players[playerIndex].maskTimer = maskTime

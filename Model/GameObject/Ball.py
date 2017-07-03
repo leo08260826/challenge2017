@@ -34,45 +34,58 @@ class OriginalBall(object):
                 if element > mc.gameRangeUpper:
                     self.position[index] = mc.gameRangeUpper * 2 - element
                     self.direction = mc.dirBounce[index][self.direction]
-
-            tmpScore = self.checkWhoseGoal(self, tmpPosition)
-            self.playerIndex = -1
-            self.state = 0
-            self.isStrengthened = False
+            
+            checkGoal = self.checkWhoseGoal(self, tmpPosition)
+            tmpScore = 0
+            if checkGoal != mc.reachNothing:
+                self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
+                                 random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
+                self.direction = random.randrange(1, 9)
+                self.playerIndex = -1
+                self.state = 0
+                self.isStrengthened = False
+                if checkGoal == self.playerIndex:
+                    tmpScore = 0
+                elif checkGoal == mc.reachCornerGoal:
+                    tmpScore = mc.scoreOfQuaffles[5]
+                elif (checkGoal - self.playerIndex) in (-2, 2):
+                    tmpScore = mc.scoreofQuaffles[4]
+                else:
+                    tmpScore = mc.scoreofQuaffles[3]
             return (tmpScore, self.playerIndex)
 
     def checkWhoseGoal(self, position):
-        checkGoal = -1;
+        checkGoal = mc.reachNothing
         if position[0] < mc.gameRangeLower:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 3
             elif position[1] > mc.goalRangeUpper or position[1] < mc.goalRangeLower:
-                checkGoal = 4
+                checkGoal = mc.reachCornerGoal
+            else:
+                checkGoal = mc.reachWall
         elif position[0] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 1                
             elif position[1] > mc.goalRangeUpper or position[1] < mc.goalRangeLower:
-                checkGoal = 4
+                checkGoal = mc.reachCornerGoal
+            else:
+                checkGoal = mc.reachWall
         elif position[1] < mc.gameRangeLower:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 0
             elif position[0] > mc.goalRangeUpper or position[0] < mc.goalRangeLower:
-                checkGoal = 4
+                checkGoal = mc.reachCornerGoal
+            else:
+                checkGoal = mc.reachWall
         elif position[1] > mc.gameRangeLower:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 2
             elif position[0] > mc.goalRangeUpper or position[0] < mc.goalRangeLower:
-                checkGoal = 4
+                checkGoal = mc.reachCornerGoal
+            else:
+                checkGoal = mc.reachWall
+        return checkGoal
 
-        if checkGoal in (-1, self.playerIndex):
-            return 0
-        elif checkGoal == 4:
-            return mc.scoreOfQuaffles[5]
-        elif (checkGoal - self.playerIndex) in (-2, 2):
-            return mc.scoreofQuaffles[4]
-        else:
-            return mc.scoreofQuaffles[3]
-                
 class Quaffle(OriginalBall):
     def __init__(self, index):
         super(Quaffle, self).__init__(id, index)
@@ -82,6 +95,7 @@ class Quaffle(OriginalBall):
     def catch(self, playerIndex):
         self.playerIndex = playerIndex
         self.state = 1
+        self.isStrengthened = False
         
     def deprive(self, direction):
         self.state = 0
@@ -89,7 +103,7 @@ class Quaffle(OriginalBall):
         self.direction = direction
 
     def tickCheck(self):
-        super(GoldenSnitch, self).tickCheck(self)
+        super(Quaffle, self).tickCheck(self)
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
