@@ -59,11 +59,11 @@ class GameEngine(object):
             self.Bump()
         elif isinstance(event, Event_EverySec):
             pass
-        elif isinstance(event, Event_PlayerMove):
+        elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
-        elif isinstance(event, Event_PlayerTimeup):
+        elif isinstance(event, Event_TimeUp):
             self.state.push(STATE_RECORD)
         elif isinstance(event, Event_SkillCard):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
