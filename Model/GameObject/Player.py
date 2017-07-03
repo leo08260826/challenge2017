@@ -7,10 +7,12 @@ class player(object):
 		self.direction = dir_const[0]
 		self.mode = 1
 		self.is_freeze = 0
+		self.freeze_timer = 0
 		self.power = 30
 		self.score = 0
 		self.skillcard = None
 		self.is_takeball = 0
 		self.is_AI = is_AI
 		self.AI = AI
+
 
