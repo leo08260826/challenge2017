@@ -161,9 +161,7 @@ class GameEngine(object):
         pass
 
     def ApplyAction(self, playerIndex, actionIndex):
-        """
-        
-        """
+        pass
 
     def run(self):
         """
