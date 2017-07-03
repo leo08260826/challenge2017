@@ -28,6 +28,13 @@ class GameEngine(object):
         self.state = StateMachine()
         self.AIList = AIList
         self.player = []
+        self.quaffles = []
+        # initialize quaffles
+        for quaffleId in range(0, numberOfQuaffles):
+            quaffleTemp = quaffles(quaffleId)
+            quaffles.push(quaffleTemp)
+
+        self.barriers = []
         self.TurnTo = 0
 
         random.seed(time.time())
@@ -61,6 +68,8 @@ class GameEngine(object):
         elif isinstance(event, Event_SkillCard):
             pass
         elif isinstance(event, Event_Action):
+            pass
+        elif isinstance(event, Event_Tick):
             pass
 
     def SetPlayer(self):
