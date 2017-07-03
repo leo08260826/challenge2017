@@ -8,6 +8,7 @@ class OriginalBall(object):
                          random.randrange(ballRandomLower, ballRandomUpper)]
         # 0: belongs to nobody, 1: belongs to somebody, 2: being thrown
         self.state = 0
+        # 1~8: eight directions
         self.direction = random.randrange(1, 9)
         self.playerIndex = -1
         self.isStrengthened = False
@@ -32,11 +33,16 @@ class OriginalBall(object):
                 if element < gameRangeLower:
                     self.position[index] = gameRangeLower * 2 - element 
                     self.direction = dirBounce[index][self.direction]
+                    
                 if element > gameRangeUpper:
                     self.position[index] = gameRangeUpper * 2 - element
                     self.direction = dirBounce[index][self.direction]
-            
-            return checkWhoseGoal(self, tmpPosition)
+
+            tmpScore = self.checkWhoseGoal(self, tmpPosition)
+            self.playerIndex = -1
+            self.state = 0
+            self.isStrengthened = False
+            return tmpScore
 
     def checkWhoseGoal(self, position):
         checkGoal = -1;
