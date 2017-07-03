@@ -47,6 +47,7 @@ class player(object):
 		if self.isFreeze == True:
 			self.freezeTimer = self.freezeTimer - 1
 			self.direction = 0
+
 			if self.freezeTimer == 0:
 				self.isFreeze = False
 		if self.power <= powerMax:
