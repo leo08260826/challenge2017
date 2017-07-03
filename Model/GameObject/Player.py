@@ -1,8 +1,8 @@
-from model_const import *
+from Model.GameObject.model_const import *
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
-        self.name = nam
+        self.name = name
         self.index = index
         self.mode = 1
         self.modeTimer = 0
@@ -82,7 +82,7 @@ class player(object):
 
     def bump(self, target):
         outData = []
-        if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance**2:
+        if (self.direction[0]-target.direction[0])**2 + (self.direction[1]-target.direction[1])**2 <= playerBumpDistance**2:
             selfFreeze = True
             targetFreeze = True
             if self.mode != target.mode:
@@ -104,9 +104,11 @@ class player(object):
                 self.freeze()
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction) )
+                    self.takeball = -1
             if targetFreeze == True:
                 target.freeze()
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction) )
+                    target.takeball = -1
 
         return outData
