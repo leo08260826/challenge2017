@@ -51,54 +51,47 @@ class Control(object):
             if event.key == pg.K_SPACE:
                 self.evManager.Post(Event_StateChange(model.STATE_PLAY))
 
-    def ctrl_stop(self, event):
-        """
-        Handles help events.
-        """
-        if event.type == pg.KEYDOWN:
-            # space, enter or escape pops help
-            if event.key == pg.K_SPACE:
-                self.evManager.Post(Event_StateChange(None))
-
     def ctrl_play(self, event):
         """
         Handles play events.
         """
-        if event.type == pg.KEYDOWN:
+        if event.type == pg.USEREVENT:
+            self.evManager.post(Event_EverySec())
+        elif event.type == pg.KEYDOWN:
             # escape pops the menu
             if event.key == pg.K_ESCAPE:
                 self.evManager.Post(Event_StateChange(None))
-            # key space to stop the game
+            # space to stop the game
             elif event.key == pg.K_SPACE:    
                 self.evManager.Post(Event_StateChange(model.STATE_STOP))
             # player1
             elif event.key == pg.K_w:
-                if pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
+                if   pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_a] == 0 and  pg.key.get_pressed()[pg.K_s] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_RU))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 1 :
+                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_a] == 1 and  pg.key.get_pressed()[pg.K_s] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_LU))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
+                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_a] == 0 and  pg.key.get_pressed()[pg.K_s] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_U))
             elif event.key == pg.K_s:
-                if pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
+                if   pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_a] == 0 and  pg.key.get_pressed()[pg.K_w] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_RD))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 1 :
+                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_a] == 1 and  pg.key.get_pressed()[pg.K_w] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_LD))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
+                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_a] == 0 and  pg.key.get_pressed()[pg.K_w] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_D))
             elif event.key == pg.K_d:
-                if pg.key.get_pressed()[pg.K_w] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
+                if   pg.key.get_pressed()[pg.K_w] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_RU))
                 elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 1 and  pg.key.get_pressed()[pg.K_a] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_RD))
                 elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_R))
             elif event.key == pg.K_a:
-                if pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 1 and  pg.key.get_pressed()[pg.K_w] == 0 :
-                    self.evManager.Post(Event_Move(0,DIR_LD))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_w] == 1 :
+                if   pg.key.get_pressed()[pg.K_w] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_d] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_LU))
-                elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_w] == 0 :
+                elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 1 and  pg.key.get_pressed()[pg.K_d] == 0 :
+                    self.evManager.Post(Event_Move(0,DIR_LD))
+                elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_d] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_L))
             # change_mode 
             elif event.key == pg.K_c:
@@ -110,8 +103,15 @@ class Control(object):
                 self.evManager.Post(Event_Action(0, ACTION_1))
             elif event.key == pg.K_n:
                 self.evManager.Post(Event_Action(0, ACTION_2))
-        elif event.type == pg.USEREVENT:
-            self.evManager.post(Event_EverySec())
+
+    def ctrl_stop(self, event):
+        """
+        Handles help events.
+        """
+        if event.type == pg.KEYDOWN:
+            # space pops help
+            if event.key == pg.K_SPACE:
+                self.evManager.Post(Event_StateChange(None))
 
     def initialize(self):
         """
