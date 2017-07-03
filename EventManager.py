@@ -84,6 +84,12 @@ class Event_PlayerModeChange(BaseEvent):
     def __init__(self, player):
         self.name = "ModeChange event"
         self.PlayerIndex = player
+class Event_EverySec():
+    """
+    model needs timer
+    """
+    def __init__(self):
+        self.name = "Timer"
 
 class EventManager(object):
     """
