@@ -97,11 +97,11 @@ class GameEngine(object):
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
-            quaffleTemp = quaffles(quaffleId)
-            quaffles.push(quaffleTemp)
+            quaffleTemp = Quaffle(quaffleId)
+            self.quaffles.push(quaffleTemp)
 
     def SetGoldenSnitch(self):
-        goldenSnitch = GoldenSnitch()
+        self.goldenSnitch = GoldenSnitch()
 
     def UpdateObjects(self):
         # Update players
@@ -158,7 +158,7 @@ class GameEngine(object):
         # barrier to player
         for barrier in barriers:
             for player in players:
-                if barrier.bump(player):
+                if not barrier.playerIndex == player.index and barrier.bump(player):
                     player.position[0] -= dirConst[player.direction][0]*playerSpeed
                     player.position[1] -= dirConst[player.direction][1]*playerSpeed
         # barrier to quaffle
