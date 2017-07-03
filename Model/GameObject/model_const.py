@@ -40,3 +40,8 @@ goalRangeUpper = goalRangeLower + goalRange
 #barrier const
 barrierTimer = 120
 barrierWidth = 180
+
+#goal check
+reachNothing = -1
+reachCornerGoal = 4
+reachWall = 10
