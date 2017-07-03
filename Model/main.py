@@ -53,7 +53,7 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
         elif isinstance(event, Event_PlayerShot):
-            pass
+            self.PlayerShot()
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode()
         elif isinstance(event, Event_PlayerTimeup):
@@ -83,6 +83,11 @@ class GameEngine(object):
             player = self.AIList[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
+
+    def PlayerShot(self, playerIndex):
+        if self.AIList[playerIndex] != None:
+            player = self.AIList[playerIndex]
+            ballID = player.shot()
 
     def run(self):
         """
