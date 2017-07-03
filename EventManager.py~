@@ -22,37 +22,16 @@ class Event_EveryTick(BaseEvent):
     def __init__ (self):
         self.name = "Tick event"
 
-class Event_TimeUp(BaseEvent):
+class Event_Input(BaseEvent):
     """
-    Time's Up
+    Keyboard or mouse input event.
     """
-
-    def __init__(self):
-        self.name = "Time's Up"
-    def __init__(self):
-        return "TimeUp"
-
-class Event_SkillCard(BaseEvent):
-    """
-    UseSkillCard
-    """
-    def __init__(self,SkillIndex,PlayerIndex):
-        self.name = "Use SkillCard"
-        self.SkillType = SkillIndex
-        self.Player = PlayerIndex
+    def __init__(self, unicodechar, clickpos):
+        self.name = "Input event"
+        self.char = unicodechar
+        self.clickpos = clickpos
     def __str__(self):
-        return "UseSkillCard" 
-
-class Event_Action(BaseEvent):
-    """
-    UseSkill
-    """
-    def __init__(self,ActionIndex,PlayerIndex):
-        self.name = "Use Action"
-        self.ActionIndex = ActionIndex
-        self.Player = PlayerIndex
-    def __init__(self):
-        return "UseAction"
+        return '%s, char=%s, clickpos=%s' % (self.name, self.char, self.clickpos)
 
 class Event_Initialize(BaseEvent):
     """
