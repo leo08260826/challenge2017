@@ -3,38 +3,83 @@ class player(object):
     def __init__(self, name, index, is_AI, AI = None):
         self.name = name        
         self.index = index
-		self.position = player_init_pos[index]
+		self.position = playerInitPos[index]
 		self.direction = 0
 		self.mode = 1
-		self.is_freeze = False
-		self.freeze_timer = 0
+		self.isFreeze = False
+		self.freezeTimer = 0
+		self.modeTimer = 0
 		self.power = 30
 		self.score = 0
 		self.skillcard = None
 		self.takeball = -1
 		self.is_AI = is_AI
 		self.AI = AI
+		self.isVisible = True
+		self.invisibleTime = 0
 
 	def freeze(self, freezeTime):
-		self.is_freeze = True
-		self.freeze_timer = freezeTime
+		self.isFreeze = True
+		self.freezeTimer = freezeTime
+		self.direction = 0
+
+	def setBarrier(self):
+
+	def hide(self):
+		self.isVisible = True
+		self.invisibleTime = invisibleTime 
 
 	def set_barrier(self):
 
-	def attack(self):
+	def changeDirection(self, direction):
+		self.direction = direction
 
-	def move(self, direction):
 
-	def tick_check(self):
-		if self.is_freeze == True:
-			self.freeze_timer = self.freeze_timer - 1
+	def tickCheck(self):
+		if self.isFreeze == True:
+			self.freezeTimer = self.freezeTimer - 1
 			self.direction = 0
-			if self.freeze_timer == 0:
-				self.is_freeze = False
-		if self.power <= power_max:
+			if self.freezeTimer == 0:
+				self.isFreeze = False
+		if self.power <= powerMax:
 			#add power
+		if self.modeTimer > 0:
+			self.modeTimer = self.modeTimer - 1
+		self.position[0] += dirConst[self.direction][0]
+		self.position[1] += dirConst[self.direction][1]
 
 	def shot(self):
-		ball_index = self.takeball
+		ballIndex = self.takeball
 		self.takeball = -1
-		return ball_index
+		return ballIndex
+
+	def bump(self, target):
+		if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance :
+			if self.mode == target.mode :
+				self.freeze()
+				target.freeze()
+				if self.takeball == -1 and target.takeball == -1:
+					return []
+				elif target.takeball == -1:
+					return [(self.takeball, self.direction)]
+				elif self.takeball == -1:
+					return [(target.takeball, target.direction)]
+				else :
+					return [(self.takeball, self.direction), (target.takeball, target.direction)]
+			elif self.mode == 0:
+				self.freeze()
+				if self.takeball != -1 :
+					return [(self.takeball, self.direction)]
+				else :
+					return []
+			else
+				target.freeze()
+				if target.takeball != -1:
+					return [(target.takeball, target.direction)]
+				else :
+					return []
+
+
+
+
+
