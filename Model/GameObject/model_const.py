@@ -50,3 +50,6 @@ barrierWidth = 180
 reachNothing = -1
 reachCornerGoal = 4
 reachWall = 10
+
+#game const
+initTime = 5400
