@@ -72,35 +72,45 @@ class Control(object):
             elif event.key == pg.K_SPACE:    
                 self.evManager.Post(Event_StateChange(model.STATE_STOP))
             # player1
-            if event.key == pg.K_w:
+            elif event.key == pg.K_w:
                 if pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_RU))
+                    self.evManager.Post(Event_Move(0,DIR_RU))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 1 :
-                    self.evManager.Post(Event_Move(1,DIR_LU))
+                    self.evManager.Post(Event_Move(0,DIR_LU))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_U))
+                    self.evManager.Post(Event_Move(0,DIR_U))
             elif event.key == pg.K_s:
                 if pg.key.get_pressed()[pg.K_d] == 1 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_RD))
+                    self.evManager.Post(Event_Move(0,DIR_RD))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 1 :
-                    self.evManager.Post(Event_Move(1,DIR_LD))
+                    self.evManager.Post(Event_Move(0,DIR_LD))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_w] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_D))
+                    self.evManager.Post(Event_Move(0,DIR_D))
             elif event.key == pg.K_d:
                 if pg.key.get_pressed()[pg.K_w] == 1 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_RU))
+                    self.evManager.Post(Event_Move(0,DIR_RU))
                 elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 1 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_RD))
+                    self.evManager.Post(Event_Move(0,DIR_RD))
                 elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_a] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_R))
+                    self.evManager.Post(Event_Move(0,DIR_R))
             elif event.key == pg.K_a:
                 if pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 1 and  pg.key.get_pressed()[pg.K_w] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_LD))
+                    self.evManager.Post(Event_Move(0,DIR_LD))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_w] == 1 :
-                    self.evManager.Post(Event_Move(1,DIR_LU))
+                    self.evManager.Post(Event_Move(0,DIR_LU))
                 elif pg.key.get_pressed()[pg.K_d] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_w] == 0 :
-                    self.evManager.Post(Event_Move(1,DIR_L))
-            
+                    self.evManager.Post(Event_Move(0,DIR_L))
+            # change_mode 
+            elif event.key == pg.K_c:
+                self.evManager.Post(Event_PlayerModeChange(0))
+            # use action
+            elif event.key == pg.K_v:
+                self.evManager.Post(Event_Action(0,0))
+            elif event.key == pg.K_b:
+                self.evManager.Post(Event_Action(0,1))
+            elif event.key == pg.K_n:
+                self.evManager.Post(Event_Action(0,2))
+
     def initialize(self):
         """
         init pygame event and set timer
