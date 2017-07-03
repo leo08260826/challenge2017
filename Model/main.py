@@ -1,13 +1,11 @@
 import time
 import random
+import itertools
 
 from EventManager import *
 from const_main import *
 from Model.StateMachine import *
-
 from Model.GameObject.Player import *
-from Model.GameObject.Ball import *
-from Model.GameObject.Barrier import *
 
 class GameEngine(object):
     """
@@ -40,7 +38,7 @@ class GameEngine(object):
 
     def notify(self, event):
         """
-        Called by an event in the message queue.
+        Called by an event in the message queue. 
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
@@ -57,27 +55,23 @@ class GameEngine(object):
             self.SetPlayer()
             self.SetQuaffle()
             self.SetGoldenSnitch()
-        elif isinstance(event, Event_EvertTick):
-            self.UpdatePlayers()
-            self.UpdateQuaffles()
-            self.UpdateGoldenSnitch()
-            self.UpdateBarriers()
+        elif isinstance(event, Event_EveryTick):
+            self.UpdateObjects()
+            self.Bump()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
-        elif isinstance(event, Event_PlayerShot):
-            self.PlayerShot()
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode()
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard(event.playerIndex, event.skillIndex)
+            self.ApplySkillCard()
         elif isinstance(event, Event_Action):
             self.ApplyAction()
         elif isinstance(event, Event_Tick):
             pass
-            
+
     def SetPlayer(self):
         for i in range(PlayerNum):
             if self.AIList[i] != None:
@@ -86,7 +80,7 @@ class GameEngine(object):
             else:
                 Tmp_P = player("Default")
                 Tmp_P.IS_AI = False
-            self.players.append(Tmp_P)
+            self.player.append(Tmp_P)
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
@@ -96,18 +90,54 @@ class GameEngine(object):
     def SetGoldenSnitch(self):
         goldenSnitch = GoldenSnitch()
 
-    def UpdatePlayers(self):
-        for i in range(PlayerNum):
-            self.players[i].tickCheck()
+    def UpdateObjects(self):
+        # Update players
+        for player in self.players:
+            player.tickCheck()
+        # Update quaffles
+        for quaffle in self.quaffles:
+            quaffle.tickCheck()
+        # Update golden snitch
+        self.goldenSnitch.tickCheck()
+        # Update barriers
+        for barrier in self.barriers:
+            barrier.tickCheck()
 
-    def UpdateQuaffles(self):
-        pass
+    def Bump(self):
+        # player to player
+        for players in itertools.combinations(self.players, 2):
+            lostBalls = players[0].bump(players[1])
+            for lostBall in lostBalls:
+        # player to golden snitch
+        distToGoldenSnitch = []
+        for player in self.players:
+            if player.takeball == -1:
+                distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
+                             (player.position[1] - goldenSnitch.position[1]) ** 2
+                distToGoldenSnitch.append((distSquare ** (1/2), player.index))
+        if not distToGoldenSnitch:
+            dist, playerIndex = min(distToGoldenSnitch)
+            if dist < distToCatchGoldenSnitch:
+                self.players[playerIndex].score += scoreOfGoldenSnitch
+                self.evManager(Event_Timeup)
+        # player to quaffle
+        for quaffle in self.quaffles:
+            if quaffle.state != 1:
+                distToQuaffle = []
+                for player in self.players:
+                    if player.takeball == -1:
+                        distSquare = (player.position[0] - quaffle.position[0]) ** 2 + \
+                                     (player.position[1] - quaffle.position[1]) ** 2
+                        distToQuaffle.append((distSquare ** (1/2), player.index))
+                if not distToQuaffle:
+                    dist, playerIndex = min(distToGoldenSnitch)
+                    if dist < distToCatchQuaffle:
+                        self.players[playerIndex].score += scoreOfQuaffle[quaffle.state]
+                        self.players[playerIndex].takeball = quaffle.index
+                        quaffle.catch(playerIndex)
+        # barrier to player
 
-    def UpdateGoldenSnitch(self):
-        pass
-
-    def UpdateBarriers(self):
-        pass
+        # barrier to quaffle
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
@@ -120,23 +150,17 @@ class GameEngine(object):
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
-    def PlayerShot(self, playerIndex):
+    def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             ballID = player.shot()
             if ballID != -1:
-                self.balls[ballID].state = 2
+                self.quaffles[ballID].throw(player.direction, isStrengthened)
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        if event.SkillIndex == 0:
-            # invisible
-            player[event.playerIndex].hide()
-        if event.SkillIndex == 1:
-            # Dementor
-            player[event.target].power *= dementorAttackFactor
+        pass
 
-
-    def ApplyAct(self, playerIndex, actionIndex):
+    def ApplyAction(self, playerIndex, actionIndex):
         pass
 
     def run(self):
@@ -144,7 +168,7 @@ class GameEngine(object):
         Starts the game engine loop.
 
         This pumps a Tick event into the message queue for each loop.
-        The loop ends when this object hears a QuitEvent in notify().
+        The loop ends when this object hears a QuitEvent in notify(). 
         """
         self.running = True
         self.evManager.Post(Event_Initialize())
