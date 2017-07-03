@@ -112,7 +112,7 @@ class GoldenSnitch(OriginalBall):
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
 
 
-    def tick_check(self, players):
+    def tickCheck(self, players):
         fleeDirectionList = []
         # the golden snitch will flee if some player's distance to it is smaller than alertRadius
         alertRadius = 50
