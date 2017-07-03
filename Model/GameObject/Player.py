@@ -91,11 +91,11 @@ class player(object):
                 elif target.mode == 1:
                     targetFreeze == False
 
-            if self.isMask == True && selfFreeze == True:
+            if self.isMask == True and selfFreeze == True:
                 selfFreeze = False
                 self.reSetMask()
 
-            if target.isMask == True && targetFreeze == True:
+            if target.isMask == True and targetFreeze == True:
                 targetFreeze == False
                 target.reSetMask()
 
