@@ -106,8 +106,10 @@ class GameEngine(object):
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
 
-    def ApplyAct(self, playerIndex, actionIndex):
-        pass
+    def ApplyAction(self, playerIndex, actionIndex):
+        """
+        
+        """
 
     def run(self):
         """
