@@ -49,12 +49,13 @@ class GameEngine(object):
             self.running = False
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
+        # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
-            pass
+            self.SetPlayerDirection()
         elif isinstance(event, Event_PlayerShot):
             pass
         elif isinstance(event, Event_PlayerModeChange):
-            pass
+            self.ChangePlayerMode()
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
@@ -71,6 +72,17 @@ class GameEngine(object):
                 Tmp_P = player("Default")
                 Tmp_P.IS_AI = False
             self.player.append(Tmp_P)
+
+    def SetPlayerDirection(self, playerIndex, direction):
+        if self.AIList[playerIndex] != None:
+            player = self.AIList[playerIndex]
+            player.direction = direction;
+
+    def ChangePlayerMode(self, playerIndex):
+        if self.AIList[playerIndex] != None:
+            player = self.AIList[playerIndex]
+            player.freeze(ChangeModeFreezeTime);
+            player.mode = 1 - player.mode
 
     def run(self):
         """
