@@ -39,6 +39,13 @@ class player(object):
 				self.is_freeze = False
 		if self.power <= power_max:
 			#add power
+			pass
+
+		# update remaining invisible time
+		if (! self.isVisible):
+			invisibleTime -= 1
+			if (invisibleTime == 0):
+				isVisible = True
 
 	def shot(self):
 		ball_index = self.takeball
