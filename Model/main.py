@@ -27,8 +27,15 @@ class GameEngine(object):
         self.running = False
         self.state = StateMachine()
         self.AIList = AIList
-        self.player = []
-        self.ball   = []
+        self.players = []
+        self.balls   = []
+        self.quaffles = []
+        # initialize quaffles
+        for quaffleId in range(0, numberOfQuaffles):
+            quaffleTemp = quaffles(quaffleId)
+            quaffles.push(quaffleTemp)
+
+        self.barriers = []
         self.TurnTo = 0
 
         random.seed(time.time())
@@ -63,6 +70,9 @@ class GameEngine(object):
             self.ApplySkillCard()
         elif isinstance(event, Event_Action):
             self.ApplyAction()
+            pass
+        elif isinstance(event, Event_Tick):
+            pass
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -75,22 +85,22 @@ class GameEngine(object):
             self.player.append(Tmp_P)
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.player[playerIndex] != None:
-            player = self.player[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.player[playerIndex] != None:
-            player = self.player[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
     def PlayerShot(self, playerIndex):
-        if self.player[playerIndex] != None:
-            player = self.player[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             ballID = player.shot()
             if ballID != -1:
-                self.ball[ballID].state = 2
+                self.balls[ballID].state = 2
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
