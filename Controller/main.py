@@ -105,11 +105,11 @@ class Control(object):
                 self.evManager.Post(Event_PlayerModeChange(0))
             # use action
             elif event.key == pg.K_v:
-                self.evManager.Post(Event_Action(0,0))
+                self.evManager.Post(Event_Action(0,ACTION_0))
             elif event.key == pg.K_b:
-                self.evManager.Post(Event_Action(0,1))
+                self.evManager.Post(Event_Action(0,ACTION_1))
             elif event.key == pg.K_n:
-                self.evManager.Post(Event_Action(0,2))
+                self.evManager.Post(Event_Action(0,ACTION_2))
 
     def initialize(self):
         """

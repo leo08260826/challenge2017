@@ -7,7 +7,6 @@ DIR_RD = 4
 DIR_LU = 8
 DIR_LD = 6
 
-
-
-
-
+ACTION_0 = 0 # power throw / barrier
+ACTION_1 = 1 # stun / mask
+ACTION_2 = 2 # general throw

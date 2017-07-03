@@ -8,6 +8,13 @@ class BaseEvent(object):
     def __str__(self):
         return self.name
 
+class Event_Initialize(BaseEvent):
+    """
+    Initialize event.
+    """
+    def __init__(self):
+        self.name = "Initialize event"
+
 class Event_Quit(BaseEvent):
     """
     Quit event.
@@ -15,19 +22,12 @@ class Event_Quit(BaseEvent):
     def __init__ (self):
         self.name = "Quit event"
 
-class Event_Initialize(BaseEvent):
-    """
-    Initialize all object/player
-    """
-    def __init__(self):
-        self.name = "Initialize game"
-
 class Event_StateChange(BaseEvent):
     """
-    change game state
+    change state event.
     """
-    def __init__(self,state):
-        self.name = "StateChangingEvent"
+    def __init__(self, state):
+        self.name = "StateChange event"
         self.state = state    
 
 class Event_EveryTick(BaseEvent):
@@ -37,36 +37,19 @@ class Event_EveryTick(BaseEvent):
     def __init__ (self):
         self.name = "Tick event"
 
-class Event_TimeUp(BaseEvent):
+class Event_EverySec(BaseEvent):
     """
-    Time's Up
+    Sec event.
     """
     def __init__(self):
-        self.name = "Time's Up"
-    def __str__(self):
-        return "TimeUp"
+        self.name = "Sec event"
 
-class Event_SkillCard(BaseEvent):
+class Event_TimeUp(BaseEvent):
     """
-    UseSkillCard
+    TimeUp event.
     """
-    def __init__(self,SkillIndex,PlayerIndex):
-        self.name = "Use SkillCard"
-        self.SkillIndex = SkillIndex
-        self.PlayerIndex = PlayerIndex
-    def __str__(self):
-        return "UseSkillCard" 
-
-class Event_Action(BaseEvent):
-    """
-    UseSkill
-    """
-    def __init__(self,ActionIndex,PlayerIndex):
-        self.name = "Use Action"
-        self.ActionIndex = ActionIndex
-        self.PlayerIndex = PlayerIndex
-    def __str__(self):
-        return "UseAction"
+    def __init__(self):
+        self.name = "TimeUp event"
 
 class Event_Move(BaseEvent):
     """
@@ -84,12 +67,24 @@ class Event_PlayerModeChange(BaseEvent):
     def __init__(self, player):
         self.name = "ModeChange event"
         self.PlayerIndex = player
-class Event_EverySec():
+
+class Event_SkillCard(BaseEvent):
     """
-    model needs timer
+    SkillCard event.
     """
-    def __init__(self):
-        self.name = "Timer"
+    def __init__(self,player,skill):
+        self.name = "SkillCard event"
+        self.PlayerIndex = player
+        self.SkillIndex = skill
+
+class Event_Action(BaseEvent):
+    """
+    Action event.
+    """
+    def __init__(self, player, action):
+        self.name = "Action event"
+        self.PlayerIndex = player
+        self.ActionIndex = action
 
 class EventManager(object):
     """
