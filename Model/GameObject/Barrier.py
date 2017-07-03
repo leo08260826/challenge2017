@@ -21,14 +21,35 @@ class Barrier(object):
 			return False
 
 	def bump(self, target):
-		a = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 2) % 9]
-		b = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 6) % 9]
-		c = target.position
-		d = target.position + dirConst[target.direction]
-		c1 = cross(b - a, c - a)
-		c2 = cross(b - a, d - a)
-		c3 = cross(d - c, a - c)
-		c4 = cross(d - c, b - c)
+		a = []
+		b = []
+		c = []
+		d = []
+		ba = []
+		ca = []
+		da = []
+		dc = []
+		ac = []
+		bc = []
+		a.append(self.position[0] + 0.5 * barrierWidth * dirConst[(self.direction + 1) % 8 + 1][0])
+		a.append(self.position[1] + 0.5 * barrierWidth * dirConst[(self.direction + 1) % 8 + 1][1])
+		b.append(self.position[0] + 0.5 * barrierWidth * dirConst[(self.direction + 5) % 8 + 1][0])
+		b.append(self.position[1] + 0.5 * barrierWidth * dirConst[(self.direction + 5) % 8 + 1][1])
+		c.append(target.position[0])
+		c.append(target.position[1])
+		d.append(target.position[0] + dirConst[target.direction][0])
+		d.append(target.position[1] + dirConst[target.direction][1])
+		for i in range(2):
+			ba.append(b[i] - a[i])
+			ca.append(c[i] - a[i])
+			da.append(d[i] - a[i])
+			dc.append(d[i] - c[i])
+			ac.append(a[i] - c[i])
+			bc.append(b[i] - c[i])
+		c1 = cross(ba, ca)
+		c2 = cross(ba, da)
+		c3 = cross(dc, ac)
+		c4 = cross(dc, bc)
 		if c1 * c2 < 0 and c3 * c4 < 0:
 			return True
 		else:

@@ -61,7 +61,7 @@ class player(object):
 			self.direction = dirConst[1][self.direction]		
 
 	def bump(self, target):
-		if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance :
+		if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance ** 2 :
 			if self.mode == target.mode :
 				self.freeze()
 				target.freeze()
@@ -79,7 +79,7 @@ class player(object):
 					return [(self.takeball, self.direction)]
 				else :
 					return []
-			else
+			else:
 				target.freeze()
 				if target.takeball != -1:
 					return [(target.takeball, target.direction)]

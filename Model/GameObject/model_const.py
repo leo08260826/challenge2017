@@ -19,10 +19,11 @@ gameRangeUpper = gameRangeLower + gameRange
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 1000
 freezeTime = 60
-playerBumpDistance = 625
+playerBumpDistance = 25
 barrierPowerCost = 180
 PlayerNum = 4
 playerSpeed = 4
+stunFreezeTime = 60
 
 #golden snitch
 goldenSnitchSize = 10
@@ -30,7 +31,8 @@ scoreOfGoldenSnitch = 32
 
 #dir const
 dirConst = [[0,0],[0,1],[0.707,-0.707],[1,0],[0.707,0.707],[0,-1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]
-dirBounce = [[0, 1, 8, 7, 6, 5, 4, 3, 2], [0, 5, 4, 3, 2, 1, 8, 7, 6]]
+dirBounce = [[0, 1, 8, 7, 6, 5, 4, 3, 2], [0, 5, 4, 3, 2, 1, 8, 7, 6], \
+             [0, 7, 6, 5, 8, 3, 2, 1, 4], [0, 3, 6, 1, 8, 7, 2, 5, 3]]
 
 #gate const
 goalRange = 180
