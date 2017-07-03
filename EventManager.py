@@ -22,40 +22,29 @@ class Event_EveryTick(BaseEvent):
     def __init__ (self):
         self.name = "Tick event"
 
-class Event_Input(BaseEvent):
+class Event_Move(BaseEvent):
     """
-    Keyboard or mouse input event.
+    Move event.
     """
-    def __init__(self, unicodechar, clickpos):
-        self.name = "Input event"
-        self.char = unicodechar
-        self.clickpos = clickpos
-    def __str__(self):
-        return '%s, char=%s, clickpos=%s' % (self.name, self.char, self.clickpos)
+    def __init__(self, player, direction):
+        self.name = "Move event"
+        self.playerIndex = player
+        self.Direction = direction
+class Event_PlaterShot(BaseEvent):
+    """
+    Shot event.
+    """
+    def __init__(self, player):
+        self.name = "Shot event"
+        self.PlayerIndex = player
 
-class Event_Initialize(BaseEvent):
+class Event_PlayerModeChange(BaseEvent):
     """
-    Tells all listeners to initialize themselves.
-    
-    Avoid initializing such things within listener __init__ calls 
-    to minimize snafus (if some rely on others being yet created.)
+    Mode change event.
     """
-    def __init__ (self):
-        self.name = "Initialize event"
-
-class Event_StateChange(BaseEvent):
-    """
-    Change the model state machine.
-    Given a None state will pop() instead of push.
-    """
-    def __init__(self, state):
-        self.name = "State change event"
-        self.state = state
-    def __str__(self):
-        if self.state:
-            return '%s pushed %s' % (self.name, self.state)
-        else:
-            return '%s popped' % (self.name, )
+    def __init__(self, player):
+        self.name = "ModeChange event"
+        self.PlayerIndex = player
 
 class EventManager(object):
     """
