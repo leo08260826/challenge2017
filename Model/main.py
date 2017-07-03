@@ -1,5 +1,6 @@
 import time
 import random
+import itertools
 
 from EventManager import *
 from const_main import *
@@ -53,11 +54,13 @@ class GameEngine(object):
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
             self.SetQuaffle()
+            self.SetGoldenSnitch()
+        elif isinstance(event, Event_EveryTick):
+            self.UpdateObjects()
+            self.Bump()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
-        elif isinstance(event, Event_PlayerShot):
-            self.PlayerShot()
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode()
         elif isinstance(event, Event_PlayerTimeup):
@@ -66,7 +69,6 @@ class GameEngine(object):
             self.ApplySkillCard()
         elif isinstance(event, Event_Action):
             self.ApplyAction()
-            pass
         elif isinstance(event, Event_Tick):
             pass
 
@@ -85,6 +87,58 @@ class GameEngine(object):
             quaffleTemp = quaffles(quaffleId)
             quaffles.push(quaffleTemp)
 
+    def SetGoldenSnitch(self):
+        goldenSnitch = GoldenSnitch()
+
+    def UpdateObjects(self):
+        # Update players
+        for player in self.players:
+            player.tickCheck()
+        # Update quaffles
+        for quaffle in self.quaffles:
+            quaffle.tickCheck()
+        # Update golden snitch
+        self.goldenSnitch.tickCheck()
+        # Update barriers
+        for barrier in self.barriers:
+            barrier.tickCheck()
+
+    def Bump(self):
+        # player to player
+        for players in itertools.combinations(self.players, 2):
+            lostBalls = players[0].bump(players[1])
+            for lostBall in lostBalls:
+        # player to golden snitch
+        distToGoldenSnitch = []
+        for player in self.players:
+            if player.takeball == -1:
+                distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
+                             (player.position[1] - goldenSnitch.position[1]) ** 2
+                distToGoldenSnitch.append((distSquare ** (1/2), player.index))
+        if not distToGoldenSnitch:
+            dist, playerIndex = min(distToGoldenSnitch)
+            if dist < distToCatchGoldenSnitch:
+                self.players[playerIndex].score += scoreOfGoldenSnitch
+                self.evManager(Event_Timeup)
+        # player to quaffle
+        for quaffle in self.quaffles:
+            if quaffle.state != 1:
+                distToQuaffle = []
+                for player in self.players:
+                    if player.takeball == -1:
+                        distSquare = (player.position[0] - quaffle.position[0]) ** 2 + \
+                                     (player.position[1] - quaffle.position[1]) ** 2
+                        distToQuaffle.append((distSquare ** (1/2), player.index))
+                if not distToQuaffle:
+                    dist, playerIndex = min(distToGoldenSnitch)
+                    if dist < distToCatchQuaffle:
+                        self.players[playerIndex].score += scoreOfQuaffle[quaffle.state]
+                        self.players[playerIndex].takeball = quaffle.index
+                        quaffle.catch(playerIndex)
+        # barrier to player
+
+        # barrier to quaffle
+
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
@@ -96,20 +150,18 @@ class GameEngine(object):
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
-    def PlayerShot(self, playerIndex):
+    def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             ballID = player.shot()
             if ballID != -1:
-                self.balls[ballID].state = 2
+                self.quaffles[ballID].throw(player.direction, isStrengthened)
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
 
     def ApplyAction(self, playerIndex, actionIndex):
-        """
-        
-        """
+        pass
 
     def run(self):
         """
