@@ -53,7 +53,8 @@ class OriginalBall(object):
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-        return tuple(tmpScore, tmpPlayerIndex)
+
+        return (tmpScore, tmpPlayerIndex)
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
