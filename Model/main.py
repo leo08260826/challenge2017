@@ -30,11 +30,6 @@ class GameEngine(object):
         self.players = []
         self.balls   = []
         self.quaffles = []
-        # initialize quaffles
-        for quaffleId in range(0, numberOfQuaffles):
-            quaffleTemp = quaffles(quaffleId)
-            quaffles.push(quaffleTemp)
-
         self.barriers = []
         self.TurnTo = 0
 
@@ -57,6 +52,7 @@ class GameEngine(object):
             self.running = False
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
+            self.SetQuaffle()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
@@ -83,6 +79,11 @@ class GameEngine(object):
                 Tmp_P = player("Default")
                 Tmp_P.IS_AI = False
             self.player.append(Tmp_P)
+
+    def SetQuaffle(self):
+        for quaffleId in range(0, numberOfQuaffles):
+            quaffleTemp = quaffles(quaffleId)
+            quaffles.push(quaffleTemp)
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
