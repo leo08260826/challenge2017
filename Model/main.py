@@ -1,5 +1,6 @@
 import time
 import random
+import itertools
 
 from EventManager import *
 from const_main import *
@@ -57,11 +58,9 @@ class GameEngine(object):
             self.SetPlayer()
             self.SetQuaffle()
             self.SetGoldenSnitch()
-        elif isinstance(event, Event_EvertTick):
-            self.UpdatePlayers()
-            self.UpdateQuaffles()
-            self.UpdateGoldenSnitch()
-            self.UpdateBarriers()
+        elif isinstance(event, Event_EveryTick):
+            self.UpdateObjects()
+            self.Bump()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
@@ -75,8 +74,6 @@ class GameEngine(object):
             self.ApplySkillCard()
         elif isinstance(event, Event_Action):
             self.ApplyAction()
-        elif isinstance(event, Event_Tick):
-            pass
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -96,23 +93,54 @@ class GameEngine(object):
     def SetGoldenSnitch(self):
         goldenSnitch = GoldenSnitch()
 
-    def UpdatePlayers(self):
-        for i in range(PlayerNum):
-            self.players[i].tickCheck()
+    def UpdateObjects(self):
+        # Update players
+        for player in self.players:
+            player.tickCheck()
+        # Update quaffles
+        for quaffle in self.quaffles:
+            quaffle.tickCheck()
+        # Update golden snitch
+        self.goldenSnitch.tickCheck()
+        # Update barriers
+        for barrier in self.barriers:
+            barrier.tickCheck()
 
-    def UpdateQuaffles(self):
-        pass
+    def Bump(self):
+        # player to player
+        for players in itertools.combinations(self.players, 2):
+            lostBalls = players[0].bump(players[1])
+            for lostBall in lostBalls:
+        # player to golden snitch
+        distToGoldenSnitch = []
+        for player in self.players:
+            if player.takeball == -1:
+                distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
+                             (player.position[1] - goldenSnitch.position[1]) ** 2
+                distToGoldenSnitch.append((distSquare ** (1/2), player.index))
+        if not distToGoldenSnitch:
+            dist, playerIndex = min(distToGoldenSnitch)
+            if dist < distToCatchGoldenSnitch:
+                self.players[playerIndex].score += scoreOfGoldenSnitch
+                self.evManager(Event_Timeup)
+        # player to quaffle
+        for quaffle in self.quaffles:
+            if quaffle.state != 1:
+                distToQuaffle = []
+                for player in self.players:
+                    if player.takeball == -1:
+                        distSquare = (player.position[0] - quaffle.position[0]) ** 2 + \
+                                     (player.position[1] - quaffle.position[1]) ** 2
+                        distToQuaffle.append((distSquare ** (1/2), player.index))
+                if not distToQuaffle:
+                    dist, playerIndex = min(distToGoldenSnitch)
+                    if dist < distToCatchQuaffle:
+                        self.players[playerIndex].score += scoreOfQuaffle[quaffle.state]
+                        self.players[playerIndex].takeball = quaffle.index
+                        quaffle.catch(playerIndex)
+        # barrier to player
 
-    def UpdateGoldenSnitch(self):
-        pass
-
-    def UpdateBarriers(self):
-        pass
-
-    def SetPlayerDirection(self, playerIndex, direction):
-        if self.players[playerIndex] != None:
-            player = self.players[playerIndex]
-            player.direction = direction;
+        # barrier to quaffle
 
     def ChangePlayerMode(self, playerIndex):
         if self.players[playerIndex] != None:
