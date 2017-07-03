@@ -9,6 +9,7 @@ class player(object):
         # 0 = attack
         # 1 = defense
         self.power = 30
+        self.powertmp = 0
         self.score = 0
         self.skillcard = None
         self.takeball = -1
@@ -41,7 +42,7 @@ class player(object):
         self.invisibleTime = invisibleTime
 
     def setBarrier(self):
-        self.power -= barrierPowerCost
+        self.power = self. power - barrierPowerCost
         return (self.position, self.direction)
 
     def shot(self):
@@ -65,8 +66,12 @@ class player(object):
             if self.freezeTimer == 0:
                 self.isFreeze = False
 
-        if self.power <= powerMax:
-            self.power += 1
+        if self.powertmp < ticktime:
+            self.powertmp = self.powertmp + 1
+        elif self.powertmp == ticktime:
+        	self.powertmp = 0
+        	self.power = self.power + 1
+
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1
 
