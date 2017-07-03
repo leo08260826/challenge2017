@@ -61,8 +61,6 @@ class GameEngine(object):
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
-        elif isinstance(event, Event_PlayerShot):
-            self.PlayerShot()
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode()
         elif isinstance(event, Event_PlayerTimeup):
@@ -152,12 +150,12 @@ class GameEngine(object):
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
-    def PlayerShot(self, playerIndex):
+    def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             ballID = player.shot()
             if ballID != -1:
-                self.balls[ballID].state = 2
+                self.quaffles[ballID].throw(player.direction, isStrengthened)
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
