@@ -14,10 +14,16 @@ class player(object):
 		self.takeball = -1
 		self.is_AI = is_AI
 		self.AI = AI
+		self.isVisible = True
+		self.invisibleTime = 0
 
 	def freeze(self, freezeTime):
 		self.is_freeze = True
 		self.freeze_timer = freezeTime
+
+	def hide(self):
+		self.isVisible = True
+		self.invisibleTime = invisibleTime 
 
 	def set_barrier(self):
 

@@ -71,6 +71,13 @@ class GameEngine(object):
             pass
         elif isinstance(event, Event_Tick):
             pass
+        elif isinstance(event, Event_SkillCard):
+            if event.SkillIndex == 0:
+                # invisible
+                player[event.playerIndex].hide()
+            if event.SkillIndex == 1:
+                # Dementor
+                player[event.target].power *= dementorAttackFactor
 
     def SetPlayer(self):
         for i in range(PlayerNum):
