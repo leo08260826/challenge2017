@@ -37,6 +37,6 @@ goalRange = 180
 goalRangeLower = gameRangeLower + (gameRange - goalRange) / 2
 goalRangeUpper = goalRangeLower + goalRange
 
-
-
-
+#barrier const
+barrierTimer = 120
+barrierWidth = 180

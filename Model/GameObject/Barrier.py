@@ -4,11 +4,11 @@ def cross(a, b):
 	return a[0] * b[1] - a[1] * b[0]
 
 class Barrier(object):
-	def __init__(self, playerIndex, position, direction, timer):
+	def __init__(self, playerIndex, position, direction):
 		self.playerIndex = playerIndex
 		self.position = position
 		self.direction = direction
-		self.timer = timer
+		self.timer = barrierTimer
 
 	def tickCheck(self):
 		"""
