@@ -39,9 +39,9 @@ class OriginalBall(object):
                 elif checkGoal == mc.reachCornerGoal:
                     tmpScore = mc.scoreOfQuaffles[5]
                 elif (checkGoal - self.playerIndex) in (-2, 2):
-                    tmpScore = mc.scoreofQuaffles[4]
+                    tmpScore = mc.scoreOfQuaffles[4]
                 else:
-                    tmpScore = mc.scoreofQuaffles[3]
+                    tmpScore = mc.scoreOfQuaffles[3]
                 if checkGoal == mc.reachWall:
                     for index, element in enumerate(self.position):
                         if element < mc.gameRangeLower:
@@ -54,7 +54,7 @@ class OriginalBall(object):
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-            return (tmpScore, tmpPlayerIndex)
+            return tuple(tmpScore, tmpPlayerIndex)
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
