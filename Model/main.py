@@ -4,7 +4,10 @@ import random
 from EventManager import *
 from const_main import *
 from Model.StateMachine import *
+
 from Model.GameObject.Player import *
+from Model.GameObject.Ball import *
+from Model.GameObject.Barrier import *
 
 class GameEngine(object):
     """
@@ -27,13 +30,9 @@ class GameEngine(object):
         self.running = False
         self.state = StateMachine()
         self.AIList = AIList
-        self.player = []
+        self.players = []
+        self.balls   = []
         self.quaffles = []
-        # initialize quaffles
-        for quaffleId in range(0, numberOfQuaffles):
-            quaffleTemp = quaffles(quaffleId)
-            quaffles.push(quaffleTemp)
-
         self.barriers = []
         self.TurnTo = 0
 
@@ -41,7 +40,7 @@ class GameEngine(object):
 
     def notify(self, event):
         """
-        Called by an event in the message queue. 
+        Called by an event in the message queue.
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
@@ -56,6 +55,13 @@ class GameEngine(object):
             self.running = False
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
+            self.SetQuaffle()
+            self.SetGoldenSnitch()
+        elif isinstance(event, Event_EvertTick):
+            self.UpdatePlayers()
+            self.UpdateQuaffles()
+            self.UpdateGoldenSnitch()
+            self.UpdateBarriers()
         # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection()
@@ -66,9 +72,9 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            pass
+            self.ApplySkillCard()
         elif isinstance(event, Event_Action):
-            pass
+            self.ApplyAction()
         elif isinstance(event, Event_Tick):
             pass
         elif isinstance(event, Event_SkillCard):
@@ -87,30 +93,59 @@ class GameEngine(object):
             else:
                 Tmp_P = player("Default")
                 Tmp_P.IS_AI = False
-            self.player.append(Tmp_P)
+            self.players.append(Tmp_P)
+
+    def SetQuaffle(self):
+        for quaffleId in range(0, numberOfQuaffles):
+            quaffleTemp = quaffles(quaffleId)
+            quaffles.push(quaffleTemp)
+
+    def SetGoldenSnitch(self):
+        goldenSnitch = GoldenSnitch()
+
+    def UpdatePlayers(self):
+        for i in range(PlayerNum):
+            self.players[i].tickCheck()
+
+    def UpdateQuaffles(self):
+        pass
+
+    def UpdateGoldenSnitch(self):
+        pass
+
+    def UpdateBarriers(self):
+        pass
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
     def PlayerShot(self, playerIndex):
-        if self.AIList[playerIndex] != None:
-            player = self.AIList[playerIndex]
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             ballID = player.shot()
+            if ballID != -1:
+                self.balls[ballID].state = 2
+
+    def ApplySkillCard(self, playerIndex, skillIndex):
+        pass
+
+    def ApplyAct(self, playerIndex, actionIndex):
+        pass
 
     def run(self):
         """
         Starts the game engine loop.
 
         This pumps a Tick event into the message queue for each loop.
-        The loop ends when this object hears a QuitEvent in notify(). 
+        The loop ends when this object hears a QuitEvent in notify().
         """
         self.running = True
         self.evManager.Post(Event_Initialize())

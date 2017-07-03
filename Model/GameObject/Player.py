@@ -29,4 +29,18 @@ class player(object):
 
 	def attack(self):
 
+	def move(self, direction):
+
+	def tick_check(self):
+		if self.is_freeze == True:
+			self.freeze_timer = self.freeze_timer - 1
+			self.direction = 0
+			if self.freeze_timer == 0:
+				self.is_freeze = False
+		if self.power <= power_max:
+			#add power
+
 	def shot(self):
+		ball_index = self.takeball
+		self.takeball = -1
+		return ball_index
