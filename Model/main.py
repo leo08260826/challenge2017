@@ -49,7 +49,18 @@ class GameEngine(object):
             self.running = False
         elif isinstance(event, Event_Initialize):
             self.SetPlayer()
-
+        elif isinstance(event, Event_PlayerMove):
+            pass
+        elif isinstance(event, Event_PlayerShot):
+            pass
+        elif isinstance(event, Event_PlayerModeChange):
+            pass
+        elif isinstance(event, Event_PlayerTimeup):
+            pass
+        elif isinstance(event, Event_SkillCard):
+            pass
+        elif isinstance(event, Event_Action):
+            pass
 
     def SetPlayer(self):
         for i in range(PlayerNum):
