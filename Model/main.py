@@ -72,19 +72,12 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerTimeup):
             pass
         elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard()
+            self.ApplySkillCard(event.playerIndex, event.skillIndex)
         elif isinstance(event, Event_Action):
             self.ApplyAction()
         elif isinstance(event, Event_Tick):
             pass
-        elif isinstance(event, Event_SkillCard):
-            if event.SkillIndex == 0:
-                # invisible
-                player[event.playerIndex].hide()
-            if event.SkillIndex == 1:
-                # Dementor
-                player[event.target].power *= dementorAttackFactor
-
+            
     def SetPlayer(self):
         for i in range(PlayerNum):
             if self.AIList[i] != None:
@@ -135,7 +128,13 @@ class GameEngine(object):
                 self.balls[ballID].state = 2
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        pass
+        if event.SkillIndex == 0:
+            # invisible
+            player[event.playerIndex].hide()
+        if event.SkillIndex == 1:
+            # Dementor
+            player[event.target].power *= dementorAttackFactor
+
 
     def ApplyAct(self, playerIndex, actionIndex):
         pass
