@@ -26,10 +26,9 @@ class Event_TimeUp(BaseEvent):
     """
     Time's Up
     """
-
     def __init__(self):
         self.name = "Time's Up"
-    def __init__(self):
+    def __str__(self):
         return "TimeUp"
 
 class Event_SkillCard(BaseEvent):
@@ -38,8 +37,8 @@ class Event_SkillCard(BaseEvent):
     """
     def __init__(self,SkillIndex,PlayerIndex):
         self.name = "Use SkillCard"
-        self.SkillType = SkillIndex
-        self.Player = PlayerIndex
+        self.SkillIndex = SkillIndex
+        self.PlayerIndex = PlayerIndex
     def __str__(self):
         return "UseSkillCard" 
 
@@ -50,33 +49,34 @@ class Event_Action(BaseEvent):
     def __init__(self,ActionIndex,PlayerIndex):
         self.name = "Use Action"
         self.ActionIndex = ActionIndex
-        self.Player = PlayerIndex
-    def __init__(self):
+        self.PlayerIndex = PlayerIndex
+    def __str__(self):
         return "UseAction"
 
-class Event_Initialize(BaseEvent):
+class Event_Move(BaseEvent):
     """
-    Tells all listeners to initialize themselves.
-    
-    Avoid initializing such things within listener __init__ calls 
-    to minimize snafus (if some rely on others being yet created.)
+    Move event.
     """
-    def __init__ (self):
-        self.name = "Initialize event"
+    def __init__(self, player, direction):
+        self.name = "Move event"
+        self.playerIndex = player
+        self.Direction = direction
 
-class Event_StateChange(BaseEvent):
+class Event_PlaterShot(BaseEvent):
     """
-    Change the model state machine.
-    Given a None state will pop() instead of push.
+    Shot event.
     """
-    def __init__(self, state):
-        self.name = "State change event"
-        self.state = state
-    def __str__(self):
-        if self.state:
-            return '%s pushed %s' % (self.name, self.state)
-        else:
-            return '%s popped' % (self.name, )
+    def __init__(self, player):
+        self.name = "Shot event"
+        self.PlayerIndex = player
+
+class Event_PlayerModeChange(BaseEvent):
+    """
+    Mode change event.
+    """
+    def __init__(self, player):
+        self.name = "ModeChange event"
+        self.PlayerIndex = player
 
 class EventManager(object):
     """
