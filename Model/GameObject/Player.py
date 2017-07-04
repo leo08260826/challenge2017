@@ -81,7 +81,7 @@ class player(object):
         if self.position[0] < 47 or self.position[0] > 693 :
             self.direction = dirConst[0][self.direction]
         elif self.position[1] < 47 or self.position[1] > 693 :
-            self.direction = dirConst[1][self.direction]
+            self.direction = dirConst[self.direction][1]
 
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
