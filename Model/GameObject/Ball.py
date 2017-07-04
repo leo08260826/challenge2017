@@ -105,9 +105,6 @@ class Quaffle(OriginalBall):
         self.direction = direction
         self.speed = mc.depriveSpeed
 
-    def tickCheck(self):
-        super(Quaffle, self).tickCheck()
-
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
         super(GoldenSnitch, self).__init__(index)    
