@@ -27,11 +27,11 @@ class Interface(object):
             self.initialize()
     
     def API_play(self):
-        for player in self.model.player:
-            player.ai.decide()
+        for player in self.model.players:
+            player.AI.decide()
         
     def initialize(self):
-        for index, player in enumerate(self.model.player):
+        for index, player in enumerate(self.model.players):
             # load TeamAI .py file
             try:
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')

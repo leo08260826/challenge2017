@@ -98,10 +98,10 @@ class GameEngine(object):
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
             quaffleTemp = Quaffle(quaffleId)
-            self.quaffles.push(quaffleTemp)
+            self.quaffles.append(quaffleTemp)
 
     def SetGoldenSnitch(self):
-        self.goldenSnitch = GoldenSnitch()
+        self.goldenSnitch = GoldenSnitch(0)
 
     def UpdateObjects(self):
         # Update players
