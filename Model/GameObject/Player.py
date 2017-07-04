@@ -1,8 +1,8 @@
-from model_const import *
+from Model.GameObject.model_const import *
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
-        self.name = nam
+        self.name = name
         self.index = index
         self.mode = 1
         self.modeTimer = 0
@@ -12,7 +12,11 @@ class player(object):
         self.score = 0
         self.skillcard = None
         self.takeball = -1
-        self.is_AI = is_AI
+        if AI == None:
+        	self.is_AI = False
+        else:
+        	self.is_AI = True
+
         self.AI = AI
 
         # move data
@@ -82,7 +86,7 @@ class player(object):
 
     def bump(self, target):
         outData = []
-        if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance**2:
+        if (self.direction[0]-target.direction[0])**2 + (self.direction[1]-target.direction[1])**2 <= playerBumpDistance**2:
             selfFreeze = True
             targetFreeze = True
             if self.mode != target.mode:
@@ -91,11 +95,11 @@ class player(object):
                 elif target.mode == 1:
                     targetFreeze == False
 
-            if self.isMask == True && selfFreeze == True:
+            if self.isMask == True and selfFreeze == True:
                 selfFreeze = False
                 self.reSetMask()
 
-            if target.isMask == True && targetFreeze == True:
+            if target.isMask == True and targetFreeze == True:
                 targetFreeze == False
                 target.reSetMask()
 
@@ -104,9 +108,11 @@ class player(object):
                 self.freeze()
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction) )
+                    self.takeball = -1
             if targetFreeze == True:
                 target.freeze()
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction) )
+                    target.takeball = -1
 
         return outData
