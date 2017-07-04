@@ -115,7 +115,7 @@ class GameEngine(object):
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
         # Update golden snitch
-        self.goldenSnitch.tickCheck(self.Players)
+        self.goldenSnitch.tickCheck(self.players)
         # Update barriers
         for barrier in self.barriers:
             barrier.tickCheck()
@@ -205,11 +205,11 @@ class GameEngine(object):
         #ACTION_2 = 2   general throw
         if self.players[playerIndex] != None:
             if actionIndex == 0:
-                if players[playerIndex].mode == 0:
-                    ballData = Players[playerIndex].shot()
+                if self.players[playerIndex].mode == 0:
+                    ballData = self.players[playerIndex].shot()
                     quaffles[ballData[0]].throw(ballData[1],True)
                 elif players[playerIndex].mode == 1:
-                    ballData = Players[playerIndex].setBarrier()
+                    ballData = self.players[playerIndex].setBarrier()
                     barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
