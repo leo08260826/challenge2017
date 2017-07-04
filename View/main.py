@@ -68,7 +68,11 @@ class GraphicalView(object):
         Render the game play.
         """
         # draw backgound
-        self.screen.blit(self.bg,(0,0))
+        self.render_background()
+        for i in range(PlayerNum):
+            self.render_player_status(i)
+        for i in range(PlayerNum):
+            self.render_player_character(i)
         # update surface
         pg.display.flip()
         
@@ -77,7 +81,15 @@ class GraphicalView(object):
         Render the stop screen.
         """
         # draw backgound
-        self.screen.blit(self.bg_gray,(0,0))
+        self.screen.blit(self.map_gray,(0,0))
+        # display words
+        somewords = self.smallfont.render(
+                    'Pause',
+                    True, (0, 255, 0))
+        (SurfaceX, SurfaceY) = somewords.get_size()
+        pos_x = (ScreenSize[0] - SurfaceX)/2
+        pos_y = (ScreenSize[1] - SurfaceY)/2
+        self.screen.blit(somewords, (pos_x, pos_y))
         # update surface
         pg.display.flip()
 
@@ -98,10 +110,26 @@ class GraphicalView(object):
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
         # load images
-        self.bg = pg.image.load('View/image/background.png')
-        self.bg_gray = pg.image.load('View/image/background_grayscale.png')
+        self.map = pg.image.load('View/image/background/map.png')
+        self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
+        self.time = pg.image.load('View/image/background/time.png')
+        self.character1 = pg.image.load('View/image/player/player_leftdown_red.png')
+        self.character2 = pg.image.load('View/image/player/player_left_green.png')
+        self.character3 = pg.image.load('View/image/player/player_down_yellow.png')
+        self.character4 = pg.image.load('View/image/player/player_leftup_blue.png')
 
-    def drawplayer(self, index):
+    def render_background(self):
+        self.screen.blit(self.map, Pos_map)
+        self.screen.blit(self.time, Pos_time)
+        self.screen.blit(self.character1, (350,20))
+        self.screen.blit(self.character2, (20,350))
+        self.screen.blit(self.character3, (350,700))
+        self.screen.blit(self.character4, (700,350))
+        
+    def render_player_status(self, index):
+        pass
+    def render_player_charcter(self, index):
+        pass
 
 
 
