@@ -21,8 +21,8 @@ class Barrier(object):
 			return False
 
 	def bump(self, target):
-		a = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 2) % 9]
-		b = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 6) % 9]
+		a = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 1) % 8 + 1]
+		b = self.position + 0.5 * barrierWidth * dirConst[(self.direction + 5) % 8 + 1]
 		c = target.position
 		d = target.position + dirConst[target.direction]
 		c1 = cross(b - a, c - a)
