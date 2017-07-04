@@ -5,7 +5,9 @@ from EventManager import *
 from const_main import *
 from View.const import *
 
-import time
+# import Model.GameObject.model_const as mc
+
+numberOfQuaffles = 2
 
 class GraphicalView(object):
     """
@@ -44,6 +46,10 @@ class GraphicalView(object):
             self.display_fps()
             # limit the redraw speed to 30 frames per second
             self.clock.tick(FramePerSec)
+        elif isinstance(event, Event_Action):
+            player = self.evManager.players[event.PlayerIndex]
+            if event.ActionIndex == 1 and player.mode == 0:
+                self.stuns.append(player.position)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -79,6 +85,9 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
+        for i in range(numberOfQuaffles):
+            #self.render_quaffle(i)
+            pass
         # update surface
         pg.display.flip()
         self.ticks += 1
@@ -123,54 +132,70 @@ class GraphicalView(object):
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         ''' icons '''
-        self.icon_dizzy = pg.image.load('View/image/icon/icon_dizzy.png')
-        self.icon_attack = pg.image.load('View/image/icon/icon_attack.png')
-        self.icon_protect = pg.image.load('View/image/icon/icon_protectmode.png')
+        self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
+                            pg.image.load('View/image/icon/icon_protectmode.png')]
+        ''' balls '''
+        self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
+        self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
         ''' characters '''
+        self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['_blue', '_yellow', '_red', '_green']
         self.player_freeze_images = [pg.image.load('View/image/player/player_down'+colors[i]+'_frost.png') for i in range(4)]
-        def get_player_image(colorname, direction):
+        
+        def get_player_image(colorname, direction, suffix):
             if direction == 0:
                 direction = 5
             if direction == 1:
-                return pg.transform.flip(pg.image.load('View/image/player/player_down'+colorname+'.png'), 0, 1)
+                return pg.transform.flip(pg.image.load('View/image/player/player_down'+colorname+suffix+'.png'), 0, 1)
             elif direction in range(2,6):
-                return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+colorname+'.png'), 1, 0)
+                return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+colorname+suffix+'.png'), 1, 0)
             else:
-                return pg.image.load('View/image/player/player'+directions[8-direction]+colorname+'.png')
-        self.player_images = [ [get_player_image(colors[i],direction) for direction in range(9)] for i in range(4) ]
+                return pg.image.load('View/image/player/player'+directions[8-direction]+colorname+suffix+'.png')
+        self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(4) ]
+        self.player_invisable_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
         
 
     def render_background(self):
         self.screen.blit(self.map, Pos_map)
         self.screen.blit(self.time, Pos_time)
-        self.blit_at_center(self.player_images[3][1], (100,100))
-        self.blit_at_center(self.icon_attack, (100,100))
-        self.blit_at_center(self.player_images[3][2], (100,500))
-        self.blit_at_center(self.icon_attack, (100,500))
-        self.blit_at_center(self.player_images[3][3], (100,300))
-        self.blit_at_center(self.icon_attack, (100,300))
-        
+        self.blit_at_center(self.player_images[3][2], (200,500))
+        self.blit_at_center(self.mode_images[1], (200,500))
+        self.blit_at_center(self.take_ball_images[0], (200,500))
+        self.blit_at_center(self.ball_powered_images[0], (500,500))
         
     def render_player_status(self, index):
         pass
 
     def render_player_charcter(self, index):
+        player = self.evManager.players[index]
         if self.ticks % (FramePerSec*3) == biasrand[index]:
             bias[index] = ( bias[index] + 1 ) % 2
         bias = (2,2) if self.player_bias[index] else (-2,-2)
-        position = map(sum, zip(self.evManager.player[index].position, bias))
-        if self.evManager.player[index].is_freeze == 1:
+        position = map(sum, zip(player.position, bias))
+        # body
+        if player.isVisible == False:
+            direction = player.direction
+            self.blit_at_center(self.player_invisible_images[index][direction], position)
+        elif player.is_freeze == 1:
             self.blit_at_center(self.player_freeze_images[index], position)
-            self.blit_at_center(self.icon_dizzy, postion)
         else:
-            direction = self.evManager.player[index].direction
+            direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
-        if self.evManager.player[index].mode == 0:
-            self.blit_at_center(self.icon_attack, position)
-        else:
-            self.blit_at_center(self.icon_protect, position)
+        # mode
+        self.blit_at_center(self.mode_images[player.mode], position)
+        # ball
+        ball = player.takeball
+        if ball != -1:
+            self.blit_at_center(self.take_ball_images[ball])
+
+    def render_quaffle(self, index):
+        quaffle = self.evManager.quaffles[index]
+        if quaffle.state != 1:
+            if quaffle.isStrengthened == True:
+                self.blit_at_center(self.ball_powered_images[index], quaffle.position)
+            else:
+                self.blit_at_center(self.ball_normal_images[index], quaffle.position)
         
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
