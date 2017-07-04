@@ -62,8 +62,7 @@ class player(object):
         self.maskTimer = 0
 
     def tickCheck(self):
-        self.position[0] += dirConst[self.direction][0]*playerSpeed
-        self.position[1] += dirConst[self.direction][1]*playerSpeed
+        
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
             self.direction = 0
@@ -88,6 +87,9 @@ class player(object):
             self.maskTimer = self.maskTimer - 1
         if self.maskTimer == 0:
             self.isMask == False
+            
+        self.position[0] += dirConst[self.direction][0]*playerSpeed
+        self.position[1] += dirConst[self.direction][1]*playerSpeed
 
     def bump(self, target):
         outData = []
@@ -108,12 +110,12 @@ class player(object):
                 targetFreeze == False
                 target.reSetMask()
 
-
             if selfFreeze == True:
                 self.freeze()
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction) )
                     self.takeball = -1
+
             if targetFreeze == True:
                 target.freeze()
                 if target.takeball != -1:
