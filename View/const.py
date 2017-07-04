@@ -11,6 +11,10 @@ Color_Gray  = (128, 128, 128)
 
 # Character center
 Player_center = (70,70)
+
 # Object positions
 Pos_map = (0, 0)
 Pos_time = (20, 740)
+
+# some rand
+bias_rand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
