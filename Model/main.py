@@ -80,13 +80,13 @@ class GameEngine(object):
         for i in range(ManualPlayerNum):
             Tmp_P = player("manual")
             Tmp_P.IS_AI = False
-            self.player.append(Tmp_P)
+            self.players.append(Tmp_P)
 
         AINum = len(self.AIList)
         for i in range(AINum):
             Tmp_P = player(self.AIList[i])
             Tmp_P.IS_AI = True
-            self.player.append(Tmp_P)
+            self.players.append(Tmp_P)
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
