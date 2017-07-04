@@ -36,7 +36,7 @@ class player(object):
         self.isVisible = True
         self.invisibleTime = 0
 
-    def freeze(self, freezeTime):
+    def freeze(self):
         self.isFreeze = True
         self.freezeTimer = freezeTime
         self.direction = 0
