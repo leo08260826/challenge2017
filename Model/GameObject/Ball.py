@@ -14,11 +14,14 @@ class OriginalBall(object):
         self.isStrengthened = False
     
     def throw(self, direction, position, isStrengthened = False):
+        if self.state != 1:
+            return
         self.direction = direction
         self.isStrengthened = isStrengthened
-        self.position = position
         self.state = 2
         self.speed = mc.shotSpeed
+        self.position[0] = position[0] + mc.dirConst[direction][0] * 30
+        self.position[1] = position[1] + mc.dirConst[direction][1] * 30
     
     def modifyPosition(self):
         for index, element in enumerate(self.position):
