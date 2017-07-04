@@ -54,7 +54,7 @@ class OriginalBall(object):
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
-        elif position[1] > mc.gameRangeLower:
+        elif position[1] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 2
             elif position[0] > mc.gameRangeUpper or position[0] < mc.gameRangeLower:
