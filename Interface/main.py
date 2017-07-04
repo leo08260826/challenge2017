@@ -32,7 +32,7 @@ class Interface(object):
                 player.ai.decide()
         
     def initialize(self):
-        for index, player in enumerate(self.model.player):
+        for index, player in enumerate(self.model.players):
             if player.name == "manual":
                 continue
 
