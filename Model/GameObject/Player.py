@@ -123,3 +123,8 @@ class player(object):
                     target.takeball = -1
 
         return outData
+
+
+# freeze away
+# throw ball
+# defense power back
