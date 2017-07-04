@@ -28,7 +28,7 @@ class Barrier(object):
         ba = []
         ca = []
         da = []
-	    ac = []
+        ac = []
         dc = []
         dc = []
         ac = []
