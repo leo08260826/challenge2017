@@ -12,7 +12,11 @@ class player(object):
         self.score = 0
         self.skillcard = None
         self.takeball = -1
-        self.is_AI = is_AI
+        if AI == None:
+        	self.is_AI = False
+        else:
+        	self.is_AI = True
+
         self.AI = AI
 
         # move data

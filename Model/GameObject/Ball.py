@@ -88,7 +88,7 @@ class OriginalBall(object):
 
 class Quaffle(OriginalBall):
     def __init__(self, index):
-        super(Quaffle, self).__init__(id, index)
+        super(Quaffle, self).__init__(index)
         self.speed = mc.quaffleSpeed
         self.ballsize = mc.quaffleSize / 2
 
@@ -107,7 +107,7 @@ class Quaffle(OriginalBall):
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
-        super(GoldenSnitch, self).__init__(id, index)    
+        super(GoldenSnitch, self).__init__(index)    
         self.speed = mc.goldenSnitchSpeed
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
 
