@@ -27,7 +27,7 @@ class Interface(object):
             self.initialize()
     
     def API_play(self):
-        for player in self.model.player:
+        for player in self.model.players:
             if player.IS_AI:
                 player.ai.decide()
         
