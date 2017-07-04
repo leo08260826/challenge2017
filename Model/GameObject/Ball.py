@@ -13,9 +13,10 @@ class OriginalBall(object):
         self.playerIndex = -1
         self.isStrengthened = False
     
-    def throw(self, direction, isStrengthened = False):
+    def throw(self, position, direction, isStrengthened = False):
         self.direction = direction
         self.isStrengthened = isStrengthened
+        self.position = position
         self.state = 2
         self.speed = mc.shotSpeed
     
