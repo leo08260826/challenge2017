@@ -28,6 +28,7 @@ class GraphicalView(object):
         self.smallfont = None
         self.player_images = []
         self.player_bais = []
+        self.stuns = []
         self.ticks = 0
     
     def notify(self, event):
@@ -49,7 +50,7 @@ class GraphicalView(object):
         elif isinstance(event, Event_Action):
             player = self.evManager.players[event.PlayerIndex]
             if event.ActionIndex == 1 and player.mode == 0:
-                self.stuns.append(player.position)
+                self.stuns.append([player.position, 8])
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -134,6 +135,9 @@ class GraphicalView(object):
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
+        ''' skills '''
+        self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png' for i int range(9) ]
+        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' for i int range(12) ]
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
