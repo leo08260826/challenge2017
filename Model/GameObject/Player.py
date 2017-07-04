@@ -42,11 +42,11 @@ class player(object):
         self.direction = 0
 
     def hide(self):
-        self.isVisible = True
+        self.isVisible = False
         self.invisibleTime = invisibleTime
 
     def setBarrier(self):
-        self.power = self. power - barrierPowerCost
+        self.power = self.power - barrierPowerCost
         return (self.position, self.direction)
 
     def shot(self):
