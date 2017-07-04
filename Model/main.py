@@ -57,6 +57,8 @@ class GameEngine(object):
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
+        elif isinstance(event, Event_EverySec):
+            pass
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
@@ -67,8 +69,6 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-        elif isinstance(event, Event_Tick):
-            pass
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -95,7 +95,8 @@ class GameEngine(object):
         # Update quaffles
         for quaffle in self.quaffles:
             score, playerIndex = quaffle.tickCheck()
-            self.players[playerIndex].score += score
+            if playerIndex in range(PlayeNum):
+                self.players[playerIndex].score += score
         # Update golden snitch
         self.goldenSnitch.tickCheck()
         # Update barriers
@@ -111,7 +112,7 @@ class GameEngine(object):
         # player to golden snitch
         distToGoldenSnitch = []
         for player in self.players:
-            if player.takeball == -1:
+            if player.takeball == -1 and not player.isFreeze:
                 distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
                              (player.position[1] - goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
@@ -128,7 +129,7 @@ class GameEngine(object):
             if quaffle.state != 1:
                 distToQuaffle = []
                 for player in self.players:
-                    if player.takeball == -1:
+                    if player.takeball == -1 and not player.isFreeze:
                         distSquare = (player.position[0] - quaffle.position[0]) ** 2 + \
                                      (player.position[1] - quaffle.position[1]) ** 2
                         distToQuaffle.append((distSquare ** (1/2), player.index))
