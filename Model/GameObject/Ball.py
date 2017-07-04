@@ -20,8 +20,8 @@ class OriginalBall(object):
         self.isStrengthened = isStrengthened
         self.state = 2
         self.speed = mc.shotSpeed
-        self.position[0] = position[0] + mc.dirConst[direction][0] * 30
-        self.position[1] = position[1] + mc.dirConst[direction][1] * 30
+        self.position[0] = position[0] + mc.dirConst[direction][0] * 35
+        self.position[1] = position[1] + mc.dirConst[direction][1] * 35
     
     def modifyPosition(self):
         for index, element in enumerate(self.position):
