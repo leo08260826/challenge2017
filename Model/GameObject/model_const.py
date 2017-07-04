@@ -4,6 +4,7 @@ ballRandomUpper = 470
 numberOfQuaffles = 2
 quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
+distToCatchQuaffle = 30 
 
 #speed
 quaffleSpeed = 3
@@ -19,10 +20,10 @@ gameRangeUpper = gameRangeLower + gameRange
 
 #player const
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
-powerMax = 1000
+powerMax = 100
 freezeTime = 60
 playerBumpDistance = 25
-barrierPowerCost = 180
+barrierPowerCost = 18
 PlayerNum = 4
 MaxManualPlayer = 4
 playerSpeed = 4
@@ -31,6 +32,7 @@ stunFreezeTime = 60
 #golden snitch
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
+distToCatchGoldenSnitch = 10 
 
 #dir const
 dirConst = [[0,0],[0,1],[0.707,-0.707],[1,0],[0.707,0.707],[0,-1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]
@@ -53,3 +55,4 @@ reachWall = 10
 
 #game const
 initTime = 5400
+ticktime = 30
