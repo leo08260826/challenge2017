@@ -1,5 +1,5 @@
 import random
-import model_const as mc
+import Model.GameObject.model_const as mc
 
 class OriginalBall(object):
     def __init__(self, index):

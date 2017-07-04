@@ -1,8 +1,8 @@
-from model_const import *
+from Model.GameObject.model_const import *
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
-        self.name = nam
+        self.name = name
         self.index = index
         self.mode = 1
         self.modeTimer = 0
