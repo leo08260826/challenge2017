@@ -12,7 +12,7 @@ class OriginalBall(object):
         self.direction = random.randrange(1, 9)
         self.playerIndex = -1
         self.isStrengthened = False
-    
+
     def throw(self, direction, position, isStrengthened = False):
         if self.state != 1:
             return
@@ -22,16 +22,16 @@ class OriginalBall(object):
         self.speed = mc.shotSpeed
         self.position[0] = position[0] + mc.dirConst[direction][0] * 35
         self.position[1] = position[1] + mc.dirConst[direction][1] * 35
-    
+
     def modifyPosition(self):
         for index, element in enumerate(self.position):
             if element < mc.gameRangeLower:
-                self.position[index] = mc.gameRangeLower * 2 - element 
+                self.position[index] = mc.gameRangeLower * 2 - element
                 self.direction = mc.dirBounce[index][self.direction]
             if element > mc.gameRangeUpper:
                 self.position[index] = mc.gameRangeUpper * 2 - element
                 self.direction = mc.dirBounce[index][self.direction]
-    
+
     def tickCheck(self):
         pass
 
@@ -47,7 +47,7 @@ class OriginalBall(object):
                 checkGoal = mc.reachWall
         elif position[0] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
-                checkGoal = 1                
+                checkGoal = 1
             elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
@@ -78,22 +78,24 @@ class Quaffle(OriginalBall):
         self.playerIndex = playerIndex
         self.state = 1
         self.isStrengthened = False
-        
-    def deprive(self, direction):
+
+    def deprive(self, direction, position):
         self.state = 0
         self.isStrengtheend = False
         self.direction = direction
         self.speed = mc.depriveSpeed
-        
+        self.position[0] = position[0] + mc.dirConst[direction][0] * 35
+        self.position[1] = position[1] + mc.dirConst[direction][1] * 35
+
     def tickCheck(self):
         tmpScore = 0
         tmpPlayerIndex = self.playerIndex
         if self.state in (0, 2):
-            
+
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
             self.position[1] += mc.dirConst[self.direction][1] * self.speed
             checkGoal = self.checkWhoseGoal(self.position)
-            
+
             if checkGoal != mc.reachNothing:
                 self.playerIndex = -1
                 self.state = 0
@@ -119,7 +121,7 @@ class Quaffle(OriginalBall):
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
-        super(GoldenSnitch, self).__init__(index)    
+        super(GoldenSnitch, self).__init__(index)
         self.speed = mc.goldenSnitchSpeed
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
         self.ballSize = mc.goldenSnitchSize / 2
@@ -127,7 +129,7 @@ class GoldenSnitch(OriginalBall):
     def modifyPosition(self):
         for index, element in enumerate(self.position):
             if element < mc.gameRangeLower:
-                self.position[index] = mc.gameRangeLower * 2 - element 
+                self.position[index] = mc.gameRangeLower * 2 - element
                 self.direction[index] *= -1
             if element > mc.gameRangeUpper:
                 self.position[index] = mc.gameRangeUpper * 2 - element
