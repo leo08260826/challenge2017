@@ -86,7 +86,7 @@ class player(object):
 
     def bump(self, target):
         outData = []
-        if (self.direction[0]-target.direction[0])**2 + (self.direction[1]-target.direction[1])**2 <= playerBumpDistance**2:
+        if (self.position[0]-target.position[0])**2 + (self.position[1]-target.position[1])**2 <= playerBumpDistance**2:
             selfFreeze = True
             targetFreeze = True
             if self.mode != target.mode:
