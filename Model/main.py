@@ -116,10 +116,10 @@ class GameEngine(object):
                 distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
                              (player.position[1] - goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
-        
+
         distToGoldenSnitch.sort()
         for dist in distToGoldenSnitch:
-            if dist[0] < distToCatchGoldenSnitch && not self.players[dist[1]].isFreeze:
+            if dist[0] < distToCatchGoldenSnitch and not self.players[dist[1]].isFreeze:
                 self.players[playerIndex].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_Timeup)
                 break
