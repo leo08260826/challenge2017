@@ -28,8 +28,13 @@ class Barrier(object):
         ba = []
         ca = []
         da = []
+<<<<<<< HEAD
 	    ac = []
         dc = []
+=======
+        dc = []
+        ac = []
+>>>>>>> 75b10b54a49ab0a9bace0f09eada873ba906a61a
         bc = []
         a.append(self.position[0] + 0.5 * barrierWidth * dirConst[(self.direction + 1) % 8 + 1][0])
         a.append(self.position[1] + 0.5 * barrierWidth * dirConst[(self.direction + 1) % 8 + 1][1])
