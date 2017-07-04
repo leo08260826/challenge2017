@@ -47,10 +47,12 @@ class GraphicalView(object):
             self.display_fps()
             # limit the redraw speed to 30 frames per second
             self.clock.tick(FramePerSec)
+            '''
         elif isinstance(event, Event_Action):
             player = self.evManager.players[event.PlayerIndex]
             if event.ActionIndex == 1 and player.mode == 0:
-                self.stuns.append([player.position, 8])
+                self.stuns[player.index] = [player.positon, 0]
+                '''
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -86,14 +88,27 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
+        #for testing
+        for i in range(4):
+            self.render_player_status(i)
+        #end test
  #      for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
+#<<<<<<< HEAD
  #       for i in self.stuns:
 
  #           pass
+#=======pass
+        for stun in self.stuns:
+            if stun[1] in range(9):
+                self.blit_at_center(self.stun_images[stun[1]], stun[0])
+                stun[1] += 1
+
+#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         # update surface
         pg.display.flip()
         self.ticks += 1
+        
         
     def render_stop(self):
         """
@@ -129,16 +144,22 @@ class GraphicalView(object):
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
         self.player_bias = [0, 0, 0, 0]
+        self.stuns = [[(0,0),-1],[(0,0),-1],[(0,0),-1],[(0,0),-1]]
         # load images
         ''' backgrounds '''
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         ''' icons '''
-        self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'), pg.image.load('View/image/icon/icon_protectmode.png')]
+        self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
+                            pg.image.load('View/image/icon/icon_protectmode.png')]
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
+#<<<<<<< HEAD
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
+#=======
+        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png') for i in range(12) ]
+#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
@@ -168,8 +189,13 @@ class GraphicalView(object):
         self.blit_at_center(self.mode_images[1], (200,500))
         self.blit_at_center(self.take_ball_images[0], (200,500))
         self.blit_at_center(self.ball_powered_images[0], (500,500))
+        self.blit_at_center(self.stun_images[0], (370,370))
         
     def render_player_status(self, index):
+        player = self.evManager.players[index]
+        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
+        self.blit_at_center(info,(980,100+180*index))
+            
         pass
 
     def render_player_charcter(self, index):
