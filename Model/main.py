@@ -168,6 +168,7 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
+<<<<<<< HEAD
 
     def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
@@ -201,7 +202,7 @@ class GameEngine(object):
                 player = self.players[playerIndex]
                 ballID = player.shot()
                 if ballID != -1:
-                    self.balls[ballID].state = 2
+                    quaffles[ballData[0]].throw(ballData[1])
 
     def run(self):
         """
