@@ -154,7 +154,7 @@ class GameEngine(object):
                     dist = min(distToQuaffle)
                     playerIndex = distToQuaffle.index(dist)
                     if dist[0] < distToCatchQuaffle:
-                        self.players[playerIndex].score += scoreOfQuaffle[quaffle.state]
+                        self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
                         self.players[playerIndex].takeball = quaffle.index
                         quaffle.catch(playerIndex)
         # barrier to player

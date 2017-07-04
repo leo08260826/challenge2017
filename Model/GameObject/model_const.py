@@ -54,5 +54,5 @@ reachCornerGoal = 4
 reachWall = 10
 
 #game const
-initTime = 5400
+initTime = 180
 ticktime = 30
