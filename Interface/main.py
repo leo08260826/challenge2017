@@ -28,10 +28,13 @@ class Interface(object):
     
     def API_play(self):
         for player in self.model.player:
-            player.ai.decide()
+            if player.IS_AI:
+                player.ai.decide()
         
     def initialize(self):
         for index, player in enumerate(self.model.player):
+            if player.name == "manual":
+                continue
             # load TeamAI .py file
             try:
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
