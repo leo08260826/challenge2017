@@ -57,6 +57,8 @@ class GameEngine(object):
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
+        elif isinstance(event, Event_EverySec):
+            pass
         elif isinstance(event, Event_PlayerMove):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
@@ -67,8 +69,6 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-        elif isinstance(event, Event_Tick):
-            pass
 
     def SetPlayer(self):
         for i in range(PlayerNum):
@@ -95,7 +95,8 @@ class GameEngine(object):
         # Update quaffles
         for quaffle in self.quaffles:
             score, playerIndex = quaffle.tickCheck()
-            self.players[playerIndex].score += score
+            if playerIndex in range(PlayeNum):
+                self.players[playerIndex].score += score
         # Update golden snitch
         self.goldenSnitch.tickCheck()
         # Update barriers
@@ -168,7 +169,6 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
-<<<<<<< HEAD
 
     def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
