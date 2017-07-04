@@ -20,14 +20,13 @@ class OriginalBall(object):
         self.speed = mc.shotSpeed
         
     def tickCheck(self):
+        tmpScore = 0
+        tmpPlayerIndex = self.playerIndex
         if self.state in (0, 2):
             
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
-            self.position[1] += mc.dirConst[self.direction][1] * self.speed            
-            
+            self.position[1] += mc.dirConst[self.direction][1] * self.speed
             checkGoal = self.checkWhoseGoal(self.position)
-            tmpScore = 0
-            tmpPlayerIndex = self.playerIndex
             
             if checkGoal != mc.reachNothing:
                 self.playerIndex = -1
@@ -54,7 +53,9 @@ class OriginalBall(object):
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-            return (tmpScore, tmpPlayerIndex)
+                    
+        return (tmpScore, tmpPlayerIndex)
+
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
