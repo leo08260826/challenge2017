@@ -3,9 +3,13 @@ import random
 import itertools
 
 from EventManager import *
-from const_main import *
+from Model.GameObject.model_const import *
 from Model.StateMachine import *
 from Model.GameObject.Player import *
+from Model.GameObject.Ball import *
+from Model.GameObject.Barrier import *
+
+
 
 class GameEngine(object):
     """
@@ -71,6 +75,7 @@ class GameEngine(object):
             self.ApplyAction(event.PlayerIndex, event.ActionIndex)
 
     def SetPlayer(self):
+        count = 0
         MinAINum = PlayerNum - MaxManualPlayer
         DefautAINum = MinAINum - len(self.AIList) if len(self.AIList) < MinAINum else 0
         for i in range(DefautAINum):
@@ -78,15 +83,17 @@ class GameEngine(object):
 
         ManualPlayerNum = PlayerNum - len(self.AIList) if len(self.AIList) < PlayerNum else 0
         for i in range(ManualPlayerNum):
-            Tmp_P = player("manual")
+            Tmp_P = player("manual", count)
             Tmp_P.IS_AI = False
             self.players.append(Tmp_P)
+            count = count + 1
 
         AINum = len(self.AIList)
         for i in range(AINum):
-            Tmp_P = player(self.AIList[i])
+            Tmp_P = player(self.AIList[i], count)
             Tmp_P.IS_AI = True
             self.players.append(Tmp_P)
+            count = count + 1
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
