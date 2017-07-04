@@ -26,24 +26,13 @@ class OriginalBall(object):
             self.position[1] += mc.dirConst[self.direction][1] * self.speed            
             
             tmpPosition = self.position
-            for index, element in enumerate(self.position):
-                if element < mc.gameRangeLower:
-                    self.position[index] = mc.gameRangeLower * 2 - element 
-                    self.direction = mc.dirBounce[index][self.direction]
-                    
-                if element > mc.gameRangeUpper:
-                    self.position[index] = mc.gameRangeUpper * 2 - element
-                    self.direction = mc.dirBounce[index][self.direction]
-            
             checkGoal = self.checkWhoseGoal(self, tmpPosition)
             tmpScore = 0
             if checkGoal != mc.reachNothing:
-                self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
-                                 random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
-                self.direction = random.randrange(1, 9)
                 self.playerIndex = -1
                 self.state = 0
                 self.isStrengthened = False
+                self.speed = mc.quaffleSpeed
                 if checkGoal == self.playerIndex:
                     tmpScore = 0
                 elif checkGoal == mc.reachCornerGoal:
@@ -52,6 +41,18 @@ class OriginalBall(object):
                     tmpScore = mc.scoreofQuaffles[4]
                 else:
                     tmpScore = mc.scoreofQuaffles[3]
+                if checkGoal == mc.reachWall:
+                    for index, element in enumerate(self.position):
+                        if element < mc.gameRangeLower:
+                            self.position[index] = mc.gameRangeLower * 2 - element 
+                            self.direction = mc.dirBounce[index][self.direction]
+                        if element > mc.gameRangeUpper:
+                            self.position[index] = mc.gameRangeUpper * 2 - element
+                            self.direction = mc.dirBounce[index][self.direction]
+                else:
+                    self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
+                                     random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
+                    self.direction = random.randrange(1, 9)
             return (tmpScore, self.playerIndex)
 
     def checkWhoseGoal(self, position):
@@ -101,6 +102,7 @@ class Quaffle(OriginalBall):
         self.state = 0
         self.isStrengtheend = False
         self.direction = direction
+        self.speed = mc.depriveSpeed
 
     def tickCheck(self):
         super(Quaffle, self).tickCheck(self)

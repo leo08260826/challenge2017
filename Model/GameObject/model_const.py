@@ -9,6 +9,8 @@ scoreOfQuaffles = [1,0,4,8,12,16]
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
 playerSpeed = 4
+shotSpeed = 5
+depriveSpeed = 5
 
 #view const
 gameRange = 700
