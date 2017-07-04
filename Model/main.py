@@ -115,12 +115,14 @@ class GameEngine(object):
                 distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
                              (player.position[1] - goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
-        if distToGoldenSnitch:
-            dist = min(distToGoldenSnitch)
-            playerIndex = distToGoldenSnitch.index(dist)
-            if dist < distToCatchGoldenSnitch:
+        
+        distToGoldenSnitch.sort()
+        for dist in distToGoldenSnitch:
+            if dist[0] < distToCatchGoldenSnitch && not self.players[dist[1]].isFreeze:
                 self.players[playerIndex].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_Timeup)
+                break
+
         # player to quaffle
         for quaffle in self.quaffles:
             if quaffle.state != 1:
@@ -168,7 +170,6 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
-<<<<<<< HEAD
 
     def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
@@ -195,7 +196,8 @@ class GameEngine(object):
 
             elif actionIndex == 1:
                 if self.players[playerIndex].mode == 0:
-                     for player in self.players:
+                     for 
+                     player in self.players:
                         if player == self.players[playerIndex]:
                             continue
                         else:
