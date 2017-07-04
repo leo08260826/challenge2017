@@ -28,6 +28,8 @@ class Barrier(object):
         ba = []
         ca = []
         da = []
+        ac = []
+        dc = []
         dc = []
         ac = []
         bc = []
