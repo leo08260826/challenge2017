@@ -194,8 +194,16 @@ class GameEngine(object):
                     barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
-                if players[playerIndex].mode == 0:
-                     players[playerIndex].
+                if self.players[playerIndex].mode == 0:
+                     for player in self.players:
+                        if player == self.players[playerIndex]:
+                            continue
+                        else:
+                            distSquare = (player.position[0] - players[playerIndex].position[0]) ** 2 + \
+                                    player.position[1] - players[playerIndex].position[1]) ** 2
+                            if (distSquare < (2 * mc.playerBumpDistance) ** 2):
+                                player.freeze(mc.stunFreezeTime)
+
                 elif players[playerIndex].mode == 1:
 
             elif  actionIndex == 2:

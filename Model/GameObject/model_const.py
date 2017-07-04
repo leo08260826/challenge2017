@@ -19,10 +19,11 @@ gameRangeUpper = gameRangeLower + gameRange
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 1000
 freezeTime = 60
-playerBumpDistance = 625
+playerBumpDistance = 25
 barrierPowerCost = 180
 PlayerNum = 4
 playerSpeed = 4
+stunFreezeTime = 60
 
 #golden snitch
 goldenSnitchSize = 10
