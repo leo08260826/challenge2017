@@ -4,6 +4,7 @@ ballRandomUpper = 470
 numberOfQuaffles = 2
 quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
+distToCatchQuaffle = 30 
 
 #speed
 quaffleSpeed = 3
@@ -31,6 +32,7 @@ stunFreezeTime = 60
 #golden snitch
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
+distToCatchGoldenSnitch = 10 
 
 #dir const
 dirConst = [[0,0],[0,1],[0.707,-0.707],[1,0],[0.707,0.707],[0,-1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]
