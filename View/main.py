@@ -88,6 +88,8 @@ class GraphicalView(object):
             self.render_player_character(i)
         for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
+        for i in self.stuns:
+
             pass
         # update surface
         pg.display.flip()
@@ -133,8 +135,7 @@ class GraphicalView(object):
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         ''' icons '''
-        self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
-                            pg.image.load('View/image/icon/icon_protectmode.png')]
+        self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'), pg.image.load('View/image/icon/icon_protectmode.png')]
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png' for i int range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' for i int range(12) ]
