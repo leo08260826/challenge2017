@@ -14,6 +14,8 @@ class Event_Initialize(BaseEvent):
     """
     def __init__(self):
         self.name = "Initialize event"
+    def __str__(self):
+        return self.name
 
 class Event_Quit(BaseEvent):
     """
@@ -21,6 +23,8 @@ class Event_Quit(BaseEvent):
     """
     def __init__ (self):
         self.name = "Quit event"
+    def __str__(self):
+        return self.name
 
 class Event_StateChange(BaseEvent):
     """
@@ -28,7 +32,9 @@ class Event_StateChange(BaseEvent):
     """
     def __init__(self, state):
         self.name = "StateChange event"
-        self.state = state    
+        self.state = state
+    def __str__(self):
+        return "{0} => StateTo:{1}".format(self.name,self.state)
 
 class Event_EveryTick(BaseEvent):
     """
@@ -36,6 +42,8 @@ class Event_EveryTick(BaseEvent):
     """
     def __init__ (self):
         self.name = "Tick event"
+    def __str__(self):
+        return self.name
 
 class Event_EverySec(BaseEvent):
     """
@@ -43,6 +51,8 @@ class Event_EverySec(BaseEvent):
     """
     def __init__(self):
         self.name = "Sec event"
+    def __str__(self):
+        return self.name
 
 class Event_TimeUp(BaseEvent):
     """
@@ -50,6 +60,8 @@ class Event_TimeUp(BaseEvent):
     """
     def __init__(self):
         self.name = "TimeUp event"
+    def __str__(self):
+        return self.name
 
 class Event_Move(BaseEvent):
     """
@@ -59,6 +71,8 @@ class Event_Move(BaseEvent):
         self.name = "Move event"
         self.PlayerIndex = player
         self.Direction = direction
+    def __str__(self):
+        return "{0} => Playerindex={1}, DirectionTo:{2}".format(self.name,self.PlayerIndex,self.Direction)
 
 class Event_PlayerModeChange(BaseEvent):
     """
@@ -67,6 +81,8 @@ class Event_PlayerModeChange(BaseEvent):
     def __init__(self, player):
         self.name = "ModeChange event"
         self.PlayerIndex = player
+    def __str__(self):
+        return "{0} => Playerindex={1}".format(self.name,self.PlayerIndex)
 
 class Event_SkillCard(BaseEvent):
     """
@@ -76,6 +92,8 @@ class Event_SkillCard(BaseEvent):
         self.name = "SkillCard event"
         self.PlayerIndex = player
         self.SkillIndex = skill
+    def __str__(self):
+        return "{0} => Playerindex={1}, SkillIndex={2}".format(self.name,self.PlayerIndex,self.SkillIndex)
 
 class Event_Action(BaseEvent):
     """
@@ -85,6 +103,8 @@ class Event_Action(BaseEvent):
         self.name = "Action event"
         self.PlayerIndex = player
         self.ActionIndex = action
+    def __str__(self):
+        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name,self.PlayerIndex,self.ActionIndex)
 
 class EventManager(object):
     """
@@ -116,7 +136,7 @@ class EventManager(object):
         It will be broadcast to all listeners.
         """
         # this segment use to debug
-        if not isinstance(event, Event_EveryTick):
+        if not (isinstance(event, Event_EveryTick) or isinstance(event, Event_EverySec)):
             print( str(event) )
         for listener in self.listeners.keys():
             listener.notify(event)

@@ -56,7 +56,7 @@ class Control(object):
         Handles play events.
         """
         if event.type == pg.USEREVENT:
-            self.evManager.post(Event_EverySec())
+            self.evManager.Post(Event_EverySec())
         elif event.type == pg.KEYDOWN:
             # escape pops the menu
             if event.key == pg.K_ESCAPE:
