@@ -130,8 +130,8 @@ class GameEngine(object):
         distToGoldenSnitch = []
         for player in self.players:
             if player.takeball == -1 and not player.isFreeze:
-                distSquare = (player.position[0] - goldenSnitch.position[0]) ** 2 + \
-                             (player.position[1] - goldenSnitch.position[1]) ** 2
+                distSquare = (player.position[0] - self.goldenSnitch.position[0]) ** 2 + \
+                             (player.position[1] - self.goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
 
         distToGoldenSnitch.sort()
