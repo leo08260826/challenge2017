@@ -29,7 +29,6 @@ class GraphicalView(object):
         self.player_images = []
         self.player_bais = []
         self.stuns = []
-        self.ticks = 0
     
     def notify(self, event):
         """
@@ -95,10 +94,12 @@ class GraphicalView(object):
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
+        for barrier in self.evManager.barriers:
+            self.render_barrier(barrier)
+
 
         # update surface
         pg.display.flip()
-        self.ticks += 1
         
     def render_stop(self):
         """
@@ -134,7 +135,7 @@ class GraphicalView(object):
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
         self.player_bias = [0, 0, 0, 0]
-        self.stuns = [[(0,0),-1],[(0,0),-1],[(0,0),-1],[(0,0),-1]]
+        self.stuns = [[(0,0),-1] for _ in range(PlayerNum)]]
         # load images
         ''' backgrounds '''
         self.map = pg.image.load('View/image/background/map.png')
@@ -173,7 +174,7 @@ class GraphicalView(object):
         self.screen.blit(self.time, Pos_time)
         self.blit_at_center(self.player_images[3][2], (200,500))
         self.blit_at_center(self.mode_images[1], (200,500))
-        self.blit_at_center(self.take_ball_images[0], (200,500))
+        self.blit_at_center(self.take_ball_images[1], (200,500))
         self.blit_at_center(self.ball_powered_images[0], (500,500))
         self.blit_at_center(self.stun_images[0], (370,370))
         
@@ -182,7 +183,7 @@ class GraphicalView(object):
 
     def render_player_charcter(self, index):
         player = self.evManager.players[index]
-        if self.ticks % (FramePerSec*3) == biasrand[index]:
+        if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
             bias[index] = ( bias[index] + 1 ) % 2
         bias = (2,2) if self.player_bias[index] else (-2,-2)
         position = map(sum, zip(player.position, bias))
@@ -209,6 +210,10 @@ class GraphicalView(object):
                 self.blit_at_center(self.ball_powered_images[index], quaffle.position)
             else:
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
+
+    def render_barrier(self, barrier):
+        if
+        pg.draw.1ine(self.screen, playercolor[barrier.playerIndex], start_pos, end_pos, width=1)
         
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
