@@ -6,8 +6,8 @@ quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
 
 #speed
-quaffleSpeed = 1
-goldenSnitchSpeed = 2
+quaffleSpeed = 3
+goldenSnitchSpeed = 8
 playerSpeed = 4
 
 #view const
@@ -22,6 +22,7 @@ freezeTime = 60
 playerBumpDistance = 625
 barrierPowerCost = 180
 PlayerNum = 4
+playerSpeed = 4
 
 #golden snitch
 goldenSnitchSize = 10
@@ -37,7 +38,6 @@ goalRange = 180
 goalRangeLower = gameRangeLower + (gameRange - goalRange) / 2
 goalRangeUpper = goalRangeLower + goalRange
 
-
-#direction x, y bounce 
-
-
+#barrier const
+barrierTimer = 120
+barrierWidth = 180

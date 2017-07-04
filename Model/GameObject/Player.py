@@ -6,6 +6,8 @@ class player(object):
 		self.position = playerInitPos[index]
 		self.direction = 0
 		self.mode = 1
+		# 0 = attack
+		# 1 = defense
 		self.isFreeze = False
 		self.freezeTimer = 0
 		self.modeTimer = 0
@@ -29,11 +31,15 @@ class player(object):
 
 	def setBarrier(self):
 		self.power -= barrierPowerCost
-		return self.position
+		return (self.position, self.direction)
+
+	def shot(self):
+		ballIndex = self.takeball
+		self.takeball = -1
+		return (ballIndex, self.direction)
 
 	def changeDirection(self, direction):
 		self.direction = direction
-
 
 	def tickCheck(self):
 		self.position[0] += dirConst[self.direction][0]*playerSpeed
@@ -41,6 +47,7 @@ class player(object):
 		if self.isFreeze == True:
 			self.freezeTimer = self.freezeTimer - 1
 			self.direction = 0
+
 			if self.freezeTimer == 0:
 				self.isFreeze = False
 		if self.power <= powerMax:
@@ -51,13 +58,7 @@ class player(object):
 		if self.position[0] < 47 or self.position[0] > 693 :
 			self.direction = dirConst[0][self.direction]
 		elif self.position[1] < 47 or self.position[1] > 693 :
-			self.direction = dirConst[1][self.direction]
-		
-
-	def shot(self):
-		ballIndex = self.takeball
-		self.takeball = -1
-		return (ballIndex, self.direction)
+			self.direction = dirConst[1][self.direction]		
 
 	def bump(self, target):
 		if (self.direction[0]-target.direction[0])**2+(self.direction[1]-target.direction[1])**2 <= playerBumpDistance :
