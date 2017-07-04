@@ -87,17 +87,9 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
-        #for testing
-        for i in range(4):
-            self.render_player_status(i)
-        #end test
- #      for i in range(numberOfQuaffles):
+        for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
-#<<<<<<< HEAD
- #       for i in self.stuns:
-
- #           pass
-#=======pass
+            pass
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
@@ -106,10 +98,8 @@ class GraphicalView(object):
             self.render_barrier(barrier)
 
 
-#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         # update surface
         pg.display.flip()
-        
         
     def render_stop(self):
         """
@@ -156,11 +146,7 @@ class GraphicalView(object):
                             pg.image.load('View/image/icon/icon_protectmode.png')]
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
-#<<<<<<< HEAD
-        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
-#=======
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png') for i in range(12) ]
-#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
@@ -193,10 +179,6 @@ class GraphicalView(object):
         self.blit_at_center(self.stun_images[0], (370,370))
         
     def render_player_status(self, index):
-        player = self.evManager.players[index]
-        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
-        self.blit_at_center(info,(980,100+180*index))
-            
         pass
 
     def render_player_charcter(self, index):
@@ -214,6 +196,9 @@ class GraphicalView(object):
         else:
             direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
+        # mask
+        if player.isMask == True:
+            self.blit_at_center(self.mask_images[pg.time.get_ticks() % 12], position)
         # mode
         self.blit_at_center(self.mode_images[player.mode], position)
         # ball
@@ -230,7 +215,6 @@ class GraphicalView(object):
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
 
     def render_barrier(self, barrier):
-        if
         pg.draw.1ine(self.screen, playercolor[barrier.playerIndex], start_pos, end_pos, width=1)
         
     def blit_at_center(self, surface, position):
