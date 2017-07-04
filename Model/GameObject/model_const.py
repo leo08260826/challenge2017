@@ -9,6 +9,8 @@ scoreOfQuaffles = [1,0,4,8,12,16]
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
 playerSpeed = 4
+shotSpeed = 5
+depriveSpeed = 5
 
 #view const
 gameRange = 700
@@ -48,3 +50,6 @@ barrierWidth = 180
 reachNothing = -1
 reachCornerGoal = 4
 reachWall = 10
+
+#game const
+initTime = 5400

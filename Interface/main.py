@@ -35,6 +35,7 @@ class Interface(object):
         for index, player in enumerate(self.model.player):
             if player.name == "manual":
                 continue
+
             # load TeamAI .py file
             try:
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
