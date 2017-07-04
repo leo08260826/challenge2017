@@ -141,6 +141,7 @@ class GoldenSnitch(OriginalBall):
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
             self.position = [x + y * 0.5 for x, y in zip(self.position, self.direction)]
+            self.modifyPosition()
             return
 
         # calculate the vector sum of fleeDirectionList
