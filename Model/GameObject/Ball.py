@@ -19,7 +19,7 @@ class OriginalBall(object):
         self.state = 2
         self.speed = mc.shotSpeed
     
-    def modifiyPosition(self):
+    def modifyPosition(self):
         for index, element in enumerate(self.position):
             if element < mc.gameRangeLower:
                 self.position[index] = mc.gameRangeLower * 2 - element 
@@ -105,7 +105,7 @@ class Quaffle(OriginalBall):
                     tmpScore = mc.scoreOfQuaffles[3]
 
                 if checkGoal == mc.reachWall:
-                    self.modifiyPosition()
+                    self.modifyPosition()
                 else:
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
@@ -120,6 +120,14 @@ class GoldenSnitch(OriginalBall):
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
         self.ballSize = mc.goldenSnitchSize / 2
 
+    def modifyPosition(self):
+        for index, element in enumerate(self.position):
+            if element < mc.gameRangeLower:
+                self.position[index] = mc.gameRangeLower * 2 - element 
+                self.direction[index] *= -1
+            if element > mc.gameRangeUpper:
+                self.position[index] = mc.gameRangeUpper * 2 - element
+                self.direction[index] *= -1
 
     def tickCheck(self, players):
         fleeDirectionList = []
@@ -160,4 +168,4 @@ class GoldenSnitch(OriginalBall):
         self.position[0] += self.direction[0]
         self.position[1] += self.direction[1]
 
-        self.modifiyPosition()
+        self.modifyPosition()
