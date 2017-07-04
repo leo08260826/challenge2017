@@ -184,9 +184,8 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None and self.players[playerIndex].modeTimer <= 0:
+        if self.players[playerIndex] != None:
             player = self.players[playerIndex]
-            player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
 
     def PlayerShot(self, playerIndex, isStrengthened):
