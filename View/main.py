@@ -88,17 +88,27 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
-        for i in range(numberOfQuaffles):
+        #for testing
+        for i in range(4):
+            self.render_player_status(i)
+        #end test
+ #      for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
-            pass
+#<<<<<<< HEAD
+ #       for i in self.stuns:
+
+ #           pass
+#=======pass
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
 
+#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         # update surface
         pg.display.flip()
         self.ticks += 1
+        
         
     def render_stop(self):
         """
@@ -145,7 +155,11 @@ class GraphicalView(object):
                             pg.image.load('View/image/icon/icon_protectmode.png')]
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
+#<<<<<<< HEAD
+        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
+#=======
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png') for i in range(12) ]
+#>>>>>>> d746b46f67e2965c394b751877c1cc7bef9393ab
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
@@ -178,6 +192,10 @@ class GraphicalView(object):
         self.blit_at_center(self.stun_images[0], (370,370))
         
     def render_player_status(self, index):
+        player = self.evManager.players[index]
+        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
+        self.blit_at_center(info,(980,100+180*index))
+            
         pass
 
     def render_player_charcter(self, index):
