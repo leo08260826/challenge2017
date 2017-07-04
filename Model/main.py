@@ -59,11 +59,11 @@ class GameEngine(object):
             self.Bump()
         elif isinstance(event, Event_EverySec):
             pass
-        elif isinstance(event, Event_PlayerMove):
+        elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
-        elif isinstance(event, Event_PlayerTimeup):
+        elif isinstance(event, Event_TimeUp):
             self.state.push(STATE_RECORD)
         elif isinstance(event, Event_SkillCard):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
@@ -167,7 +167,7 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].modeTimer <= 0:
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
@@ -207,7 +207,8 @@ class GameEngine(object):
                                 player.freeze(mc.stunFreezeTime)
 
                 elif players[playerIndex].mode == 1:
-
+                    players[playerIndex].isMask = True
+                    players[playerIndex].maskTimer = maskTime
             elif  actionIndex == 2:
                 player = self.players[playerIndex]
                 ballID = player.shot()
