@@ -22,7 +22,7 @@ freezeTime = 60
 playerBumpDistance = 25
 barrierPowerCost = 180
 PlayerNum = 4
-MaxManualPlayer = 2
+MaxManualPlayer = 4
 playerSpeed = 4
 stunFreezeTime = 60
 
