@@ -43,6 +43,9 @@ dirBounce = [[0, 1, 8, 7, 6, 5, 4, 3, 2], [0, 5, 4, 3, 2, 1, 8, 7, 6], \
 goalRange = 180
 goalRangeLower = gameRangeLower + (gameRange - goalRange) / 2
 goalRangeUpper = goalRangeLower + goalRange
+cornerGoalRange = goalRange / 2
+cornerGoalRangeLower = gameRangeLower + cornerGoalRange
+cornerGoalRangeUpper = gameRangeUpper - cornerGoalRange
 
 #barrier const
 barrierTimer = 120
