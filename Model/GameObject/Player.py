@@ -17,8 +17,8 @@ class player(object):
 
         # move data
         self.position = playerInitPos[index]
-        self.direction = 0        
-        
+        self.direction = 0
+
         #mask data
         self.isMask = False
         self.maskTimer = 0
@@ -26,7 +26,7 @@ class player(object):
         #freeze data
         self.isFreeze = False
         self.freezeTimer = 0
-        
+
         #invisible data
         self.isVisible = True
         self.invisibleTime = 0
@@ -38,7 +38,7 @@ class player(object):
 
     def hide(self):
         self.isVisible = True
-        self.invisibleTime = invisibleTime 
+        self.invisibleTime = invisibleTime
 
     def setBarrier(self):
         self.power -= barrierPowerCost
@@ -77,7 +77,7 @@ class player(object):
 
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
-        if self.maskTimer == 0:    
+        if self.maskTimer == 0:
             self.isMask == False
 
     def bump(self, target):
@@ -90,7 +90,7 @@ class player(object):
                     selfFreeze == False
                 elif target.mode == 1:
                     targetFreeze == False
-            
+
             if self.isMask == True && selfFreeze == True:
                 selfFreeze = False
                 self.reSetMask()
@@ -99,7 +99,7 @@ class player(object):
                 targetFreeze == False
                 target.reSetMask()
 
-            
+
             if selfFreeze == True:
                 self.freeze()
                 if self.takeball != -1:
