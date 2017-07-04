@@ -68,15 +68,7 @@ class GraphicalView(object):
         Render the game play.
         """
         # draw backgound
-        self.screen.fill(Color_White)
-        # write some word
-        somewords = self.smallfont.render(
-                    'Play game!', 
-                    True, (0, 255, 0))
-        (SurfaceX, SurfaceY) = somewords.get_size()
-        pos_x = (ScreenSize[0] - SurfaceX)/2
-        pos_y = (ScreenSize[1] - SurfaceY)/2
-        self.screen.blit(somewords, (pos_x, pos_y))
+        self.screen.blit(self.bg,(0,0))
         # update surface
         pg.display.flip()
         
@@ -85,15 +77,7 @@ class GraphicalView(object):
         Render the stop screen.
         """
         # draw backgound
-        self.screen.fill(Color_Black)
-        # write some word
-        somewords = self.smallfont.render(
-                    'stop the game. space, escape to return the game.', 
-                    True, (0, 255, 0))
-        (SurfaceX, SurfaceY) = somewords.get_size()
-        pos_x = (ScreenSize[0] - SurfaceX)/2
-        pos_y = (ScreenSize[1] - SurfaceY)/2
-        self.screen.blit(somewords, (pos_x, pos_y))
+        self.screen.blit(self.bg_gray,(0,0))
         # update surface
         pg.display.flip()
 
@@ -113,3 +97,11 @@ class GraphicalView(object):
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
+        # load images
+        self.bg = pg.image.load('View/image/background.png')
+        self.bg_gray = pg.image.load('View/image/background_grayscale.png')
+
+    def drawplayer(self, index):
+
+
+
