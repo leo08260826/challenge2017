@@ -39,7 +39,9 @@ class player(object):
     def freeze(self):
         self.isFreeze = True
         self.freezeTimer = freezeTime
-        self.direction = 0
+        self.direction =(self.direction+4)%8
+        if self.direction == 0:
+            self.direction = 8
 
     def hide(self):
         self.isVisible = False
@@ -65,8 +67,9 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            self.direction = 0
-            if self.freezeTimer == 0:
+            if self.freezeTimer < 59 and self.freezeTimer > 0:
+                self.direction = 0
+            elif self.freezeTimer == 0:
                 self.isFreeze = False
 
         if self.powertmp < ticktime:
@@ -87,9 +90,9 @@ class player(object):
             self.maskTimer = self.maskTimer - 1
         if self.maskTimer == 0:
             self.isMask == False
-            
-        self.position[0] += dirConst[self.direction][0]*playerSpeed
-        self.position[1] += dirConst[self.direction][1]*playerSpeed
+        speedmode = self.mode + self.isFreeze * 1    
+        self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
+        self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
 
     def bump(self, target):
         outData = []
@@ -111,7 +114,7 @@ class player(object):
                 target.reSetMask()
 
             if selfFreeze == True:
-                self.freeze()
+                self.freeze()                
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction) )
                     self.takeball = -1
@@ -123,3 +126,8 @@ class player(object):
                     target.takeball = -1
 
         return outData
+
+
+# freeze away
+# throw ball
+# defense power back

@@ -188,13 +188,6 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
 
-    def PlayerShot(self, playerIndex, isStrengthened):
-        if self.players[playerIndex] != None:
-            player = self.players[playerIndex]
-            ballID = player.shot()
-            if ballID != -1:
-                self.quaffles[ballID].throw(player.direction, isStrengthened)
-
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
 
@@ -227,9 +220,9 @@ class GameEngine(object):
                     players[playerIndex].maskTimer = maskTime
             elif  actionIndex == 2:
                 player = self.players[playerIndex]
-                ballID = player.shot()
-                if ballID != -1:
-                    quaffles[ballData[0]].throw(ballData[1],player.position)
+                ballData = player.shot()
+                if ballData != -1:
+                    self.quaffles[ballData[0]].throw(ballData[1], player.position)
 
     def run(self):
         """
