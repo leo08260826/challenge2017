@@ -77,6 +77,23 @@ class GraphicalView(object):
         pos_x = (ScreenSize[0] - SurfaceX)/2
         pos_y = (ScreenSize[1] - SurfaceY)/2
         self.screen.blit(somewords, (pos_x, pos_y))
+        
+        surface = pg.display.get_surface()
+
+        # draw players
+        for player in self.model.players:
+            # Blue : defense, Red : attack
+            if player.mode == 0:
+                pg.draw.rect(surface, Color_Red, (player.position[0] - 20 , player.position[1] - 20, 40, 40))
+            elif player.mode == 1:
+                pg.draw.rect(surface, Color_Blue, (player.position[0] - 20, player.position[1] - 20), 40, 40)
+
+        # draw quaffle
+        for quaffle in self.model.quaffles:
+            pg.draw.circle(surface, Color_Grey, (quaffle.position[0], quaffle.position[1]), 20)
+
+        # draw golden snitch
+        pg.draw.circle(surface, Color_Yellow, (self.model.goldenSnitch.position[0], self.model.goldenSnitch.position[1]), 10)
         # update surface
         pg.display.flip()
         
