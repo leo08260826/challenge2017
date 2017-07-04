@@ -13,9 +13,10 @@ class OriginalBall(object):
         self.playerIndex = -1
         self.isStrengthened = False
     
-    def throw(self, direction, isStrengthened = False):
+    def throw(self, position, direction, isStrengthened = False):
         self.direction = direction
         self.isStrengthened = isStrengthened
+        self.position = position
         self.state = 2
         self.speed = mc.shotSpeed
     
@@ -36,28 +37,28 @@ class OriginalBall(object):
         if position[0] < mc.gameRangeLower:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 3
-            elif position[1] > mc.gameRangeUpper or position[1] < mc.gameRangeLower:
+            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[0] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 1                
-            elif position[1] > mc.gameRangeUpper or position[1] < mc.gameRangeLower:
+            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[1] < mc.gameRangeLower:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 0
-            elif position[0] > mc.gameRangeUpper or position[0] < mc.gameRangeLower:
+            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[1] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 2
-            elif position[0] > mc.gameRangeUpper or position[0] < mc.gameRangeLower:
+            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
@@ -141,6 +142,7 @@ class GoldenSnitch(OriginalBall):
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
             self.position = [x + y * 0.5 for x, y in zip(self.position, self.direction)]
+            self.modifyPosition()
             return
 
         # calculate the vector sum of fleeDirectionList
@@ -152,9 +154,9 @@ class GoldenSnitch(OriginalBall):
 
         # if 2 players are approaching form opposite direction
         if (len(fleeDirectionList) >= 2 and\
-            ((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5) == 0 or\
+            (((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5) == 0 or\
              (fleeDirectionList[0][0] / fleeDirectionList[1][0] == fleeDirectionList[1][0] / fleeDirectionList[1][1]\
-                and fleeDirectionList[0][0] / fleeDirectionList[1][0] < 0)):
+                and fleeDirectionList[0][0] / fleeDirectionList[1][0] < 0))):
             vectorSum[0] = fleeDirectionList[0][1]
             vectorSum[1] = fleeDirectionList[0][0]
 
