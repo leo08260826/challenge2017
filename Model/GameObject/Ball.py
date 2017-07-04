@@ -37,28 +37,28 @@ class OriginalBall(object):
         if position[0] < mc.gameRangeLower:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 3
-            elif position[1] > mc.gameRangeUpper or position[1] < mc.gameRangeLower:
+            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[0] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 1                
-            elif position[1] > mc.gameRangeUpper or position[1] < mc.gameRangeLower:
+            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[1] < mc.gameRangeLower:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 0
-            elif position[0] > mc.gameRangeUpper or position[0] < mc.gameRangeLower:
+            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
         elif position[1] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 2
-            elif position[0] > mc.gameRangeUpper or position[0] < mc.gameRangeLower:
+            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
                 checkGoal = mc.reachCornerGoal
             else:
                 checkGoal = mc.reachWall
@@ -142,6 +142,7 @@ class GoldenSnitch(OriginalBall):
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
             self.position = [x + y * 0.5 for x, y in zip(self.position, self.direction)]
+            self.modifyPosition()
             return
 
         # calculate the vector sum of fleeDirectionList
