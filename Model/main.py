@@ -71,13 +71,21 @@ class GameEngine(object):
             self.ApplyAction(event.PlayerIndex, event.ActionIndex)
 
     def SetPlayer(self):
-        for i in range(PlayerNum):
-            if self.AIList[i] != None:
-                Tmp_P = player(self.AIList[i])
-                Tmp_P.IS_AI = True
-            else:
-                Tmp_P = player("Default")
-                Tmp_P.IS_AI = False
+        MinAINum = PlayerNum - MaxManualPlayer
+        DefautAINum = MinAINum - len(self.AIList) if len(self.AIList) < MinAINum else 0
+        for i in range(DefautAINum):
+            self.AIList.append("default")
+
+        ManualPlayerNum = PlayerNum - len(self.AIList) if len(self.AIList) < PlayerNum else 0
+        for i in range(ManualPlayerNum):
+            Tmp_P = player("manual")
+            Tmp_P.IS_AI = False
+            self.player.append(Tmp_P)
+
+        AINum = len(self.AIList)
+        for i in range(AINum):
+            Tmp_P = player(self.AIList[i])
+            Tmp_P.IS_AI = True
             self.player.append(Tmp_P)
 
     def SetQuaffle(self):
