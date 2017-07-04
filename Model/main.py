@@ -57,17 +57,16 @@ class GameEngine(object):
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
-        # leave the parameter lists blank until event specs are stable
         elif isinstance(event, Event_PlayerMove):
-            self.SetPlayerDirection()
+            self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
-            self.ChangePlayerMode()
+            self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_PlayerTimeup):
-            pass
+            self.state.push(STATE_RECORD)
         elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard()
+            self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
-            self.ApplyAction()
+            self.ApplyAction(event.PlayerIndex, event.ActionIndex)
         elif isinstance(event, Event_Tick):
             pass
 
@@ -149,13 +148,13 @@ class GameEngine(object):
                     if quaffle.isStrengthened:
                         barriers.revmoe(barrier)
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirConst[0][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (2,6):
-                        quaffle.direction = dirConst[2][quaffle.direction]
+                        quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirConst[1][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (4,8):
-                        quaffle.direction = dirConst[3][quaffle.direction]
+                        quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
@@ -179,7 +178,28 @@ class GameEngine(object):
         pass
 
     def ApplyAction(self, playerIndex, actionIndex):
-        pass
+        #ACTION_0 = 0   power throw / barrier
+        #ACTION_1 = 1   stun / mask
+        #ACTION_2 = 2   general throw
+        if self.players[playerIndex] != None:
+            if actionIndex == 0:
+                if players[playerIndex].mode == 0:
+                    ballData = Players[playerIndex].shot()
+                    quaffles[ballData[0]].throw(ballData[1],True)
+                elif players[playerIndex].mode == 1:
+                    ballData = Players[playerIndex].setBarrier()
+                    barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+
+            elif actionIndex == 1:
+                if players[playerIndex].mode == 0:
+                     players[playerIndex].
+                elif players[playerIndex].mode == 1:
+
+            elif  actionIndex == 2:
+                player = self.players[playerIndex]
+                ballID = player.shot()
+                if ballID != -1:
+                    self.balls[ballID].state = 2
 
     def run(self):
         """
