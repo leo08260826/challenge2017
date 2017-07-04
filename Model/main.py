@@ -115,7 +115,7 @@ class GameEngine(object):
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
         # Update golden snitch
-        self.goldenSnitch.tickCheck()
+        self.goldenSnitch.tickCheck(self.Players)
         # Update barriers
         for barrier in self.barriers:
             barrier.tickCheck()
