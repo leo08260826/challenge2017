@@ -58,11 +58,12 @@ class GameEngine(object):
             self.SetPlayer()
             self.SetQuaffle()
             self.SetGoldenSnitch()
+            self.timer = initTime
         elif isinstance(event, Event_EveryTick):
             self.UpdateObjects()
             self.Bump()
         elif isinstance(event, Event_EverySec):
-            pass
+            self.timer -= 1
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
