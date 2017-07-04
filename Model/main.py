@@ -149,6 +149,9 @@ class GameEngine(object):
             player = self.players[playerIndex]
             player.freeze(ChangeModeFreezeTime);
             player.mode = 1 - player.mode
+<<<<<<< HEAD
+    
+=======
 
     def PlayerShot(self, playerIndex, isStrengthened):
         if self.players[playerIndex] != None:
@@ -157,11 +160,33 @@ class GameEngine(object):
             if ballID != -1:
                 self.quaffles[ballID].throw(player.direction, isStrengthened)
 
+>>>>>>> be3fec3b371b990712cd9da37ed21f7d6ce6b245
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
 
     def ApplyAction(self, playerIndex, actionIndex):
-        pass
+        #ACTION_0 = 0   power throw / barrier
+        #ACTION_1 = 1   stun / mask
+        #ACTION_2 = 2   general throw
+        if self.players[playerIndex] != None:
+            if actionIndex == 0:
+                if players[playerIndex].mode == 0:
+                    ballData = Players[playerIndex].shot()
+                    quaffles[ballData[0]].throw(ballData[1],True)
+                elif players[playerIndex].mode == 1:
+                    ballData = Players[playerIndex].setBarrier()
+                    barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+
+            elif actionIndex == 1:
+                if players[playerIndex].mode == 0:
+                     players[playerIndex].
+                elif players[playerIndex].mode == 1:
+
+            elif  actionIndex == 2:
+                player = self.players[playerIndex]
+                ballID = player.shot()
+                if ballID != -1:
+                    self.balls[ballID].state = 2
 
     def run(self):
         """
