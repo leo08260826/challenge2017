@@ -86,11 +86,11 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
-        for i in range(numberOfQuaffles):
+ #      for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
-        for i in self.stuns:
+ #       for i in self.stuns:
 
-            pass
+ #           pass
         # update surface
         pg.display.flip()
         self.ticks += 1
@@ -137,8 +137,8 @@ class GraphicalView(object):
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'), pg.image.load('View/image/icon/icon_protectmode.png')]
         ''' skills '''
-        self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png' for i int range(9) ]
-        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' for i int range(12) ]
+        self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
+        self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normad_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
