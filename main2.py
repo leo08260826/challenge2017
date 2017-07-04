@@ -64,7 +64,7 @@ class GraphicalView(object):
         Render the game menu.
         """
         # draw backgound
-        self.screen.fill(Color_Black)
+        self.screen.blit(self.background,(0,0))
         # write some word
         somewords = self.smallfont.render(
                     'You are in the Menu. Space to play. Esc exits.', 
@@ -105,8 +105,10 @@ class GraphicalView(object):
         """
         Render the stop screen.
         """
-        # draw backgound
+        # draw background
+        self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map_gray,(0,0))
+    
         # display words
         somewords = self.smallfont.render(
                     'Pause',
@@ -141,6 +143,7 @@ class GraphicalView(object):
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
+        self.background = pg.image.load('View/image/background/backgroundfill.png')
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -179,6 +182,12 @@ class GraphicalView(object):
         self.blit_at_center(self.stun_images[0], (370,370))
         
     def render_player_status(self, index):
+<<<<<<< HEAD
+=======
+ #      player = self.evManager.players[index]
+        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
+        self.blit_at_center(info,(980,100+180*index))
+>>>>>>> cf0952cf51a7aacf198c0c96d1e54e3dc74ac5d7
         pass
 
     def render_player_charcter(self, index):
