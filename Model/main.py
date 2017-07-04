@@ -206,7 +206,7 @@ class GameEngine(object):
             if actionIndex == 0:
                 if self.players[playerIndex].mode == 0:
                     ballData = self.players[playerIndex].shot()
-                    quaffles[ballData[0]].throw(ballData[1],True)
+                    quaffles[ballData[0]].throw(ballData[1],player.position,True)
                 elif players[playerIndex].mode == 1:
                     ballData = self.players[playerIndex].setBarrier()
                     barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
@@ -229,7 +229,7 @@ class GameEngine(object):
                 player = self.players[playerIndex]
                 ballID = player.shot()
                 if ballID != -1:
-                    quaffles[ballData[0]].throw(ballData[1])
+                    quaffles[ballData[0]].throw(ballData[1],player.position)
 
     def run(self):
         """
