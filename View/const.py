@@ -10,7 +10,7 @@ Color_Red   = (255,   0,   0)
 Color_Gray  = (128, 128, 128)
 
 # Character center
-
+Player_center = (70,70)
 # Object positions
 Pos_map = (0, 0)
 Pos_time = (20, 740)
