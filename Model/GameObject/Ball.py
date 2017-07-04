@@ -25,7 +25,7 @@ class OriginalBall(object):
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
             self.position[1] += mc.dirConst[self.direction][1] * self.speed            
             
-            checkGoal = self.checkWhoseGoal(self, self.position)
+            checkGoal = self.checkWhoseGoal(self.position)
             tmpScore = 0
             tmpPlayerIndex = self.playerIndex
             
