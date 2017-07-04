@@ -29,7 +29,6 @@ class GameEngine(object):
         self.state = StateMachine()
         self.AIList = AIList
         self.players = []
-        self.balls   = []
         self.quaffles = []
         self.barriers = []
         self.TurnTo = 0
@@ -38,7 +37,7 @@ class GameEngine(object):
 
     def notify(self, event):
         """
-        Called by an event in the message queue. 
+        Called by an event in the message queue.
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
@@ -96,7 +95,8 @@ class GameEngine(object):
             player.tickCheck()
         # Update quaffles
         for quaffle in self.quaffles:
-            quaffle.tickCheck()
+            score, playerIndex = quaffle.tickCheck()
+            self.players[playerIndex].score += score
         # Update golden snitch
         self.goldenSnitch.tickCheck()
         # Update barriers
@@ -108,6 +108,7 @@ class GameEngine(object):
         for players in itertools.combinations(self.players, 2):
             lostBalls = players[0].bump(players[1])
             for lostBall in lostBalls:
+                self.balls[lostBall[0]].deprive(lostBall[1])
         # player to golden snitch
         distToGoldenSnitch = []
         for player in self.players:
@@ -136,8 +137,25 @@ class GameEngine(object):
                         self.players[playerIndex].takeball = quaffle.index
                         quaffle.catch(playerIndex)
         # barrier to player
-
+        for barrier in barriers:
+            for player in players:
+                if barrier.bump(player):
+                    player.position[0] -= dirConst[player.direction][0]*playerSpeed
+                    player.position[1] -= dirConst[player.direction][1]*playerSpeed
         # barrier to quaffle
+        for barrier in barriers:
+            for quaffle in quaffles:
+                if barrier.bump(quaffle):
+                    if quaffle.isStrengthened:
+                        barriers.revmoe(barrier)
+                    elif barrier.direction in (1,5):
+                        quaffle.direction = dirConst[0][quaffle.direction]
+                    elif barrier.direction in (2,6):
+                        quaffle.direction = dirConst[2][quaffle.direction]
+                    elif barrier.direction in (3,7):
+                        quaffle.direction = dirConst[1][quaffle.direction]
+                    elif barrier.direction in (4,8):
+                        quaffle.direction = dirConst[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
@@ -168,7 +186,7 @@ class GameEngine(object):
         Starts the game engine loop.
 
         This pumps a Tick event into the message queue for each loop.
-        The loop ends when this object hears a QuitEvent in notify(). 
+        The loop ends when this object hears a QuitEvent in notify().
         """
         self.running = True
         self.evManager.Post(Event_Initialize())
