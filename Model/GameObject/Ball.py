@@ -151,7 +151,7 @@ class GoldenSnitch(OriginalBall):
 
 
         # if 2 players are approaching form opposite direction
-        if (fleeDirectionList.len() >= 2 and\
+        if (len(fleeDirectionList) >= 2 and\
             ((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5) == 0 or\
              (fleeDirectionList[0][0] / fleeDirectionList[1][0] == fleeDirectionList[1][0] / fleeDirectionList[1][1]\
                 and fleeDirectionList[0][0] / fleeDirectionList[1][0] < 0)):
