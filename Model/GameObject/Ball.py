@@ -25,9 +25,10 @@ class OriginalBall(object):
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
             self.position[1] += mc.dirConst[self.direction][1] * self.speed            
             
-            tmpPosition = self.position
-            checkGoal = self.checkWhoseGoal(self, tmpPosition)
+            checkGoal = self.checkWhoseGoal(self, self.position)
             tmpScore = 0
+            tmpPlayerIndex = self.playerIndex
+            
             if checkGoal != mc.reachNothing:
                 self.playerIndex = -1
                 self.state = 0
@@ -53,7 +54,7 @@ class OriginalBall(object):
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-            return (tmpScore, self.playerIndex)
+            return (tmpScore, tmpPlayerIndex)
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
