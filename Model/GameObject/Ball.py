@@ -117,6 +117,7 @@ class GoldenSnitch(OriginalBall):
         super(GoldenSnitch, self).__init__(index)    
         self.speed = mc.goldenSnitchSpeed
         self.direction = [random.randrange(1,5), random.randrange(1,5)]
+        self.ballSize = mc.goldenSnitchSize / 2
 
 
     def tickCheck(self, players):
@@ -157,4 +158,5 @@ class GoldenSnitch(OriginalBall):
         # update position
         self.position[0] += self.direction[0]
         self.position[1] += self.direction[1]
-        self.ballSize = mc.goldenSnitchSize / 2
+
+        self.modifiyPosition()
