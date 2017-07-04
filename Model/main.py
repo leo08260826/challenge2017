@@ -35,6 +35,7 @@ class GameEngine(object):
         self.players = []
         self.quaffles = []
         self.barriers = []
+        self.timer = 0
         self.TurnTo = 0
 
         random.seed(time.time())
