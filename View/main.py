@@ -88,10 +88,16 @@ class GraphicalView(object):
                 pg.draw.rect(surface, Color_Red, (round(player.position[0]) - 20 , round(player.position[1]) - 20, 40, 40))
             elif player.mode == 1:
                 pg.draw.rect(surface, Color_Blue, (round(player.position[0]) - 20, round(player.position[1]) - 20, 40, 40))
+            # draw magic power on player
+            somewords = self.smallfont.render(str(player.power), True, (0, 255, 0))
+            (SurfaceX, SurfaceY) = somewords.get_size()
+            pos_x = player.position[0] - SurfaceX/2
+            pos_y = player.position[1] - SurfaceY/2
+            self.screen.blit(somewords, (pos_x, pos_y))
 
         # draw quaffle
         for quaffle in self.model.quaffles:
-            if not quaffle.mode == 1:
+            if not quaffle.state == 1:
                 if quaffle.isStrengthened:
                     pg.draw.circle(surface, pg.Color("Orange"), (round(quaffle.position[0]), round(quaffle.position[1])), 20)
                 else:
@@ -124,6 +130,8 @@ class GraphicalView(object):
                 pg.draw.line(surface, pg.Color("Black"), False\
                  [round(barrier.position[0] + barrierWidth/4), round(barrier.position[1] + barrierWidth/4)],\
                   [round(barrier.position[0] - barrierWidth/4), round(barrier.position[1] - barrierWidth/4)], 3)
+        
+
         # update surface
         pg.display.flip()
         
