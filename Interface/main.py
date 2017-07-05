@@ -3,7 +3,7 @@ import imp, traceback
 import Model.main as model
 from EventManager import *
 from const_main import *
-from Interface.helper import Helper
+#from Interface.helper import Helper
 
 class Interface(object):
     def __init__(self, evManager, model):

@@ -1,4 +1,4 @@
 GameCaption = "Challenge 2017"
 ScreenSize = (1200, 800)
 
-PlayerNum = 0
+PlayerNum = 4
