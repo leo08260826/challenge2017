@@ -29,6 +29,7 @@ MaxManualPlayer = 4
 playerSpeed = [3,5,10]
 stunFreezeTime = 60
 powerAdd = [1,2]
+maskTime = 100
 
 #golden snitch
 goldenSnitchSize = 10
