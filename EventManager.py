@@ -34,7 +34,7 @@ class Event_StateChange(BaseEvent):
         self.name = "StateChange event"
         self.state = state
     def __str__(self):
-        return "{0} => StateTo:{1}".format(self.name,self.state)
+        return "{0} => StateTo:{1}".format(self.name, self.state)
 
 class Event_EveryTick(BaseEvent):
     """
@@ -72,7 +72,7 @@ class Event_Move(BaseEvent):
         self.PlayerIndex = player
         self.Direction = direction
     def __str__(self):
-        return "{0} => Playerindex={1}, DirectionTo:{2}".format(self.name,self.PlayerIndex,self.Direction)
+        return "{0} => Playerindex={1}, DirectionTo:{2}".format(self.name, self.PlayerIndex, self.Direction)
 
 class Event_PlayerModeChange(BaseEvent):
     """
@@ -82,7 +82,7 @@ class Event_PlayerModeChange(BaseEvent):
         self.name = "ModeChange event"
         self.PlayerIndex = player
     def __str__(self):
-        return "{0} => Playerindex={1}".format(self.name,self.PlayerIndex)
+        return "{0} => Playerindex={1}".format(self.name, self.PlayerIndex)
 
 class Event_SkillCard(BaseEvent):
     """
@@ -93,7 +93,7 @@ class Event_SkillCard(BaseEvent):
         self.PlayerIndex = player
         self.SkillIndex = skill
     def __str__(self):
-        return "{0} => Playerindex={1}, SkillIndex={2}".format(self.name,self.PlayerIndex,self.SkillIndex)
+        return "{0} => Playerindex={1}, SkillIndex={2}".format(self.name, self.PlayerIndex, self.SkillIndex)
 
 class Event_Action(BaseEvent):
     """
@@ -104,7 +104,7 @@ class Event_Action(BaseEvent):
         self.PlayerIndex = player
         self.ActionIndex = action
     def __str__(self):
-        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name,self.PlayerIndex,self.ActionIndex)
+        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name, self.PlayerIndex, self.ActionIndex)
 
 class EventManager(object):
     """
