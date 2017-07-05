@@ -20,3 +20,7 @@ biasrand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
 
 # barrier
 barrier_size = 180
+
+# music volume
+background_music_volume = 0.8
+menu_music_volume = 0.8

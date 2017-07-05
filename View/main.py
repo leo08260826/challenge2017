@@ -1,4 +1,5 @@
 import pygame as pg
+import random
 
 import Model.main as model
 from EventManager import *
@@ -29,7 +30,11 @@ class GraphicalView(object):
         self.player_images = []
         self.player_bias = []
         self.stuns = []
-    
+
+        self.sound = []
+        self.menu_music = None
+        self.shoot_music = None
+        
     def notify(self, event):
         """
         Receive events posted to the message queue. 
@@ -61,6 +66,10 @@ class GraphicalView(object):
         """
         Render the game menu.
         """
+        #music
+        pg.mixer.music.pause()
+        self.menu_music.play()
+        
         # draw backgound
         self.screen.blit(self.background,(0,0))
         # write some word
@@ -78,6 +87,10 @@ class GraphicalView(object):
         """
         Render the game play.
         """
+        # music
+        pg.mixer.music.unpause()
+        self.menu_music.stop()
+        
         # draw backgound
         self.render_background()
 
@@ -105,6 +118,9 @@ class GraphicalView(object):
         """
         Render the stop screen.
         """
+        # music
+        pg.mixer.music.pause()
+        
         # draw background
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map_gray,(0,0))
@@ -129,6 +145,22 @@ class GraphicalView(object):
         """
         Set up the pygame graphical display and loads graphical resources.
         """
+        #music
+        pg.mixer.init()
+        self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
+        choose_music=random.randint(1,5)
+        pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
+        self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
+        for i in range(5):
+            self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
+
+        self.menu_music.set_volume(menu_music_volume)
+        pg.mixer.music.set_volume(background_music_volume)
+        
+        #playmusic
+        pg.mixer.music.play(-1)
+        pg.mixer.music.pause()
+        
         result = pg.init()
         pg.font.init()
         pg.display.set_caption(GameCaption)
