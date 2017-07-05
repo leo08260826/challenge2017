@@ -23,7 +23,10 @@ class OriginalBall(object):
         # invalid request prevention
         if self.state != 1:
             return
-        self.direction = direction
+        if direction == 0:
+            self.direction = random.randrange(1,9)
+        else
+            self.direction = direction
         self.isStrengthened = isStrengthened
         self.state = 2
         self.speed = mc.shotSpeed
