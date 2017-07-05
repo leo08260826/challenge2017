@@ -68,8 +68,7 @@ class GraphicalView(object):
         """
         #music
         pg.mixer.music.pause()
-        if pg.mixer.get_busy() == False:
-            self.menu_music.play()
+        self.menu_music.play()
         
         # draw backgound
         menu = pg.image.load('View/image/background/menu.png')
@@ -285,7 +284,7 @@ class GraphicalView(object):
 
     def render_quaffle(self, index):
         quaffle = self.model.quaffles[index]
-        if quaffle.state != 1:
+        if quaffle.state != 1 and quaffle.state != 3:
             if quaffle.isStrengthened == True:
                 self.blit_at_center(self.ball_powered_images[index], quaffle.position)
             else:
