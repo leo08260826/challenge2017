@@ -100,7 +100,7 @@ class GraphicalView(object):
 
         # draw quaffle
         for quaffle in self.model.quaffles:
-            if not quaffle.state == 1:
+            if quaffle.state in [0, 2]:
                 if quaffle.isStrengthened:
                     pg.draw.circle(surface, pg.Color("Orange"), (round(quaffle.position[0]), round(quaffle.position[1])), 20)
                 else:
