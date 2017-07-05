@@ -9,7 +9,7 @@ distToCatchQuaffle = 30
 #speed
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
-playerSpeed = [3,5,10]
+playerSpeed = [3,5,15]
 shotSpeed = 6
 depriveSpeed = 5
 
@@ -29,11 +29,11 @@ stunFreezeTime = 60
 powerAdd = [1,2]
 maskTime = 100
 
-#player power cost
+#cost const
 barrierPowerCost = 18
-powerShotPowerCost = 18
 stunPowerCost = 30
-maskPowerCost = 25
+maskPowerCost = 20
+powerShotPowerCost = 18
 
 #golden snitch
 goldenSnitchSize = 10
