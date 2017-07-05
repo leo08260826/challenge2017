@@ -47,8 +47,10 @@ class player(object):
             self.freezeTimer = freezeTime - 2   
         else:
             self.isFreeze = True
-            self.freezeTimer = freezeTime            
-            self.direction == 0
+            self.freezeTimer = freezeTime   
+            self.direction == (self.direction+4)%8
+            if self.direction == 0:
+                self.direction = 8
 
 
     def hide(self):
