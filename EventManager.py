@@ -8,12 +8,33 @@ class BaseEvent(object):
     def __str__(self):
         return self.name
 
+class Event_Initialize(BaseEvent):
+    """
+    Initialize event.
+    """
+    def __init__(self):
+        self.name = "Initialize event"
+    def __str__(self):
+        return self.name
+
 class Event_Quit(BaseEvent):
     """
     Quit event.
     """
     def __init__ (self):
         self.name = "Quit event"
+    def __str__(self):
+        return self.name
+
+class Event_StateChange(BaseEvent):
+    """
+    change state event.
+    """
+    def __init__(self, state):
+        self.name = "StateChange event"
+        self.state = state
+    def __str__(self):
+        return "{0} => StateTo:{1}".format(self.name,self.state)
 
 class Event_EveryTick(BaseEvent):
     """
@@ -21,41 +42,69 @@ class Event_EveryTick(BaseEvent):
     """
     def __init__ (self):
         self.name = "Tick event"
-
-class Event_Input(BaseEvent):
-    """
-    Keyboard or mouse input event.
-    """
-    def __init__(self, unicodechar, clickpos):
-        self.name = "Input event"
-        self.char = unicodechar
-        self.clickpos = clickpos
     def __str__(self):
-        return '%s, char=%s, clickpos=%s' % (self.name, self.char, self.clickpos)
+        return self.name
 
-class Event_Initialize(BaseEvent):
+class Event_EverySec(BaseEvent):
     """
-    Tells all listeners to initialize themselves.
-    
-    Avoid initializing such things within listener __init__ calls 
-    to minimize snafus (if some rely on others being yet created.)
+    Sec event.
     """
-    def __init__ (self):
-        self.name = "Initialize event"
-
-class Event_StateChange(BaseEvent):
-    """
-    Change the model state machine.
-    Given a None state will pop() instead of push.
-    """
-    def __init__(self, state):
-        self.name = "State change event"
-        self.state = state
+    def __init__(self):
+        self.name = "Sec event"
     def __str__(self):
-        if self.state:
-            return '%s pushed %s' % (self.name, self.state)
-        else:
-            return '%s popped' % (self.name, )
+        return self.name
+
+class Event_TimeUp(BaseEvent):
+    """
+    TimeUp event.
+    """
+    def __init__(self):
+        self.name = "TimeUp event"
+    def __str__(self):
+        return self.name
+
+class Event_Move(BaseEvent):
+    """
+    Move event.
+    """
+    def __init__(self, player, direction):
+        self.name = "Move event"
+        self.PlayerIndex = player
+        self.Direction = direction
+    def __str__(self):
+        return "{0} => Playerindex={1}, DirectionTo:{2}".format(self.name,self.PlayerIndex,self.Direction)
+
+class Event_PlayerModeChange(BaseEvent):
+    """
+    Mode change event.
+    """
+    def __init__(self, player):
+        self.name = "ModeChange event"
+        self.PlayerIndex = player
+    def __str__(self):
+        return "{0} => Playerindex={1}".format(self.name,self.PlayerIndex)
+
+class Event_SkillCard(BaseEvent):
+    """
+    SkillCard event.
+    """
+    def __init__(self,player,skill):
+        self.name = "SkillCard event"
+        self.PlayerIndex = player
+        self.SkillIndex = skill
+    def __str__(self):
+        return "{0} => Playerindex={1}, SkillIndex={2}".format(self.name,self.PlayerIndex,self.SkillIndex)
+
+class Event_Action(BaseEvent):
+    """
+    Action event.
+    """
+    def __init__(self, player, action):
+        self.name = "Action event"
+        self.PlayerIndex = player
+        self.ActionIndex = action
+    def __str__(self):
+        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name,self.PlayerIndex,self.ActionIndex)
 
 class EventManager(object):
     """
@@ -87,7 +136,7 @@ class EventManager(object):
         It will be broadcast to all listeners.
         """
         # this segment use to debug
-        if not isinstance(event, Event_EveryTick):
+        if not (isinstance(event, Event_EveryTick) or isinstance(event, Event_EverySec)):
             print( str(event) )
         for listener in self.listeners.keys():
             listener.notify(event)

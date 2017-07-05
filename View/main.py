@@ -102,6 +102,32 @@ class GraphicalView(object):
         for barrier in self.evManager.barriers:
             self.render_barrier(barrier)
 
+        self.screen.fill(Color_White)
+        # write some word
+        #somewords = self.smallfont.render(
+        #            'Play game!', 
+        #            True, (0, 255, 0))
+        #(SurfaceX, SurfaceY) = somewords.get_size()
+        #pos_x = (ScreenSize[0] - SurfaceX)/2
+        #pos_y = (ScreenSize[1] - SurfaceY)/2
+        #self.screen.blit(somewords, (pos_x, pos_y))
+        
+        #surface = pg.display.get_surface()
+
+        # draw players
+        for player in self.model.players:
+            # Blue : defense, Red : attack
+            if player.mode == 0:
+                pg.draw.rect(surface, Color_Red, (round(player.position[0]) - 20 , round(player.position[1]) - 20, 40, 40))
+            elif player.mode == 1:
+                pg.draw.rect(surface, Color_Blue, (round(player.position[0]) - 20, round(player.position[1]) - 20, 40, 40))
+
+        # draw quaffle
+        for quaffle in self.model.quaffles:
+            pg.draw.circle(surface, Color_Green, (round(quaffle.position[0]), round(quaffle.position[1])), 20)
+
+        # draw golden snitch
+        pg.draw.circle(surface, pg.Color("Yellow"), (round(self.model.goldenSnitch.position[0]), round(self.model.goldenSnitch.position[1])), 10)
         # update surface
         pg.display.flip()
         
@@ -197,7 +223,7 @@ class GraphicalView(object):
         if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
             bias[index] = ( bias[index] + 1 ) % 2
         bias = (2,2) if self.player_bias[index] else (-2,-2)
-        position = map(sum, zip(player.position, bias))
+        position = tuple(map(lambda x,y: int(x+y), player.position, bias))
         # body
         if player.isVisible == False:
             direction = player.direction
