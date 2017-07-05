@@ -47,10 +47,11 @@ class player(object):
             self.freezeTimer = freezeTime
         else:
             self.isFreeze = True
-            self.freezeTimer = freezeTime   
-            self.direction == (self.direction+4)%8
-            if self.direction == 0:
-                self.direction = 8
+            self.freezeTimer = freezeTime
+            if self.direction != 0:
+                self.direction == (self.direction+4)%8
+                if self.direction == 0:
+                    self.direction = 8
 
 
     def hide(self):
@@ -85,8 +86,8 @@ class player(object):
         if self.powertmp < ticktime and self.isFreeze == False:
             self.powertmp = self.powertmp + 1
         elif self.powertmp == ticktime and self.power < powerMax:
-        	self.powertmp = 0
-        	self.power = self.power + powerAdd[self.mode]
+            self.powertmp = 0
+            self.power = self.power + powerAdd[self.mode]
             if self.power > powerMax:
                 self.power = powerMax
 
@@ -138,6 +139,3 @@ class player(object):
         return outData
 
 
-# freeze away
-# throw ball
-# defense power back
