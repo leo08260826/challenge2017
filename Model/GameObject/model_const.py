@@ -57,6 +57,9 @@ cornerGoalRangeUpper = gameRangeUpper - cornerGoalRange
 barrierTimer = 120
 barrierWidth = 180
 
+#stun const
+stunDistance = 75
+
 #goal check
 reachNothing = -1
 reachCornerGoal = 4
