@@ -6,7 +6,11 @@ class OriginalBall(object):
         self.index = index
         self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                          random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
-        # 0: belongs to nobody, 1: belongs to somebody, 2: being thrown
+        """
+        0: belongs to nobody
+        1: belongs to somebody or in reborn time
+        2: being thrown
+        """
         self.state = 0
         # 1~8: eight directions
         self.direction = random.randrange(1, 9)
@@ -15,12 +19,14 @@ class OriginalBall(object):
         self.isStrengthened = False
 
     def throw(self, direction, position, isStrengthened = False):
+        # invalid request prevention
         if self.state != 1:
             return
         self.direction = direction
         self.isStrengthened = isStrengthened
         self.state = 2
         self.speed = mc.shotSpeed
+        # add a safe distance to avoid re-catch the ball after shooting
         self.position[0] = position[0] + mc.dirConst[direction][0] * 35
         self.position[1] = position[1] + mc.dirConst[direction][1] * 35
 
