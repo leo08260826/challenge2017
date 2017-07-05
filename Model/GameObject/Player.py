@@ -54,7 +54,7 @@ class player(object):
     def shot(self):
         ballIndex = self.takeball
         self.takeball = -1
-        return (ballIndex, self.direction)
+        return ballIndex
 
     def changeDirection(self, direction):
         self.direction = direction
@@ -76,21 +76,25 @@ class player(object):
             self.powertmp = self.powertmp + 1
         elif self.powertmp == ticktime:
         	self.powertmp = 0
-        	self.power = self.power + 1
+        	self.power = self.power + powerAdd[self.mode]
 
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1
 
-        if self.position[0] < 47 or self.position[0] > 693 :
+        speedmode = self.mode + self.isFreeze * 1   
+        if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 47 \
+            or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 693 :
             self.direction = dirBounce[0][self.direction]
-        elif self.position[1] < 47 or self.position[1] > 693 :
+        elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 47 \
+            or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 693 :
             self.direction = dirBounce[1][self.direction]
 
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
         if self.maskTimer == 0:
             self.isMask == False
-        speedmode = self.mode + self.isFreeze * 1    
+
+         
         self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
         self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
 
@@ -116,13 +120,13 @@ class player(object):
             if selfFreeze == True:
                 self.freeze()                
                 if self.takeball != -1:
-                    outData.append( (self.takeball, self.direction) )
+                    outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
             if targetFreeze == True:
                 target.freeze()
                 if target.takeball != -1:
-                    outData.append( (target.takeball, target.direction) )
+                    outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
 
         return outData
