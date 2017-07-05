@@ -174,11 +174,11 @@ class GameEngine(object):
                     if quaffle.isStrengthened:
                         barrier.inactive()
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirBounce[0][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (2,6):
                         quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirBounce[1][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (4,8):
                         quaffle.direction = dirBounce[3][quaffle.direction]
 
