@@ -83,11 +83,14 @@ class GraphicalView(object):
 
         # draw players
         for player in self.model.players:
-            # Blue : defense, Red : attack
+            # Blue : defense, Red : attack, # purple : mask
             if player.mode == 0:
                 pg.draw.rect(surface, Color_Red, (round(player.position[0]) - 20 , round(player.position[1]) - 20, 40, 40))
             elif player.mode == 1:
-                pg.draw.rect(surface, Color_Blue, (round(player.position[0]) - 20, round(player.position[1]) - 20, 40, 40))
+                if player.isMask:
+                    pg.draw.rect(surface, pg.Color("purple"), (round(player.position[0]) - 20 , round(player.position[1]) - 20, 40, 40))
+                else:
+                    pg.draw.rect(surface, Color_Blue, (round(player.position[0]) - 20, round(player.position[1]) - 20, 40, 40))
             # draw magic power on player
             somewords = self.smallfont.render(str(player.power), True, (0, 255, 0))
             (SurfaceX, SurfaceY) = somewords.get_size()
