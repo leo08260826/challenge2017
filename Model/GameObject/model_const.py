@@ -26,9 +26,10 @@ playerBumpDistance = 25
 barrierPowerCost = 18
 PlayerNum = 4
 MaxManualPlayer = 4
-playerSpeed = [5,3,10]
+playerSpeed = [3,5,10]
 stunFreezeTime = 60
 powerAdd = [1,2]
+maskTime = 100
 
 #golden snitch
 goldenSnitchSize = 10
