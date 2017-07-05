@@ -110,26 +110,27 @@ class GraphicalView(object):
 
         # draw barrier
         for barrier in self.model.barriers:
+
             # veritcal barrier
             if barrier.direction in [1, 5]:
-                pg.draw.line(surface, pg.Color("Black"), False\
-                 [round(barrier.position[0] - barrierWidth/2), round(barrier.position[1])],\
-                  [round(barrier.position[0] + barrierWidth/2), round(barrier.position[1])], 3)
+                pg.draw.line(surface, pg.Color("Black"),\
+                 [round(barrier.position[0] - mc.barrierWidth/2), round(barrier.position[1])],\
+                 [round(barrier.position[0] + mc.barrierWidth/2), round(barrier.position[1])], 3)
             # NE - SW barrier
             elif barrier.direction in [2, 6]:
-                pg.draw.line(surface, pg.Color("Black"), False\
-                 [round(barrier.position[0] - barrierWidth/4), round(barrier.position[1] + barrierWidth/4)],\
-                  [round(barrier.position[0] + barrierWidth/4), round(barrier.position[1] - barrierWidth/4)], 3)
+                pg.draw.line(surface, pg.Color("Black"),\
+                 [round(barrier.position[0] - mc.barrierWidth/4), round(barrier.position[1] + mc.barrierWidth/4)],\
+                 [round(barrier.position[0] + mc.barrierWidth/4), round(barrier.position[1] - mc.barrierWidth/4)], 3)
             # horizontal barrier
             elif barrier.direction in [3, 7]:
-                pg.draw.line(surface, pg.Color("Black"), False\
-                 [round(barrier.position[0]), round(barrier.position[1] - barrierWidth/2)],\
-                  [round(barrier.position[0]), round(barrier.position[1] + barrierWidth/2)], 3)
+                pg.draw.line(surface, pg.Color("Black"),\
+                 [round(barrier.position[0]), round(barrier.position[1] - mc.barrierWidth/2)],\
+                 [round(barrier.position[0]), round(barrier.position[1] + mc.barrierWidth/2)], 3)
             # NW - SE barrier
             elif barrier.direction in [4, 8]:
-                pg.draw.line(surface, pg.Color("Black"), False\
-                 [round(barrier.position[0] + barrierWidth/4), round(barrier.position[1] + barrierWidth/4)],\
-                  [round(barrier.position[0] - barrierWidth/4), round(barrier.position[1] - barrierWidth/4)], 3)
+                pg.draw.line(surface, pg.Color("Black"),\
+                 [round(barrier.position[0] + mc.barrierWidth/4), round(barrier.position[1] + mc.barrierWidth/4)],\
+                 [round(barrier.position[0] - mc.barrierWidth/4), round(barrier.position[1] - mc.barrierWidth/4)], 3)
         
 
         # update surface
