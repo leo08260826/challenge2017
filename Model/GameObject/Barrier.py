@@ -19,6 +19,8 @@ class Barrier(object):
             return True
         else:
             return False
+    def inactive(self):
+        self.timer = -1
 
     def bump(self, target):
         a = []

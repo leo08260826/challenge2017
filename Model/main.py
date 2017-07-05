@@ -118,7 +118,9 @@ class GameEngine(object):
         self.goldenSnitch.tickCheck(self.players)
         # Update barriers
         for barrier in self.barriers:
-            barrier.tickCheck()
+            # if barrier is inacitve, remove it.
+            if not barrier.tickCheck():
+                barriers.remove(barrier)
 
     def Bump(self):
         # player to player
@@ -169,7 +171,7 @@ class GameEngine(object):
             for quaffle in self.quaffles:
                 if barrier.bump(quaffle):
                     if quaffle.isStrengthened:
-                        barriers.remove(barrier)
+                        barrier.inactive()
                     elif barrier.direction in (1,5):
                         quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (2,6):
