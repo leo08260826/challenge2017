@@ -204,7 +204,7 @@ class GameEngine(object):
                     quaffles[ballData[0]].throw(ballData[1],player.position,True)
                 elif player.mode == 1:
                     ballData = self.players[playerIndex].setBarrier()
-                    barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
                 if player.mode == 0:
