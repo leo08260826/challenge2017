@@ -92,6 +92,8 @@ class GraphicalView(object):
         #end test
         for i in range(numberOfQuaffles):
             self.render_quaffle(i)
+        self.render_goldenSnitch()
+
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
@@ -163,6 +165,7 @@ class GraphicalView(object):
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
+        self.goldenSnitch_images = [ pg.image.load('View/image/ball/goldball_'+str(i+1)+'.png') for i in range(2) ]
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
@@ -190,7 +193,7 @@ class GraphicalView(object):
         player = self.model.players[index]
         info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
         self.blit_at_center(info,(980,100+180*index))
-       player = self.evManager.players[index]
+        player = self.model.players[index]
         info = self.playerInfo[index]
         pos_x , pos_y = 750 , 20 + 180*index
         pos = (pos_x,pos_y)
@@ -234,6 +237,10 @@ class GraphicalView(object):
                 self.blit_at_center(self.ball_powered_images[index], quaffle.position)
             else:
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
+
+    def render_goldenSnitch(self):
+        if self.mode.goldenSnitch.stare != 1:
+            self.blit_at_center(self.goldenSnitch_images[pg.time.get_ticks() % 2], self.model.goldenSnitch.position)
 
     def render_barrier(self,barrier):
         self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
