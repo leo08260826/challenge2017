@@ -221,7 +221,7 @@ class GameEngine(object):
                     player.isMask = True
                     player.maskTimer = maskTime
 
-            elif  actionIndex == 2 and player.mode == 1:
+            elif  actionIndex == 2 and player.mode == 0:
 
                 ballData = player.shot()
                 if ballData != -1:
