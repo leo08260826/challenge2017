@@ -191,6 +191,7 @@ class GameEngine(object):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
+            player.isMask = False
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
