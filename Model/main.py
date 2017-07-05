@@ -199,7 +199,7 @@ class GameEngine(object):
         #ACTION_0 = 0   power throw / barrier
         #ACTION_1 = 1   stun / mask
         #ACTION_2 = 2   general throw
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
             if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:

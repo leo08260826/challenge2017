@@ -42,15 +42,13 @@ class player(object):
         self.invisibleTime = 0
 
     def freeze(self):
-        
-        """if self.isFreeze == True:
+
+        if self.isFreeze == True:
             self.freezeTimer = freezeTime - 2   
         else:
             self.isFreeze = True
-            self.freezeTimer = freezeTime
-            self.direction =(self.direction+4)%8
-            if self.direction == 0:
-                self.direction = 8"""
+            self.freezeTimer = freezeTime            
+            self.direction == 0
 
 
     def hide(self):
