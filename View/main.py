@@ -92,18 +92,12 @@ class GraphicalView(object):
         #end test
         for i in range(numberOfQuaffles):
             self.render_quaffle(i)
->>>>>>> ee1f1ef2d4bcecf26d2fff7951c0f19f054c8e2e
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
-<<<<<<< HEAD
         for barrier in self.model.barriers:
             self.render_barrier(barrier)
-=======
-#        for barrier in self.evManager.barriers:
-#            self.render_barrier(barrier)
->>>>>>> ee1f1ef2d4bcecf26d2fff7951c0f19f054c8e2e
 
         # update surface
         pg.display.flip()
@@ -246,4 +240,4 @@ class GraphicalView(object):
         
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
-        self.screen.blit(surface, (position[0]-Xsize/2, position[1]-Ysize/3))
+        self.screen.blit(surface, (position[1]-Xsize/2, position[1]-Ysize/3))
