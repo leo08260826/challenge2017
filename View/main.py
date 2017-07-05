@@ -117,8 +117,8 @@ class GraphicalView(object):
             # NE - SW barrier
             elif barrier.direction in [2, 6]:
                 pg.draw.line(surface, pg.Color("Black"),\
-                 [round(barrier.position[0] - mc.barrierWidth/4), round(barrier.position[1] + mc.barrierWidth/4)],\
-                 [round(barrier.position[0] + mc.barrierWidth/4), round(barrier.position[1] - mc.barrierWidth/4)], 3)
+                 [round(barrier.position[0] + mc.barrierWidth/2), round(barrier.position[1] + mc.barrierWidth/2)],\
+                 [round(barrier.position[0] - mc.barrierWidth/2), round(barrier.position[1] - mc.barrierWidth/2)], 3)
             # horizontal barrier
             elif barrier.direction in [3, 7]:
                 pg.draw.line(surface, pg.Color("Black"),\
@@ -127,8 +127,8 @@ class GraphicalView(object):
             # NW - SE barrier
             elif barrier.direction in [4, 8]:
                 pg.draw.line(surface, pg.Color("Black"),\
-                 [round(barrier.position[0] + mc.barrierWidth/4), round(barrier.position[1] + mc.barrierWidth/4)],\
-                 [round(barrier.position[0] - mc.barrierWidth/4), round(barrier.position[1] - mc.barrierWidth/4)], 3)
+                 [round(barrier.position[0] - mc.barrierWidth/2), round(barrier.position[1] + mc.barrierWidth/2)],\
+                 [round(barrier.position[0] + mc.barrierWidth/2), round(barrier.position[1] - mc.barrierWidth/2)], 3)
         
 
         # update surface
