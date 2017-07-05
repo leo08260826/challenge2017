@@ -43,12 +43,14 @@ class player(object):
 
     def freeze(self):
 
-        if self.isFreeze == True:
-            self.freezeTimer = freezeTime - 2   
+        if self.isFreeze == True and self.freezeTimer < 58:
+            self.freezeTimer = freezeTime
         else:
             self.isFreeze = True
-            self.freezeTimer = freezeTime            
-            self.direction == 0
+            self.freezeTimer = freezeTime   
+            self.direction == (self.direction+4)%8
+            if self.direction == 0:
+                self.direction = 8
 
 
     def hide(self):
@@ -89,7 +91,8 @@ class player(object):
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1
 
-        speedmode = self.mode + self.isFreeze * 1   
+        speedmode = self.mode + self.isFreeze * 1
+
         if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 47 \
             or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 693 :
             self.direction = dirBounce[0][self.direction]
@@ -111,19 +114,12 @@ class player(object):
         if (self.position[0]-target.position[0])**2 + (self.position[1]-target.position[1])**2 <= playerBumpDistance**2:
             selfFreeze = True
             targetFreeze = True
+
             if self.mode != target.mode:
                 if self.mode == 1:
                     selfFreeze = False
                 elif target.mode == 1:
                     targetFreeze = False
-
-            if self.isMask == True and selfFreeze == True:
-                selfFreeze = False
-                self.reSetMask()
-
-            if target.isMask == True and targetFreeze == True:
-                targetFreeze == False
-                target.reSetMask()
 
             if selfFreeze == True:
                 self.freeze()   
