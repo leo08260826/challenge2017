@@ -164,21 +164,23 @@ class GraphicalView(object):
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
-        colors = ['_blue', '_yellow', '_red', '_green']
+        colors = ['_red', '_green', '_yellow', '_blue']
         self.player_freeze_images = [pg.image.load('View/image/player/player_down'+colors[i]+'_frost.png') for i in range(4)]
-        
-        def get_player_image(colorname, direction, suffix):
-            if direction == 0:
-                direction = 5
-            if direction == 1:
-                return pg.transform.flip(pg.image.load('View/image/player/player_down'+colorname+suffix+'.png'), 0, 1)
-            elif direction in range(2,6):
-                return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+colorname+suffix+'.png'), 1, 0)
-            else:
-                return pg.image.load('View/image/player/player'+directions[8-direction]+colorname+suffix+'.png')
+        charactor_name =['cat','black','shinging','silver']
+        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+color[i]+'.png') for i in range(PlayerNum)]
+        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+color[i]+'.png') for i in range(PlayerNum)]
+    def get_player_image(colorname, direction, suffix):
+        if direction == 0:
+            direction = 5
+        if direction == 1:
+            return pg.transform.flip(pg.image.load('View/image/player/player_down'+colorname+suffix+'.png'), 0, 1)
+        elif direction in range(2,6):
+            return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+colorname+suffix+'.png'), 1, 0)
+        else:
+            return pg.image.load('View/image/player/player'+directions[8-direction]+colorname+suffix+'.png')
         self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(4) ]
         self.player_invisable_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
-        
+
     def render_background(self):
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map, Pos_map)
@@ -186,18 +188,40 @@ class GraphicalView(object):
         
     def render_player_status(self, index):
         player = self.model.players[index]
-        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
-        self.blit_at_center(info,(980,100+180*index))
-        player = self.model.players[index]
-        info = self.playerInfo[index]
         pos_x , pos_y = 750 , 20 + 180*index
         pos = (pos_x,pos_y)
-        self.screen.blit(info,pos)
-        
-#unfinished        
-#        if player.isFreeze:
-#            self.screen.blit(self.player_status0,)
-        pass
+            
+ #     background display        
+        info = self.playerInfo[index]
+        self.blit_at_center(info,(980,100+180*index))
+
+ #      player photo display
+         if player.isFreeze :
+             self.screen.blit(self.player_photo_hurt[index], pos + (20,20))
+         else:
+             self.screen.blit(self.player_photo[index],pos+(20,20))
+         
+ #       icon display       
+         if player.isFreeze:
+             self.screen.blit(self.player_status0,pos+(150,20))
+
+         if player.isMask:                #not sure about this part
+             self.screen.blit(self.player_status1,pos+(150,50))   
+             
+         if not player.isVisible:
+             self.screen.blit(self.player_status2,pos+(150,80))
+         if player.mode == 1:
+             self.screen.blit(self.player_status_P,pos+(150,110))
+         elif player.mode == 0:
+             self.screen.blit(self.player_status_A,pos+(150,110))
+         
+ #      mana and score and name
+         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
+         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
+         name = self.smallfont.render(player.name,True,(255,200,14))
+         self.screen.blit(score,pos + (215,95))
+         self.screen.blit(mana,pos + (335,95))
+         self.screen.blit(name,pos + (285,20))
 
     def render_player_character(self, index):
         player = self.model.players[index]
