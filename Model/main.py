@@ -163,13 +163,14 @@ class GameEngine(object):
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
-                if not barrier.playerIndex == player.index and barrier.bump(player):
-                    player.position[0] -= dirConst[player.direction][0]*playerSpeed
-                    player.position[1] -= dirConst[player.direction][1]*playerSpeed
+                if not barrier.playerIndex == player.index and \
+                        barrier.bump(player, playerSpeed[player.mode]):
+                    player.position[0] -= dirConst[player.direction][0]*playerSpeed[player.mode]
+                    player.position[1] -= dirConst[player.direction][1]*playerSpeed[player.mode]
         # barrier to quaffle
         for barrier in self.barriers:
             for quaffle in self.quaffles:
-                if barrier.bump(quaffle):
+                if barrier.bump(quaffle, quaffle.speed):
                     if quaffle.isStrengthened:
                         barrier.inactive()
                     elif barrier.direction in (1,5):
@@ -204,7 +205,7 @@ class GameEngine(object):
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
                     self.quaffles[ballData].throw(player.direction,player.position,True)
-                elif player.mode == 1:
+                elif player.mode == 1 and player.power >= 18:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
