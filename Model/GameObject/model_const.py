@@ -9,7 +9,7 @@ distToCatchQuaffle = 30
 #speed
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
-playerSpeed = 4
+playerSpeed = [3,5,10]
 shotSpeed = 6
 depriveSpeed = 5
 
@@ -26,7 +26,6 @@ playerBumpDistance = 25
 barrierPowerCost = 18
 PlayerNum = 4
 MaxManualPlayer = 4
-playerSpeed = [3,5,10]
 stunFreezeTime = 60
 powerAdd = [1,2]
 maskTime = 100

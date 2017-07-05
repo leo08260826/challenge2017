@@ -76,12 +76,12 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            if self.freezeTimer < 59 and self.freezeTimer > 0:
+            if self.freezeTimer < 58 and self.freezeTimer > 0:
                 self.direction = 0
             elif self.freezeTimer == 0:
                 self.isFreeze = False
 
-        if self.powertmp < ticktime:
+        if self.powertmp < ticktime and self.isFreeze == False:
             self.powertmp = self.powertmp + 1
         elif self.powertmp == ticktime:
         	self.powertmp = 0
@@ -127,7 +127,7 @@ class player(object):
                 target.reSetMask()
 
             if selfFreeze == True:
-                self.freeze()                
+                self.freeze()    
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
