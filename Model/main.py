@@ -217,15 +217,15 @@ class GameEngine(object):
                             if (distSquare < (2 * playerBumpDistance) ** 2):
                                 playercheck.freeze()
 
-                elif players[playerIndex].mode == 1:
-                    players[playerIndex].isMask = True
-                    players[playerIndex].maskTimer = maskTime
+                elif player.mode == 1:
+                    player.isMask = True
+                    player.maskTimer = maskTime
 
             elif  actionIndex == 2 and player.mode == 1:
 
                 ballData = player.shot()
                 if ballData != -1:
-                    self.quaffles[ballData[0]].throw(player.direction, player.position)
+                    self.quaffles[ballData].throw(player.direction, player.position)
 
     def run(self):
         """
