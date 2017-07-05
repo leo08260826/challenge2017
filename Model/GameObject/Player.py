@@ -54,7 +54,7 @@ class player(object):
     def shot(self):
         ballIndex = self.takeball
         self.takeball = -1
-        return (ballIndex, self.direction)
+        return ballIndex
 
     def changeDirection(self, direction):
         self.direction = direction
