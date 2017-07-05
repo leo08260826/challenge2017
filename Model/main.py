@@ -146,7 +146,7 @@ class GameEngine(object):
 
         # player to quaffle
         for quaffle in self.quaffles:
-            if quaffle.state != 1:
+            if quaffle.state in [0, 2]:
                 distToQuaffle = []
                 for player in self.players:
                     if player.takeball == -1 and not player.isFreeze:
