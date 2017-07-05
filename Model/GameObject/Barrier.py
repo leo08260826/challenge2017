@@ -9,7 +9,7 @@ class Barrier(object):
         self.playerIndex = playerIndex
         self.position = position[:]
         if direction == 0:
-            self.direction = random.randrange(1,9)
+            self.direction = 5
         else:
             self.direction = direction
         self.timer = barrierTimer
