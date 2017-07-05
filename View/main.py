@@ -71,14 +71,15 @@ class GraphicalView(object):
         self.menu_music.play()
         
         # draw backgound
-        self.screen.blit(self.background,(0,0))
+        menu = pg.image.load('View/image/background/menu.png')
+        self.screen.blit(menu,(0,0))
         # write some word
         somewords = self.smallfont.render(
-                    'You are in the Menu. Space to play. Esc exits.', 
-                    True, (0, 255, 0))
+                    "Press 'Space' to play, 'Esc' to exits.", 
+                    True, (255,200, 14))
         (SurfaceX, SurfaceY) = somewords.get_size()
         pos_x = (ScreenSize[0] - SurfaceX)/2
-        pos_y = (ScreenSize[1] - SurfaceY)/2
+        pos_y = (ScreenSize[1] - SurfaceY)/2 + 180
         self.screen.blit(somewords, (pos_x, pos_y))
         # update surface
         pg.display.flip()
