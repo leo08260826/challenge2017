@@ -199,19 +199,22 @@ class GameEngine(object):
         #ACTION_0 = 0   power throw / barrier
         #ACTION_1 = 1   stun / mask
         #ACTION_2 = 2   general throw
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
-            if actionIndex == 0:
+            if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
                     self.quaffles[ballData].throw(player.direction,player.position,True)
+                    player.power -= powerShotPowerCost
                 elif player.mode == 1 and player.power >= 18:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    player.power -= barrierPowerCost
 
             elif actionIndex == 1:
-                if player.mode == 0:
-                     for playercheck in self.players:
+                if player.mode == 0 and player.power >= stunPowerCost:
+                    player.power -= stunPowerCost
+                    for playercheck in self.players:
                         if playercheck == self.players[playerIndex]:
                             continue
                         else:
@@ -220,9 +223,10 @@ class GameEngine(object):
                             if (distSquare < (2 * playerBumpDistance) ** 2):
                                 playercheck.freeze()
 
-                elif player.mode == 1:
+                elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True
                     player.maskTimer = maskTime
+                    player.power -= maskPowerCost
 
             elif  actionIndex == 2 and player.mode == 0:
 
