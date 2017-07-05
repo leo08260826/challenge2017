@@ -9,7 +9,7 @@ distToCatchQuaffle = 30
 #speed
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
-playerSpeed = [3,5,15]
+playerSpeed = [3,5,12]
 shotSpeed = 6
 depriveSpeed = 5
 
