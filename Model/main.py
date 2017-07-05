@@ -174,11 +174,11 @@ class GameEngine(object):
                     if quaffle.isStrengthened:
                         barrier.inactive()
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirBounce[0][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (2,6):
                         quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirBounce[1][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (4,8):
                         quaffle.direction = dirBounce[3][quaffle.direction]
 
@@ -211,7 +211,6 @@ class GameEngine(object):
                 elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
-                    player.power -= barrierPowerCost
 
             elif actionIndex == 1:
                 if player.mode == 0 and player.power >= stunPowerCost:
