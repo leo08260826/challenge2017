@@ -155,7 +155,7 @@ class GameEngine(object):
                         distToQuaffle.append((distSquare ** (1/2), player.index))
                 if distToQuaffle:
                     dist = min(distToQuaffle)
-                    playerIndex = distToQuaffle.index(dist)
+                    playerIndex = dist[1]
                     if dist[0] < distToCatchQuaffle:
                         self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
                         self.players[playerIndex].takeball = quaffle.index
