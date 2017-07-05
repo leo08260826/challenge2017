@@ -25,7 +25,7 @@ class OriginalBall(object):
             return
         if direction == 0:
             self.direction = random.randrange(1,9)
-        else
+        else:
             self.direction = direction
         self.isStrengthened = isStrengthened
         self.state = 2
