@@ -85,8 +85,8 @@ class player(object):
         if self.powertmp < ticktime and self.isFreeze == False:
             self.powertmp = self.powertmp + 1
         elif self.powertmp == ticktime and self.power < powerMax:
-        	self.powertmp = 0
-        	self.power = self.power + powerAdd[self.mode]
+            self.powertmp = 0
+            self.power = self.power + powerAdd[self.mode]
             if self.power > powerMax:
                 self.power = powerMax
 
