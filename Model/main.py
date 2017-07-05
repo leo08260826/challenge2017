@@ -120,7 +120,7 @@ class GameEngine(object):
         for barrier in self.barriers:
             # if barrier is inacitve, remove it.
             if not barrier.tickCheck():
-                barriers.remove(barrier)
+                self.barriers.remove(barrier)
 
     def Bump(self):
         # player to player
