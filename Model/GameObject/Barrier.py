@@ -6,7 +6,7 @@ def cross(a, b):
 class Barrier(object):
     def __init__(self, playerIndex, position, direction):
         self.playerIndex = playerIndex
-        self.position = position
+        self.position = position[:]
         self.direction = direction
         self.timer = barrierTimer
 
