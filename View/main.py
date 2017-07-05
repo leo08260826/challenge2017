@@ -1,7 +1,7 @@
 import pygame as pg
 
 import Model.main as model
-import Model.GameObjcet.model_const as mc
+import Model.GameObject.model_const as mc
 from EventManager import *
 from const_main import *
 from View.const import *
