@@ -172,6 +172,17 @@ class GraphicalView(object):
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['_blue', '_yellow', '_red', '_green']
         self.player_freeze_images = [pg.image.load('View/image/player/player_down'+colors[i]+'_frost.png') for i in range(4)]
+
+        self.player_photo = []
+        self.player_photo.append( pg.image.load('View/image/cat/cat-normal-red.png'))
+        self.player_photo.append( pg.image.load('View/image/silver/silver-normal-blue.png'))
+        self.player_photo.append( pg.image.load('View/image/black/black-normal-green.png'))
+        self.player_photo.append( pg.image.load('View/image/shining/shining-normal-yellow.png'))
+        
+        self.player_photo.append( pg.image.load('View/image/cat/cat-hurt-red.png'))
+        self.player_photo.append( pg.image.load('View/image/silver/silver-hurt-blue.png'))
+        self.player_photo.append( pg.image.load('View/image/black/black-hurt-green.png'))
+        self.player_photo.append( pg.image.load('View/image/shining/shining-hurt-yellow.png'))
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -196,17 +207,46 @@ class GraphicalView(object):
         self.blit_at_center(self.stun_images[0], (370,370))
         
     def render_player_status(self, index):
- #      player = self.evManager.players[index]
+#     player = self.evManager.players[index]
+
+#     background display
         info = self.playerInfo[index]
         pos_x , pos_y = 750 , 20 + 180*index
         pos = (pos_x,pos_y)
         self.screen.blit(info,pos)
+
+#      player photo display
+        if player.isFreeze or :
+            self.screen.blit(self.player_photo[index + 4], pos + (20,20))
+        else:
+            self.screen.blit(self.player_photo[index],pos+(20,20))
         
-#unfinished        
-#        if player.isFreeze:
-#            self.screen.blit(self.player_status0,)
+        
+#       icon display       
+        if player.isFreeze:
+            self.screen.blit(self.player_status0,pos+(150,20))
+            
+        #!!!!
+        if self.model.players[index].isMask:                #not sure about this part
+            self.screen.blit(self.player_status1,pos+(150,50))   
+        #!!!!
+            
+        if !player.isVisible:
+            self.screen.blit(self.player_status2,pos+(150,80))
+        if player.mode == 1:
+            self.screen.blit(self.player_status_P,pos+(150,110))
+        elif player.mode == 0:
+            self.screen.blit(self.player_status_A,pos+(150,110))
         pass
 
+#      mana and score and name
+        score = self.smallfont.render(str(player.score),  True, (255,200, 14))
+        mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
+        name = self.smallfont.render(player.name,True,(255,200,14))
+        self.screen.blit(score,pos + (215,95))
+        self.screen.blit(mana,pos + (335,95))
+        self.screen.blit(name,pos + (285,20))
+                         
     def render_player_charcter(self, index):
         player = self.evManager.players[index]
         if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
