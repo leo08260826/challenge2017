@@ -81,7 +81,6 @@ class player(object):
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1
 
-
         speedmode = self.mode + self.isFreeze * 1   
         if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 47 \
             or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 693 :
@@ -121,13 +120,13 @@ class player(object):
             if selfFreeze == True:
                 self.freeze()                
                 if self.takeball != -1:
-                    outData.append( (self.takeball, self.direction) )
+                    outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
             if targetFreeze == True:
                 target.freeze()
                 if target.takeball != -1:
-                    outData.append( (target.takeball, target.direction) )
+                    outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
 
         return outData
