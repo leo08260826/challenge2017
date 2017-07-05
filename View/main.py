@@ -86,12 +86,10 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             self.render_player_character(i)
             
-        #for testing
-        for i in range(4):
-            self.render_player_status(i)
-        #end test
         for i in range(numberOfQuaffles):
             self.render_quaffle(i)
+        self.render_goldenSnitch()
+
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
@@ -146,14 +144,13 @@ class GraphicalView(object):
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
-        for i in range(4):
-            self.playerInfo[i] = pg.image.load('View/image/background/info'+str(i+1)+'.png')
+        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
         self.player_status0 = pg.image.load('View/image/icon/dizzyOninfo.png')
         self.player_status1 = pg.image.load('View/image/icon/shieldOninfo.png')
-        self.player_status2 = pg.image.load('View/image/icon/shadowOningo.png')
+        self.player_status2 = pg.image.load('View/image/icon/shadowOninfo.png')
         self.player_status_A = pg.image.load('View/image/icon/attackmodeOninfo.png')
         self.player_status_P = pg.image.load('View/image/icon/protectmodeOninfo.png')
         ''' skills '''
@@ -163,6 +160,7 @@ class GraphicalView(object):
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
+        self.goldenSnitch_images = [ pg.image.load('View/image/ball/goldball_'+str(i+1)+'.png') for i in range(2) ]
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
@@ -190,7 +188,7 @@ class GraphicalView(object):
         player = self.model.players[index]
         info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
         self.blit_at_center(info,(980,100+180*index))
-       player = self.evManager.players[index]
+        player = self.model.players[index]
         info = self.playerInfo[index]
         pos_x , pos_y = 750 , 20 + 180*index
         pos = (pos_x,pos_y)
@@ -234,6 +232,10 @@ class GraphicalView(object):
                 self.blit_at_center(self.ball_powered_images[index], quaffle.position)
             else:
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
+
+    def render_goldenSnitch(self):
+        if self.model.goldenSnitch.state != 1:
+            self.blit_at_center(self.goldenSnitch_images[pg.time.get_ticks() % 2], self.model.goldenSnitch.position)
 
     def render_barrier(self,barrier):
         self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
