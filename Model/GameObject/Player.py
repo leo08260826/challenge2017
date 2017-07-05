@@ -87,6 +87,8 @@ class player(object):
         elif self.powertmp == ticktime and self.power < powerMax:
         	self.powertmp = 0
         	self.power = self.power + powerAdd[self.mode]
+            if self.power > powerMax:
+                self.power = powerMax
 
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1

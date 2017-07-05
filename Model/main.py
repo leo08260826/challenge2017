@@ -205,9 +205,7 @@ class GameEngine(object):
             if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
-                    tmpDirection = player.direction if player.direction != 0 \
-                                                    else random.randrange(1, 9)
-                    self.quaffles[ballData].throw(tmpDirection,player.position,True)
+                    self.quaffles[ballData].throw(player.direction,player.position,True)
                     player.power -= powerShotPowerCost
                 elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
@@ -234,9 +232,7 @@ class GameEngine(object):
 
                 ballData = player.shot()
                 if ballData != -1:
-                    tmpDirection = player.direction if player.direction != 0 \
-                                                    else random.randrange(1, 9)
-                    self.quaffles[ballData].throw(tmpDirection, player.position)
+                    self.quaffles[ballData].throw(player.direction, player.position)
 
     def run(self):
         """
