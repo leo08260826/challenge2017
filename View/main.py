@@ -87,10 +87,12 @@ class GraphicalView(object):
             self.render_player_status(i)
         for i in range(PlayerNum):
             self.render_player_character(i)
+            
         #for testing
         for i in range(4):
             self.render_player_status(i)
         #end test
+            
  #      for i in range(numberOfQuaffles):
             #self.render_quaffle(i)
  #       for i in self.stuns:
@@ -99,8 +101,8 @@ class GraphicalView(object):
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
-        for barrier in self.evManager.barriers:
-            self.render_barrier(barrier)
+#        for barrier in self.evManager.barriers:
+#            self.render_barrier(barrier)
 
         # update surface
         pg.display.flip()
@@ -149,9 +151,16 @@ class GraphicalView(object):
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
+        for i in range(4):
+            self.playerInfo[i] = pg.image.load('View/image/background/info'+str(i+1)+'.png')
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
+        self.player_status0 = pg.image.load('View/image/icon/dizzyOninfo.png')
+        self.player_status1 = pg.image.load('View/image/icon/shieldOninfo.png')
+        self.player_status2 = pg.image.load('View/image/icon/shadowOningo.png')
+        self.player_status_A = pg.image.load('View/image/icon/attackmodeOninfo.png')
+        self.player_status_P = pg.image.load('View/image/icon/protectmodeOninfo.png')
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
@@ -188,8 +197,14 @@ class GraphicalView(object):
         
     def render_player_status(self, index):
  #      player = self.evManager.players[index]
-        info = pg.image.load('View/image/background/info'+str(index+1)+'.png')
-        self.blit_at_center(info,(980,100+180*index))
+        info = self.playerInfo[index]
+        pos_x , pos_y = 750 , 20 + 180*index
+        pos = (pos_x,pos_y)
+        self.screen.blit(info,pos)
+        
+#unfinished        
+#        if player.isFreeze:
+#            self.screen.blit(self.player_status0,)
         pass
 
     def render_player_charcter(self, index):
@@ -226,7 +241,7 @@ class GraphicalView(object):
             else:
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
 
-    def render_barrier(self. barrier):
+    def render_barrier(self,barrier):
         self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
         
     def blit_at_center(self, surface, position):
