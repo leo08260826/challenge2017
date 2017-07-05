@@ -43,7 +43,7 @@ class player(object):
 
     def freeze(self):
         if self.isFreeze == True:
-            self.freezeTimer = freezeTimere - 2   
+            self.freezeTimer = freezeTime - 2   
         else:
             self.isFreeze = True
             self.freezeTimer = freezeTime
