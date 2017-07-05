@@ -198,30 +198,32 @@ class GameEngine(object):
         #ACTION_1 = 1   stun / mask
         #ACTION_2 = 2   general throw
         if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
             if actionIndex == 0:
-                if self.players[playerIndex].mode == 0:
+                if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
                     quaffles[ballData[0]].throw(ballData[1],player.position,True)
-                elif players[playerIndex].mode == 1:
+                elif player.mode == 1:
                     ballData = self.players[playerIndex].setBarrier()
                     barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
-                if self.players[playerIndex].mode == 0:
-                     for player in self.players:
-                        if player == self.players[playerIndex]:
+                if player.mode == 0:
+                     for playercheck in self.players:
+                        if playercheck == self.players[playerIndex]:
                             continue
                         else:
-                            distSquare = (player.position[0] - players[playerIndex].position[0]) ** 2 + \
-                                    (player.position[1] - players[playerIndex].position[1]) ** 2
-                            if (distSquare < (2 * mc.playerBumpDistance) ** 2):
-                                player.freeze(mc.stunFreezeTime)
+                            distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
+                                    (playercheck.position[1] - player.position[1]) ** 2
+                            if (distSquare < (2 * playerBumpDistance) ** 2):
+                                playercheck.freeze()
 
                 elif players[playerIndex].mode == 1:
                     players[playerIndex].isMask = True
                     players[playerIndex].maskTimer = maskTime
-            elif  actionIndex == 2:
-                player = self.players[playerIndex]
+
+            elif  actionIndex == 2 and player.mode == 1:
+                
                 ballData = player.shot()
                 if ballData != -1:
                     self.quaffles[ballData[0]].throw(ballData[1], player.position)
