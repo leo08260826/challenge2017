@@ -258,7 +258,7 @@ class GraphicalView(object):
 
     def render_player_character(self, index):
         player = self.model.players[index]
-        if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
+        if int(pg.time.get_ticks()/(FramePerSec*3))  == biasrand[index]:
             self.player_bias[index] = ( self.player_bias[index] + 1 ) % 2
         bias = (2,2) if self.player_bias[index] else (-2,-2)
         position = (player.position[0] - bias[0], player.position[1] - bias[1])
