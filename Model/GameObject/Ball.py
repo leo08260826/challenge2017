@@ -52,29 +52,37 @@ class OriginalBall(object):
         if position[0] < mc.gameRangeLower:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 3
-            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
-                checkGoal = mc.reachCornerGoal
+            elif position[1] > mc.cornerGoalRangeUpper:
+                checkGoal = 6                 
+            elif position[1] < mc.cornerGoalRangeLower:
+                checkGoal = 7
             else:
                 checkGoal = mc.reachWall
         elif position[0] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 1
-            elif position[1] > mc.cornerGoalRangeUpper or position[1] < mc.cornerGoalRangeLower:
-                checkGoal = mc.reachCornerGoal
+            elif position[1] > mc.cornerGoalRangeUpper:
+                checkGoal = 5    
+            elif position[1] < mc.cornerGoalRangeLower:
+                checkGoal = 4
             else:
                 checkGoal = mc.reachWall
         elif position[1] < mc.gameRangeLower:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 0
-            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
-                checkGoal = mc.reachCornerGoal
+            elif position[0] > mc.cornerGoalRangeUpper:
+                checkGoal = 4
+            elif position[0] < mc.cornerGoalRangeLower:
+                checkGoal = 7
             else:
                 checkGoal = mc.reachWall
         elif position[1] > mc.gameRangeUpper:
             if mc.goalRangeLower < position[0] < mc.goalRangeUpper:
                 checkGoal = 2
-            elif position[0] > mc.cornerGoalRangeUpper or position[0] < mc.cornerGoalRangeLower:
-                checkGoal = mc.reachCornerGoal
+            elif position[0] > mc.cornerGoalRangeUpper:
+                checkGoal = 5
+            elif position[0] < mc.cornerGoalRangeLower:
+                checkGoal = 6
             else:
                 checkGoal = mc.reachWall
         return checkGoal
@@ -117,7 +125,7 @@ class Quaffle(OriginalBall):
                 self.speed = mc.quaffleSpeed
                 if checkGoal == self.playerIndex:
                     tmpScore = 0
-                elif checkGoal == mc.reachCornerGoal:
+                elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
                 elif (checkGoal - self.playerIndex) in (-2, 2):
                     tmpScore = mc.scoreOfQuaffles[4]
