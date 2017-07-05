@@ -98,6 +98,11 @@ class GraphicalView(object):
 
         for i in range(PlayerNum):
             self.render_player_status(i)
+
+        for stun in self.stuns:
+            if stun[1] in range(9):
+                self.blit_at_center(self.stun_images[stun[1]], stun[0])
+                stun[1] += 1
         for i in range(PlayerNum):
             self.render_player_character(i)
             
@@ -105,10 +110,6 @@ class GraphicalView(object):
             self.render_quaffle(i)
         self.render_goldenSnitch()
 
-        for stun in self.stuns:
-            if stun[1] in range(9):
-                self.blit_at_center(self.stun_images[stun[1]], stun[0])
-                stun[1] += 1
         for barrier in self.model.barriers:
             self.render_barrier(barrier)
 
@@ -190,7 +191,7 @@ class GraphicalView(object):
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
-        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(4)] for i in range(PlayerNum) ]
+        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(PlayerNum) ]
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
@@ -222,44 +223,41 @@ class GraphicalView(object):
         
     def render_player_status(self, index):
         player = self.model.players[index]
-        pos_x , pos_y = 750 , 20 + 180*index
-        pos = (pos_x,pos_y)
+        pos_x , pos_y = 750 , (20 + 180*index)
             
  #     background display        
         info = self.playerInfo[index]
-        self.blit_at_center(info,(980,100+180*index))
+        self.screen.blit(info,(pos_x,pos_y))
 
  #      player photo display
         if player.isFreeze :
-             self.screen.blit(self.player_photo_hurt[index], pos + (20,20))
+             self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20))
         else:
-             self.screen.blit(self.player_photo[index],pos+(20,20))
+             self.screen.blit(self.player_photo[index],(pos_x+20,pos_y+20))
          
  #       icon display       
         if player.isFreeze:
-             self.screen.blit(self.player_status0,pos+(150,20))
-
-        if player.isMask:                #not sure about this part
-             self.screen.blit(self.player_status1,pos+(150,50))   
-             
+             self.screen.blit(self.player_status0,(pos_x+150,pos_y + 20))
+        if player.isMask:       
+             self.screen.blit(self.player_status1,(pos_x+150,pos_y + 50))   
         if not player.isVisible:
-             self.screen.blit(self.player_status2,pos+(150,80))
+             self.screen.blit(self.player_status2,(pos_x+150,pos_y + 80))
         if player.mode == 1:
-             self.screen.blit(self.player_status_P,pos+(150,110))
+             self.screen.blit(self.player_status_P,(pos_x+150,pos_y + 110))
         elif player.mode == 0:
-             self.screen.blit(self.player_status_A,pos+(150,110))
+             self.screen.blit(self.player_status_A,(pos_x+150,pos_y + 110))
          
  #      mana and score and name
         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
         name = self.smallfont.render(player.name,True,(255,200,14))
-        self.screen.blit(score,pos + (215,95))
-        self.screen.blit(mana,pos + (335,95))
-        self.screen.blit(name,pos + (285,20))
+        self.screen.blit(score,(pos_x + 215,pos_y + 95))
+        self.screen.blit(mana,(pos_x + 335,pos_y + 95))
+        self.screen.blit(name,(pos_x + 285,pos_y + 20))
 
     def render_player_character(self, index):
         player = self.model.players[index]
-        if int(pg.time.get_ticks()/(1/FramePerSec))  == index :
+        if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
             self.player_bias[index] = ( self.player_bias[index] + 1 ) % 2
         bias = (2,2) if self.player_bias[index] else (-2,-2)
         position = (player.position[0] - bias[0], player.position[1] - bias[1])
