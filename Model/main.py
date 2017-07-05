@@ -118,7 +118,9 @@ class GameEngine(object):
         self.goldenSnitch.tickCheck(self.players)
         # Update barriers
         for barrier in self.barriers:
-            barrier.tickCheck()
+            # if barrier is inacitve, remove it.
+            if not barrier.tickCheck():
+                self.barriers.remove(barrier)
 
     def Bump(self):
         # player to player
@@ -161,21 +163,22 @@ class GameEngine(object):
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
-                if not barrier.playerIndex == player.index and barrier.bump(player):
-                    player.position[0] -= dirConst[player.direction][0]*playerSpeed
-                    player.position[1] -= dirConst[player.direction][1]*playerSpeed
+                if not barrier.playerIndex == player.index and \
+                        barrier.bump(player, playerSpeed[player.mode]):
+                    player.position[0] -= dirConst[player.direction][0]*playerSpeed[player.mode]
+                    player.position[1] -= dirConst[player.direction][1]*playerSpeed[player.mode]
         # barrier to quaffle
         for barrier in self.barriers:
             for quaffle in self.quaffles:
-                if barrier.bump(quaffle):
+                if barrier.bump(quaffle, quaffle.speed):
                     if quaffle.isStrengthened:
-                        barriers.remove(barrier)
+                        barrier.inactive()
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirBounce[0][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (2,6):
                         quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirBounce[1][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (4,8):
                         quaffle.direction = dirBounce[3][quaffle.direction]
 
@@ -196,19 +199,23 @@ class GameEngine(object):
         #ACTION_0 = 0   power throw / barrier
         #ACTION_1 = 1   stun / mask
         #ACTION_2 = 2   general throw
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
-            if actionIndex == 0:
+            if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
-                    quaffles[ballData[0]].throw(ballData[1],player.position,True)
-                elif player.mode == 1:
+                    tmpDirection = player.direction if player.direction != 0 \
+                                                    else random.randrange(1, 9)
+                    self.quaffles[ballData].throw(tmpDirection,player.position,True)
+                    player.power -= powerShotPowerCost
+                elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
-                    barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
             elif actionIndex == 1:
-                if player.mode == 0:
-                     for playercheck in self.players:
+                if player.mode == 0 and player.power >= stunPowerCost:
+                    player.power -= stunPowerCost
+                    for playercheck in self.players:
                         if playercheck == self.players[playerIndex]:
                             continue
                         else:
@@ -217,15 +224,18 @@ class GameEngine(object):
                             if (distSquare < (2 * playerBumpDistance) ** 2):
                                 playercheck.freeze()
 
-                elif player.mode == 1:
+                elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True
                     player.maskTimer = maskTime
+                    player.power -= maskPowerCost
 
             elif  actionIndex == 2 and player.mode == 0:
 
                 ballData = player.shot()
                 if ballData != -1:
-                    self.quaffles[ballData].throw(player.direction, player.position)
+                    tmpDirection = player.direction if player.direction != 0 \
+                                                    else random.randrange(1, 9)
+                    self.quaffles[ballData].throw(tmpDirection, player.position)
 
     def run(self):
         """

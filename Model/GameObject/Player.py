@@ -42,11 +42,16 @@ class player(object):
         self.invisibleTime = 0
 
     def freeze(self):
-        self.isFreeze = True
-        self.freezeTimer = freezeTime
-        self.direction =(self.direction+4)%8
-        if self.direction == 0:
-            self.direction = 8
+
+        if self.isFreeze == True:
+            self.freezeTimer = freezeTime - 2   
+        else:
+            self.isFreeze = True
+            self.freezeTimer = freezeTime   
+            self.direction == (self.direction+4)%8
+            if self.direction == 0:
+                self.direction = 8
+
 
     def hide(self):
         self.isVisible = False
@@ -72,14 +77,14 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            if self.freezeTimer < 59 and self.freezeTimer > 0:
+            if self.freezeTimer < 58 and self.freezeTimer > 0:
                 self.direction = 0
             elif self.freezeTimer == 0:
                 self.isFreeze = False
 
-        if self.powertmp < ticktime:
+        if self.powertmp < ticktime and self.isFreeze == False:
             self.powertmp = self.powertmp + 1
-        elif self.powertmp == ticktime:
+        elif self.powertmp == ticktime and self.power < powerMax:
         	self.powertmp = 0
         	self.power = self.power + powerAdd[self.mode]
 
@@ -110,9 +115,9 @@ class player(object):
             targetFreeze = True
             if self.mode != target.mode:
                 if self.mode == 1:
-                    selfFreeze == False
+                    selfFreeze = False
                 elif target.mode == 1:
-                    targetFreeze == False
+                    targetFreeze = False
 
             if self.isMask == True and selfFreeze == True:
                 selfFreeze = False
@@ -123,7 +128,7 @@ class player(object):
                 target.reSetMask()
 
             if selfFreeze == True:
-                self.freeze()                
+                self.freeze()   
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
