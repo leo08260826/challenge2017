@@ -196,32 +196,32 @@ class GraphicalView(object):
         self.blit_at_center(info,(980,100+180*index))
 
  #      player photo display
-         if player.isFreeze :
+        if player.isFreeze :
              self.screen.blit(self.player_photo_hurt[index], pos + (20,20))
-         else:
+        else:
              self.screen.blit(self.player_photo[index],pos+(20,20))
          
  #       icon display       
-         if player.isFreeze:
+        if player.isFreeze:
              self.screen.blit(self.player_status0,pos+(150,20))
 
-         if player.isMask:                #not sure about this part
+        if player.isMask:                #not sure about this part
              self.screen.blit(self.player_status1,pos+(150,50))   
              
-         if not player.isVisible:
+        if not player.isVisible:
              self.screen.blit(self.player_status2,pos+(150,80))
-         if player.mode == 1:
+        if player.mode == 1:
              self.screen.blit(self.player_status_P,pos+(150,110))
-         elif player.mode == 0:
+        elif player.mode == 0:
              self.screen.blit(self.player_status_A,pos+(150,110))
          
  #      mana and score and name
-         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
-         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
-         name = self.smallfont.render(player.name,True,(255,200,14))
-         self.screen.blit(score,pos + (215,95))
-         self.screen.blit(mana,pos + (335,95))
-         self.screen.blit(name,pos + (285,20))
+        score = self.smallfont.render(str(player.score),  True, (255,200, 14))
+        mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
+        name = self.smallfont.render(player.name,True,(255,200,14))
+        self.screen.blit(score,pos + (215,95))
+        self.screen.blit(mana,pos + (335,95))
+        self.screen.blit(name,pos + (285,20))
 
     def render_player_character(self, index):
         player = self.model.players[index]
