@@ -162,8 +162,8 @@ class GameEngine(object):
         for barrier in self.barriers:
             for player in self.players:
                 if not barrier.playerIndex == player.index and barrier.bump(player):
-                    player.position[0] -= dirConst[player.direction][0]*playerSpeed
-                    player.position[1] -= dirConst[player.direction][1]*playerSpeed
+                    player.position[0] -= dirConst[player.direction][0]*playerSpeed[player.mode]
+                    player.position[1] -= dirConst[player.direction][1]*playerSpeed[player.mode]
         # barrier to quaffle
         for barrier in self.barriers:
             for quaffle in self.quaffles:
