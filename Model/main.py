@@ -170,7 +170,7 @@ class GameEngine(object):
                 if barrier.bump(quaffle):
                     if quaffle.isStrengthened:
                         barriers.remove(barrier)
-                    elif barrier.direction in (1,5):
+                    elif barrier.direction in (1,5):    
                         quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (2,6):
                         quaffle.direction = dirBounce[2][quaffle.direction]
@@ -202,7 +202,7 @@ class GameEngine(object):
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
                     self.quaffles[ballData].throw(player.direction,player.position,True)
-                elif player.mode == 1:
+                elif player.mode == 1 and player.power >= 18:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
 
