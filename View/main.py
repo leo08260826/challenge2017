@@ -1,6 +1,7 @@
 import pygame as pg
 
 import Model.main as model
+import Model.GameObjcet.model_const as mc
 from EventManager import *
 from const_main import *
 from View.const import *
@@ -90,10 +91,39 @@ class GraphicalView(object):
 
         # draw quaffle
         for quaffle in self.model.quaffles:
-            pg.draw.circle(surface, Color_Green, (round(quaffle.position[0]), round(quaffle.position[1])), 20)
+            if not quaffle.mode == 1:
+                if quaffle.isStrengthened:
+                    pg.draw.circle(surface, pg.Color("Orange"), (round(quaffle.position[0]), round(quaffle.position[1])), 20)
+                else:
+                    pg.draw.circle(surface, Color_Green, (round(quaffle.position[0]), round(quaffle.position[1])), 20)
+
+
 
         # draw golden snitch
         pg.draw.circle(surface, pg.Color("Yellow"), (round(self.model.goldenSnitch.position[0]), round(self.model.goldenSnitch.position[1])), 10)
+
+        # draw barrier
+        for barrier in self.model.barriers:
+            # veritcal barrier
+            if barrier.direction in [1, 5]:
+                pg.draw.line(surface, pg.Color("Black"), False\
+                 [round(barrier.position[0] - barrierWidth/2), round(barrier.position[1])],\
+                  [round(barrier.position[0] + barrierWidth/2), round(barrier.position[1])], 3)
+            # NE - SW barrier
+            elif barrier.direction in [2, 6]:
+                pg.draw.line(surface, pg.Color("Black"), False\
+                 [round(barrier.position[0] - barrierWidth/4), round(barrier.position[1] + barrierWidth/4)],\
+                  [round(barrier.position[0] + barrierWidth/4), round(barrier.position[1] - barrierWidth/4)], 3)
+            # horizontal barrier
+            elif barrier.direction in [3, 7]:
+                pg.draw.line(surface, pg.Color("Black"), False\
+                 [round(barrier.position[0]), round(barrier.position[1] - barrierWidth/2)],\
+                  [round(barrier.position[0]), round(barrier.position[1] + barrierWidth/2)], 3)
+            # NW - SE barrier
+            elif barrier.direction in [4, 8]:
+                pg.draw.line(surface, pg.Color("Black"), False\
+                 [round(barrier.position[0] + barrierWidth/4), round(barrier.position[1] + barrierWidth/4)],\
+                  [round(barrier.position[0] - barrierWidth/4), round(barrier.position[1] - barrierWidth/4)], 3)
         # update surface
         pg.display.flip()
         
