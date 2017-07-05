@@ -90,7 +90,8 @@ class GraphicalView(object):
 
         # draw quaffle
         for quaffle in self.model.quaffles:
-            pg.draw.circle(surface, Color_Green, (round(quaffle.position[0]), round(quaffle.position[1])), 20)
+            if quaffle.state != 1:
+                pg.draw.circle(surface, Color_Green, (round(quaffle.position[0]), round(quaffle.position[1])), 20)
 
         # draw golden snitch
         pg.draw.circle(surface, pg.Color("Yellow"), (round(self.model.goldenSnitch.position[0]), round(self.model.goldenSnitch.position[1])), 10)
