@@ -226,7 +226,7 @@ class GraphicalView(object):
             else:
                 self.blit_at_center(self.ball_normal_images[index], quaffle.position)
 
-    def render_barrier(self. barrier):
+    def render_barrier(self, barrier):
         self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
         
     def blit_at_center(self, surface, position):
