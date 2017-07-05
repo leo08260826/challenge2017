@@ -61,8 +61,9 @@ class GameEngine(object):
             self.SetGoldenSnitch()
             self.timer = initTime
         elif isinstance(event, Event_EveryTick):
-            self.UpdateObjects()
-            self.Bump()
+            if state.state == STATE_PLAY:
+                self.UpdateObjects()
+                self.Bump()
         elif isinstance(event, Event_EverySec):
             self.timer -= 1
         elif isinstance(event, Event_Move):
