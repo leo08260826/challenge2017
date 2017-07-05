@@ -125,7 +125,7 @@ class GameEngine(object):
         for players in itertools.combinations(self.players, 2):
             lostBalls = players[0].bump(players[1])
             for lostBall in lostBalls:
-                self.quaffles[lostBall[0]].deprive(lostBall[2], lostBall[1])
+                self.quaffles[lostBall[0]].deprive(lostBall[1], lostBall[2])
         # player to golden snitch
         distToGoldenSnitch = []
         for player in self.players:
