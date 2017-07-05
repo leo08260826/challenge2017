@@ -1,3 +1,4 @@
+import random
 from Model.GameObject.model_const import *
 
 def cross(a, b):
@@ -7,7 +8,10 @@ class Barrier(object):
     def __init__(self, playerIndex, position, direction):
         self.playerIndex = playerIndex
         self.position = position[:]
-        self.direction = direction
+        if direction == 0:
+            self.direction = random.randrange(1,9)
+        else:
+            self.direction = direction
         self.timer = barrierTimer
 
     def tickCheck(self):
