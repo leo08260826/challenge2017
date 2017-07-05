@@ -201,20 +201,20 @@ class GameEngine(object):
         #ACTION_2 = 2   general throw
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
-            if actionIndex == 0 and self.power >= powerShotPowerCost:
+            if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
                     self.quaffles[ballData].throw(player.direction,player.position,True)
-                    self.power -= powerShotPowerCost
+                    player.power -= powerShotPowerCost
                 elif player.mode == 1 and player.power >= 18:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
-                    self.power -= barrierPowerCost
+                    player.power -= barrierPowerCost
 
             elif actionIndex == 1:
                 if player.mode == 0 and player.power >= stunPowerCost:
                     player.power -= stunPowerCost
-                     for playercheck in self.players:
+                    for playercheck in self.players:
                         if playercheck == self.players[playerIndex]:
                             continue
                         else:

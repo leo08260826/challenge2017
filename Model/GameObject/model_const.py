@@ -23,12 +23,17 @@ playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 100
 freezeTime = 60
 playerBumpDistance = 25
-barrierPowerCost = 18
 PlayerNum = 4
 MaxManualPlayer = 4
 stunFreezeTime = 60
 powerAdd = [1,2]
 maskTime = 100
+
+#player power cost
+barrierPowerCost = 18
+powerShotPowerCost = 18
+stunPowerCost = 30
+maskPowerCost = 25
 
 #golden snitch
 goldenSnitchSize = 10
