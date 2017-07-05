@@ -4,12 +4,12 @@ ballRandomUpper = 470
 numberOfQuaffles = 2
 quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
-distToCatchQuaffle = 30 
+distToCatchQuaffle = 30
 
 #speed
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
-playerSpeed = [3,5,10]
+playerSpeed = [3,5,15]
 shotSpeed = 6
 depriveSpeed = 5
 
@@ -29,21 +29,21 @@ stunFreezeTime = 60
 powerAdd = [1,2]
 maskTime = 100
 
-#player power cost
+#cost const
 barrierPowerCost = 18
-powerShotPowerCost = 18
 stunPowerCost = 30
-maskPowerCost = 25
+maskPowerCost = 20
+powerShotPowerCost = 18
 
 #golden snitch
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
-distToCatchGoldenSnitch = 10 
+distToCatchGoldenSnitch = 10
 
 #dir const
 dirConst = [[0,0],[0,-1],[0.707,-0.707],[1,0],[0.707,0.707],[0,1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]
 dirBounce = [[0, 1, 8, 7, 6, 5, 4, 3, 2], [0, 5, 4, 3, 2, 1, 8, 7, 6], \
-             [0, 7, 6, 5, 8, 3, 2, 1, 4], [0, 3, 6, 1, 8, 7, 2, 5, 3]]
+             [0, 7, 6, 5, 8, 3, 2, 1, 4], [0, 3, 6, 1, 8, 7, 2, 5, 4]]
 
 #gate const
 goalRange = 180

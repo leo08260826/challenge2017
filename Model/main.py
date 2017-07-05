@@ -174,11 +174,11 @@ class GameEngine(object):
                     if quaffle.isStrengthened:
                         barrier.inactive()
                     elif barrier.direction in (1,5):
-                        quaffle.direction = dirBounce[0][quaffle.direction]
+                        quaffle.direction = dirBounce[1][quaffle.direction]
                     elif barrier.direction in (2,6):
                         quaffle.direction = dirBounce[2][quaffle.direction]
                     elif barrier.direction in (3,7):
-                        quaffle.direction = dirBounce[1][quaffle.direction]
+                        quaffle.direction = dirBounce[0][quaffle.direction]
                     elif barrier.direction in (4,8):
                         quaffle.direction = dirBounce[3][quaffle.direction]
 
@@ -204,9 +204,11 @@ class GameEngine(object):
             if actionIndex == 0 and player.power >= powerShotPowerCost:
                 if player.mode == 0:
                     ballData = self.players[playerIndex].shot()
-                    self.quaffles[ballData].throw(player.direction,player.position,True)
+                    tmpDirection = player.direction if player.direction != 0 \
+                                                    else random.randrange(1, 9)
+                    self.quaffles[ballData].throw(tmpDirection,player.position,True)
                     player.power -= powerShotPowerCost
-                elif player.mode == 1 and player.power >= 18:
+                elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
                     player.power -= barrierPowerCost
@@ -232,7 +234,9 @@ class GameEngine(object):
 
                 ballData = player.shot()
                 if ballData != -1:
-                    self.quaffles[ballData].throw(player.direction, player.position)
+                    tmpDirection = player.direction if player.direction != 0 \
+                                                    else random.randrange(1, 9)
+                    self.quaffles[ballData].throw(tmpDirection, player.position)
 
     def run(self):
         """
