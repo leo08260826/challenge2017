@@ -68,8 +68,7 @@ class GraphicalView(object):
         """
         #music
         pg.mixer.music.pause()
-        if pg.mixer.get_busy() == False:
-            self.menu_music.play()
+        self.menu_music.play()
         
         # draw backgound
         menu = pg.image.load('View/image/background/menu.png')
