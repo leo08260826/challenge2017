@@ -42,11 +42,15 @@ class player(object):
         self.invisibleTime = 0
 
     def freeze(self):
-        self.isFreeze = True
-        self.freezeTimer = freezeTime
-        self.direction =(self.direction+4)%8
-        if self.direction == 0:
-            self.direction = 8
+        if self.isFreeze == True:
+            self.freezeTimer = freezeTimere - 2   
+        else:
+            self.isFreeze = True
+            self.freezeTimer = freezeTime
+            self.direction =(self.direction+4)%8
+            if self.direction == 0:
+                self.direction = 8
+
 
     def hide(self):
         self.isVisible = False
@@ -110,9 +114,9 @@ class player(object):
             targetFreeze = True
             if self.mode != target.mode:
                 if self.mode == 1:
-                    selfFreeze == False
+                    selfFreeze = False
                 elif target.mode == 1:
-                    targetFreeze == False
+                    targetFreeze = False
 
             if self.isMask == True and selfFreeze == True:
                 selfFreeze = False
