@@ -164,21 +164,21 @@ class GraphicalView(object):
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
-        colors = ['_red', '_green', '_yellow', '_blue']
-        self.player_freeze_images = [pg.image.load('View/image/player/player_down'+colors[i]+'_frost.png') for i in range(4)]
-        charactor_name =['cat','black','shinging','silver']
-        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+color[i]+'.png') for i in range(PlayerNum)]
-        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+color[i]+'.png') for i in range(PlayerNum)]
-    def get_player_image(colorname, direction, suffix):
-        if direction == 0:
-            direction = 5
-        if direction == 1:
-            return pg.transform.flip(pg.image.load('View/image/player/player_down'+colorname+suffix+'.png'), 0, 1)
-        elif direction in range(2,6):
-            return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+colorname+suffix+'.png'), 1, 0)
-        else:
-            return pg.image.load('View/image/player/player'+directions[8-direction]+colorname+suffix+'.png')
-        self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(4) ]
+        colors = ['red', 'green', 'yellow', 'blue']
+        self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
+        charactor_name =['cat','black','shining','silver']
+        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
+        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
+        def get_player_image(colorname, direction, suffix):
+            if direction == 0:
+                direction = 5
+            if direction == 1:
+                return pg.transform.flip(pg.image.load('View/image/player/player_down_'+colorname+suffix+'.png'), 0, 1)
+            elif direction in range(2,6):
+                return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+'_'+colorname+suffix+'.png'), 1, 0)
+            else:
+                return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
+        self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(PlayerNum) ]
         self.player_invisable_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
 
     def render_background(self):
@@ -259,11 +259,14 @@ class GraphicalView(object):
 
     def render_goldenSnitch(self):
         if self.model.goldenSnitch.state != 1:
-            self.blit_at_center(self.goldenSnitch_images[pg.time.get_ticks() % 2], self.model.goldenSnitch.position)
+            temp = int(pg.time.get_ticks()/10) % 2
+            #self.blit_at_center(self.goldenSnitch_images[temp], map(int, self.model.goldenSnitch.position))
+            self.screen.blit(self.goldenSnitch_images[temp], self.model.goldenSnitch.position)
+            
 
     def render_barrier(self,barrier):
         self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
         
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
-        self.screen.blit(surface, (position[1]-Xsize/2, position[1]-Ysize/3))
+        self.screen.blit(surface, (int(position[0]-Xsize/2), int(position[1]-Ysize/2)))
