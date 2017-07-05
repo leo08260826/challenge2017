@@ -8,8 +8,9 @@ class OriginalBall(object):
                          random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
         """
         0: belongs to nobody
-        1: belongs to somebody or in reborn time
+        1: belongs to somebody
         2: being thrown
+        3: waiting to re-appear
         """
         self.state = 0
         # 1~8: eight directions
@@ -121,14 +122,14 @@ class Quaffle(OriginalBall):
                     self.modifyPosition()
                 else:
                     self.tickTime = 60
-                    self.state = 1
+                    self.state = 3
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-        else:
+        elif self.state == 3:
             if self.tickTime > 0:
                 self.tickTime -= 1
-            elif self.tickTime == 0:
+            elif self.tickTime <= 0:
                 self.state = 0
                 self.tickTime = -1
         return (tmpScore, tmpPlayerIndex)

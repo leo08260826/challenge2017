@@ -221,7 +221,7 @@ class GameEngine(object):
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
-                            if (distSquare < (2 * playerBumpDistance) ** 2):
+                            if (distSquare < (2 * playerBumpDistance) ** 2) and playercheck.isMask == False:
                                 playercheck.freeze()
 
                 elif player.mode == 1 and player.power >= maskPowerCost:
