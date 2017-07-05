@@ -16,7 +16,7 @@ Pos_map = (0, 0)
 Pos_time = (20, 740)
 
 # some rand
-bias_rand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
+biasrand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
 
 # barrier
 barrier_size = 180
