@@ -146,7 +146,7 @@ class GameEngine(object):
 
         # player to quaffle
         for quaffle in self.quaffles:
-            if quaffle.state != 1:
+            if quaffle.state in [0, 2]:
                 distToQuaffle = []
                 for player in self.players:
                     if player.takeball == -1 and not player.isFreeze:
@@ -191,6 +191,7 @@ class GameEngine(object):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
+            player.isMask = False
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         pass
@@ -221,7 +222,7 @@ class GameEngine(object):
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
-                            if (distSquare < (2 * playerBumpDistance) ** 2):
+                            if (distSquare < (2 * playerBumpDistance) ** 2) and playercheck.isMask == False:
                                 playercheck.freeze()
 
                 elif player.mode == 1 and player.power >= maskPowerCost:
