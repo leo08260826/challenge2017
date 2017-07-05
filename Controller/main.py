@@ -44,10 +44,10 @@ class Control(object):
         Handles menu events.
         """
         if event.type == pg.KEYDOWN:
-            # escape pops the menu
+            # escape to pop the menu
             if event.key == pg.K_ESCAPE:
                 self.evManager.Post(Event_StateChange(None))
-            # space plays the game
+            # space to play the game
             if event.key == pg.K_SPACE:
                 self.evManager.Post(Event_StateChange(model.STATE_PLAY))
 
@@ -58,7 +58,7 @@ class Control(object):
         if event.type == pg.USEREVENT:
             self.evManager.Post(Event_EverySec())
         elif event.type == pg.KEYDOWN:
-            # escape pops the menu
+            # escape to pop the menu
             if event.key == pg.K_ESCAPE:
                 self.evManager.Post(Event_StateChange(None))
             # space to stop the game
@@ -93,7 +93,7 @@ class Control(object):
                     self.evManager.Post(Event_Move(0,DIR_LD))
                 elif pg.key.get_pressed()[pg.K_w] == 0 and pg.key.get_pressed()[pg.K_s] == 0 and  pg.key.get_pressed()[pg.K_d] == 0 :
                     self.evManager.Post(Event_Move(0,DIR_L))
-            # change_mode 
+            # change mode 
             elif event.key == pg.K_c:
                 self.evManager.Post(Event_PlayerModeChange(0))
             # use action
@@ -145,10 +145,10 @@ class Control(object):
 
     def ctrl_stop(self, event):
         """
-        Handles help events.
+        Handles stop events.
         """
         if event.type == pg.KEYDOWN:
-            # space pops help
+            # space to back the game
             if event.key == pg.K_SPACE:
                 self.evManager.Post(Event_StateChange(None))
 
