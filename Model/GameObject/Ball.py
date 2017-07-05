@@ -11,6 +11,7 @@ class OriginalBall(object):
         # 1~8: eight directions
         self.direction = random.randrange(1, 9)
         self.playerIndex = -1
+        self.tickTime = -1
         self.isStrengthened = False
 
     def throw(self, direction, position, isStrengthened = False):
@@ -113,10 +114,17 @@ class Quaffle(OriginalBall):
                 if checkGoal == mc.reachWall:
                     self.modifyPosition()
                 else:
+                    self.tickTime = 60
+                    self.state = 1
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
                                      random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                     self.direction = random.randrange(1, 9)
-
+        else:
+            if self.tickTime > 0:
+                self.tickTime -= 1
+            elif self.tickTime == 0:
+                self.state = 0
+                self.tickTime = -1
         return (tmpScore, tmpPlayerIndex)
 
 class GoldenSnitch(OriginalBall):
