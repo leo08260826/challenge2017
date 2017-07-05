@@ -87,6 +87,8 @@ class player(object):
         elif self.powertmp == ticktime and self.power < powerMax:
         	self.powertmp = 0
         	self.power = self.power + powerAdd[self.mode]
+            if self.power > powerMax:
+                self.power = powerMax
 
         if self.modeTimer > 0:
             self.modeTimer = self.modeTimer - 1
@@ -103,7 +105,7 @@ class player(object):
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
             if self.maskTimer <= 0:
-                self.isMask == False
+                self.isMask = False
 
          
         self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
