@@ -22,7 +22,7 @@ class Barrier(object):
     def inactive(self):
         self.timer = -1
 
-    def bump(self, target):
+    def bump(self, target, speed):
         a = []
         b = []
         c = []
@@ -41,8 +41,8 @@ class Barrier(object):
         b.append(self.position[1] + 0.5 * barrierWidth * dirConst[(self.direction + 5) % 8 + 1][1])
         c.append(target.position[0])
         c.append(target.position[1])
-        d.append(target.position[0] + dirConst[target.direction][0])
-        d.append(target.position[1] + dirConst[target.direction][1])
+        d.append(target.position[0] + dirConst[target.direction][0] * speed)
+        d.append(target.position[1] + dirConst[target.direction][1] * speed)
         for i in range(2):
             ba.append(b[i] - a[i])
             ca.append(c[i] - a[i])
