@@ -224,8 +224,8 @@ class GraphicalView(object):
                 return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+'_'+colorname+suffix+'.png'), 1, 0)
             else:
                 return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
-        self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(PlayerNum) ]
-        self.player_invisible_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
+        self.player_images = [ [pg.transform.scale(get_player_image(colors[i],direction,''), Player_Size) for direction in range(9)] for i in range(PlayerNum) ]
+        self.player_invisible_images = [ [pg.transform.scale(get_player_image(colors[i],direction,'_invisible'), Player_Size) for direction in range(9)] for i in range(4) ]
 
     def render_background(self):
         self.screen.blit(self.background,(0,0))
