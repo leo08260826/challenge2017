@@ -18,6 +18,7 @@ class OriginalBall(object):
         self.playerIndex = -1
         self.tickTime = -1
         self.isStrengthened = False
+        self.hasCaught = []
 
     def throw(self, direction, position, isStrengthened = False):
         # invalid request prevention
@@ -45,7 +46,6 @@ class OriginalBall(object):
 
     def tickCheck(self):
         pass
-
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
@@ -97,6 +97,11 @@ class Quaffle(OriginalBall):
         self.playerIndex = playerIndex
         self.state = 1
         self.isStrengthened = False
+        if playerIndex in self.hasCaught:
+            return True
+        else:
+            self.hasCaught.append(playerIndex)
+            return False
 
     def deprive(self, direction, position):
         self.state = 0
@@ -138,6 +143,7 @@ class Quaffle(OriginalBall):
                 if checkGoal == mc.reachWall:
                     self.modifyPosition()
                 else:
+                    self.hasCaught = []
                     self.tickTime = 60
                     self.state = 3
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\

@@ -75,7 +75,7 @@ class GameEngine(object):
                 self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
-        elif isinstance(event, Event_PlayerModeChange):
+        elif isinstance(event, Event_ModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_TimeUp):
             self.evManager.Post(Event_StateChange(STATE_PRERECORD))
@@ -159,6 +159,7 @@ class GameEngine(object):
         if distToGoldenSnitch:
             dist = min(distToGoldenSnitch)
             if dist[0] < distToCatchGoldenSnitch:
+                self.players[playerIndex].takeball = 100
                 self.players[dist[1]].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
@@ -175,9 +176,10 @@ class GameEngine(object):
                     dist = min(distToQuaffle)
                     playerIndex = dist[1]
                     if dist[0] < distToCatchQuaffle:
-                        self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
                         self.players[playerIndex].takeball = quaffle.index
-                        quaffle.catch(playerIndex)
+                        hasCaught = quaffle.catch(playerIndex)
+                        if not hasCaught:
+                            self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
