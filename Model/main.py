@@ -48,10 +48,13 @@ class GameEngine(object):
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
-            if not event.state:
+            if event.state == None:
                 # false if no more states are left
                 if not self.state.pop():
                     self.evManager.Post(Event_Quit())
+            elif event.state == STATE_RESTART:
+                self.state.clear()
+                self.state.push(STATE_MENU)
             else:
                 # push a new state on the stack
                 self.state.push(event.state)
