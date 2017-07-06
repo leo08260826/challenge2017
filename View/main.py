@@ -51,7 +51,7 @@ class GraphicalView(object):
             self.display_fps()
             # limit the redraw speed to 30 frames per second
             self.clock.tick(FramePerSec)
-        elif isinstance(event, Event_Action):
+        elif isinstance(event, Event_ConfirmAction):
             player = self.model.players[event.PlayerIndex]
             if event.ActionIndex == 1 and player.mode == 0:
                 self.stuns[player.index] = [player.position, 0]
@@ -171,7 +171,6 @@ class GraphicalView(object):
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
-        self.player_bias = [0, 0, 0, 0]
         self.stuns = [[(0,0),-1] for _ in range(PlayerNum)]
         # load images
         ''' backgrounds '''
@@ -257,10 +256,7 @@ class GraphicalView(object):
 
     def render_player_character(self, index):
         player = self.model.players[index]
-        if pg.time.get_ticks() % (FramePerSec*3) == biasrand[index]:
-            self.player_bias[index] = ( self.player_bias[index] + 1 ) % 2
-        bias = (2,2) if self.player_bias[index] else (-2,-2)
-        position = (player.position[0] - bias[0], player.position[1] - bias[1])
+        position = player.position
         # body
         if player.isVisible == False:
             direction = player.direction
@@ -279,7 +275,7 @@ class GraphicalView(object):
 
         # mask
         if player.isMask == True:
-            self.blit_at_center(self.mask_images[pg.time.get_ticks() % 12], position)
+            self.blit_at_center(self.mask_images[self.get_frame() % 12], position)
 
     def render_quaffle(self, index):
         quaffle = self.model.quaffles[index]
@@ -291,9 +287,8 @@ class GraphicalView(object):
 
     def render_goldenSnitch(self):
         if self.model.goldenSnitch.state != 1:
-            temp = int(pg.time.get_ticks()/10) % 2
-            #self.blit_at_center(self.goldenSnitch_images[temp], map(int, self.model.goldenSnitch.position))
-            self.screen.blit(self.goldenSnitch_images[temp], self.model.goldenSnitch.position)
+            frame = self.get_frame() % 2
+            self.blit_at_center(self.goldenSnitch_images[frame], self.model.goldenSnitch.position)
             
 
     def render_barrier(self,barrier):
@@ -302,3 +297,6 @@ class GraphicalView(object):
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
         self.screen.blit(surface, (int(position[0]-Xsize/2), int(position[1]-Ysize/2)))
+
+    def get_frame(self):
+        return int(pg.time.get_ticks()*FramePerSec/1000)
