@@ -112,6 +112,17 @@ class Event_Action(BaseEvent):
     def __str__(self):
         return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name, self.PlayerIndex, self.ActionIndex)
 
+class Event_ConfirmAction():
+    """
+    Confirm action event.
+    """
+    def __init__(self, player, action):
+        self.name = "ConfirmAction event"
+        self.PlayerIndex = player
+        self.ActionIndex = action
+    def __str__(self):
+        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name, self.PlayerIndex, self.ActionIndex)
+
 class EventManager(object):
     """
     We coordinate communication between the Model, View, and Controller.
