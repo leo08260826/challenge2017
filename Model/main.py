@@ -55,9 +55,8 @@ class GameEngine(object):
                 self.state.push(event.state)
         elif isinstance(event, Event_Quit):
             self.running = False
-        elif isinstance(event, Event_Initialize):
-            self.Initialize()
-        elif isinstance(event, Event_Restart):
+        elif isinstance(event, Event_Initialize) or \
+             isinstance(event, Event_Restart):
             self.Initialize()
         elif isinstance(event, Event_EveryTick):
             if self.state.peek() == STATE_PLAY:
