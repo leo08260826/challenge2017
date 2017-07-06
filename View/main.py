@@ -221,7 +221,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+20,Pos_time[1]+20,735*(1-self.model.timer/modelConst.initTime),20])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],735*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
