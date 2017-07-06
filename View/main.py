@@ -199,7 +199,7 @@ class GraphicalView(object):
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
-        colors = ['red', 'green', 'yellow', 'blue']
+        colors = ['blue', 'red', 'yellow', 'green']
         self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
