@@ -2,7 +2,8 @@
 STATE_MENU = 1
 STATE_STOP = 2
 STATE_PLAY = 3
-STATE_RECORD = 4
+STATE_PRERECORD = 4
+STATE_RECORD = 5
 
 class StateMachine(object):
     """
