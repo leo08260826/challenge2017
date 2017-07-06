@@ -55,7 +55,7 @@ class Helper(object):
                 return My_dir[5]
 
     def getScoringDir(self, goal_id):
-    	self.
+    	
     
     def getNearestGoal(self, pos):
     	board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
@@ -102,7 +102,7 @@ class Helper(object):
     def getNearBallInfo(self):
         Info_list=[]
         for i in range(numberOfQuaffles):
-            tmp = []
+            tmp = [0,0,0,0]
             tmp[0] = self.model.quaffles[i].position[0]
             tmp[1] = self.model.quaffles[i].position[1]
             tmp[2] = self.model.quaffles[i].state
@@ -113,7 +113,7 @@ class Helper(object):
                 tmpDist = self.CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
             tmp[3] = tmpDist
             Info_list.append(tmp)
-        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index])]
+        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
         return Sort_Info 
