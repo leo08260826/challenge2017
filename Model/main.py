@@ -222,6 +222,7 @@ class GameEngine(object):
                 elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    player.power -= barrierPowerCost
 
             elif actionIndex == 1:
                 if player.mode == 0 and player.power >= stunPowerCost:

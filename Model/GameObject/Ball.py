@@ -31,8 +31,8 @@ class OriginalBall(object):
         self.state = 2
         self.speed = mc.shotSpeed
         # add a safe distance to avoid re-catch the ball after shooting
-        self.position[0] = position[0] + mc.dirConst[direction][0] * 35
-        self.position[1] = position[1] + mc.dirConst[direction][1] * 35
+        self.position[0] = position[0] + mc.dirConst[self.direction][0] * 35
+        self.position[1] = position[1] + mc.dirConst[self.direction][1] * 35
 
     def modifyPosition(self):
         for index, element in enumerate(self.position):
@@ -100,6 +100,7 @@ class Quaffle(OriginalBall):
 
     def deprive(self, direction, position):
         self.state = 0
+        self.playerIndex = -1
         self.isStrengtheend = False
         if direction == 0:
             self.direction = 5
@@ -123,12 +124,14 @@ class Quaffle(OriginalBall):
                 self.state = 0
                 self.isStrengthened = False
                 self.speed = mc.quaffleSpeed
-                if checkGoal == self.playerIndex:
+                if checkGoal == tmpPlayerIndex:
                     tmpScore = 0
                 elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
-                elif (checkGoal - self.playerIndex) in (-2, 2):
+                elif (checkGoal - tmpPlayerIndex) in (-2, 2):
                     tmpScore = mc.scoreOfQuaffles[4]
+                elif checkGoal == mc.reachWall:
+                    tmpScore = 0
                 else:
                     tmpScore = mc.scoreOfQuaffles[3]
 
