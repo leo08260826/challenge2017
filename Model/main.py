@@ -71,7 +71,7 @@ class GameEngine(object):
         elif isinstance(event, Event_PlayerModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_TimeUp):
-            self.state.push(STATE_RECORD)
+            self.state.push(STATE_PRERECORD)
         elif isinstance(event, Event_SkillCard):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
