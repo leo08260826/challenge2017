@@ -43,7 +43,7 @@ powerShotPowerCost = 18
 #golden snitch
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
-distToCatchGoldenSnitch = 60
+distToCatchGoldenSnitch = 20
 goldenSnitchAlertRadius = 150
 
 
