@@ -1,4 +1,5 @@
-from Model.GameObject.model_const import *
+from Model.const import *
+
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
