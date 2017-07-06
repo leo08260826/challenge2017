@@ -45,7 +45,7 @@ class player(object):
 
         if self.isFreeze == True and self.freezeTimer < 58:
              self.freezeTimer = freezeTime
-         else:
+        else:
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
@@ -103,7 +103,10 @@ class player(object):
         elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 47 \
             or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 693 :
             self.direction = dirBounce[1][self.direction]
-
+        else :
+            self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
+            self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
+            
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
             if self.maskTimer <= 0:
@@ -115,8 +118,7 @@ class player(object):
                 self.isVisible = True
 
          
-        self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
-        self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
+        
 
     def bump(self, target):
         outData = []
