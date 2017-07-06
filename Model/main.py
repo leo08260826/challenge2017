@@ -157,10 +157,10 @@ class GameEngine(object):
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
 
         if distToGoldenSnitch:
-            dist = min(distToGoldenSnitch)
-            if dist[0] < distToCatchGoldenSnitch:
+            dist, playerIndex = min(distToGoldenSnitch)
+            if dist < distToCatchGoldenSnitch:
                 self.players[playerIndex].takeball = 100
-                self.players[dist[1]].score += scoreOfGoldenSnitch
+                self.players[playerIndex].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
         # player to quaffle
@@ -177,9 +177,10 @@ class GameEngine(object):
                     playerIndex = dist[1]
                     if dist[0] < distToCatchQuaffle:
                         self.players[playerIndex].takeball = quaffle.index
+                        tmpQuaffleState = quaffle.state
                         hasCaught = quaffle.catch(playerIndex)
                         if not hasCaught:
-                            self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
+                            self.players[playerIndex].score += scoreOfQuaffles[tmpQuaffleState]
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
