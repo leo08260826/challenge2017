@@ -216,7 +216,7 @@ class GameEngine(object):
         if self.players[playerIndex] != None:
             player = self.players[playerIndex]
             if skillIndex == 0:
-                player.isvisible = True
+                player.isvisible = False
                 player.invisibleTimer =  invisibleTim
             elif skillIndex == 1:
                 for player in self.players:
