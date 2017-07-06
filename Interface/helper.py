@@ -1,4 +1,4 @@
-from Model.GameObject.model_const import *
+from Model.const import *
 import math
 """
 define Application Programming Interface(API) 
