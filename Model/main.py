@@ -35,6 +35,7 @@ class GameEngine(object):
         self.players = []
         self.quaffles = []
         self.barriers = []
+        self.goldenSnitch = None
         self.timer = 0
         self.TurnTo = 0
 
