@@ -209,7 +209,7 @@ class GraphicalView(object):
 
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.light_images = [pg.image.load('View/image/visual_effect/light/light_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
     
         
         def get_player_image(colorname, direction, suffix):
@@ -282,16 +282,16 @@ class GraphicalView(object):
         if ball != -1:
             self.blit_at_center(self.take_ball_images[ball], position)
 
-        # mask
-        if player.isMask == True:
-            self.blit_at_center(self.mask_images[self.get_frame() % 12], position)
-
         #visual effect
         
         if player_visual_effect[index] == 1:
-            self.blit_at_center(self.love_images[pg.time.get_ticks() % 4], position)
+            self.blit_at_center(self.love_images[self.get_frame() % 4], position)
         if player_visual_effect[index] == 2:
-            self.blit_at_center(self.light_images[pg.time.get_ticks() % 4], position)
+            self.blit_at_center(self.light_images[self.get_frame() % 4], position)
+            
+        # mask
+        if player.isMask == True:
+            self.blit_at_center(self.mask_images[self.get_frame() % 12], position)
 
     def render_quaffle(self, index):
         quaffle = self.model.quaffles[index]
