@@ -108,10 +108,10 @@ class player(object):
             if self.maskTimer <= 0:
                 self.isMask = False
 
-        if self.invisible == True:
+        if self.isvisible == True:
             self.invisibleTimer = self.invisibleTimer - 1
             if self.invisibleTimer <= 0:
-                self.invisible = False
+                self.isvisible = False
 
          
         self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
