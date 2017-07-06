@@ -1,3 +1,6 @@
+GameCaption = "Challenge 2017"
+ScreenSize = (1200, 800)
+
 # FPS
 FramePerSec = 30
 
