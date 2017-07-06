@@ -3,7 +3,6 @@ import random
 
 import Model.main as model
 from EventManager import *
-from const_main import *
 from View.const import *
 
 import Model.const as modelConst
