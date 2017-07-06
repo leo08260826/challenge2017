@@ -52,6 +52,15 @@ class player(object):
                 self.direction = (self.direction+4)%8
                 if self.direction == 0:
                     self.direction = 8
+            else:
+                if self.position[0] < 370 and self.position[1] < 370:
+                    self.direction = 4
+                elif self.position[0] < 370 and self.position[1] >= 370:
+                    self.direction = 2
+                elif self.position[0] >= 370 and self.position[1] < 370:
+                    self.direction = 6
+                elif self.position[0] >= 370 and self.position[1] >= 370:
+                    self.direction = 8
 
 
     def hide(self):

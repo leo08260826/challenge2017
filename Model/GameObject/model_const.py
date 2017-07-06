@@ -17,6 +17,7 @@ depriveSpeed = 5
 gameRange = 700
 gameRangeLower = 20
 gameRangeUpper = gameRangeLower + gameRange
+gameMid = (gameRangeUpper + gameRangeLower) / 2
 
 #player const
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
