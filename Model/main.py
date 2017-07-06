@@ -205,7 +205,7 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None and self.players[playerIndex] >= modeChangePower:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
