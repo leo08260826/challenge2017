@@ -24,3 +24,9 @@ barrier_size = 180
 # music volume
 background_music_volume = 0.8
 menu_music_volume = 0.8
+
+Player_Size = ( 100, 100)
+
+# visual effect
+## none = 0 , love = 1 , light = 2 , not18 = 3
+player_visual_effect = [3,1,2,0]

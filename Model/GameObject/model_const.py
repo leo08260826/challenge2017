@@ -6,12 +6,6 @@ quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
 distToCatchQuaffle = 30
 
-#speed
-quaffleSpeed = 3
-goldenSnitchSpeed = 8
-playerSpeed = [3,5,12]
-shotSpeed = 6
-depriveSpeed = 5
 
 #view const
 gameRange = 700
@@ -76,3 +70,12 @@ reachWall = 10
 #game const
 initTime = 180
 ticktime = 30
+
+#speed
+quaffleSpeed = 3
+goldenSnitchSpeed = 8
+goldenSnitchTerminalSpeed = 4
+goldenSnitchSpeedDecayPerTick = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / (initTime  * ticktime)
+playerSpeed = [3,5,12]
+shotSpeed = 6
+depriveSpeed = 5

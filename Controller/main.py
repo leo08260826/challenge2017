@@ -32,10 +32,14 @@ class Control(object):
                     cur_state = self.model.state.peek()
                     if cur_state == model.STATE_MENU:
                         self.ctrl_menu(event)
-                    if cur_state == model.STATE_PLAY:
+                    elif cur_state == model.STATE_PLAY:
                         self.ctrl_play(event)
-                    if cur_state == model.STATE_STOP:
+                    elif cur_state == model.STATE_STOP:
                         self.ctrl_stop(event)
+                    elif cur_state == model.STATE_PRERECORD:
+                        self.ctrl_prerecord(event)
+                    elif cur_state == model.STATE_RECORD:
+                        self.ctrl_record(event)
         elif isinstance(event, Event_Initialize):
             self.initialize()
 
@@ -152,6 +156,27 @@ class Control(object):
             # space to back the game
             if event.key == pg.K_SPACE:
                 self.evManager.Post(Event_StateChange(None))
+
+    def ctrl_prerecord(self, event):
+        """
+        Handles prerecord events.
+        """
+        if event.type == pg.KEYDOWN:
+            # space to pop the scoreboard
+            if event.key == pg.K_SPACE:
+                self.evManager.Post(Event_StateChange(model.STATE_RECORD))
+
+    def ctrl_record(self, event):
+        """
+        Handles record events.
+        """
+        if event.type == pg.KEYDOWN:
+            # escape to back the menu
+            if event.key == pg.K_ESCAPE:
+                self.evManager.Post(Event_StateChange(None))
+                self.evManager.Post(Event_StateChange(None))
+                self.evManager.Post(Event_StateChange(None))
+                self.evManager.Post(Event_Restart())
 
     def initialize(self):
         """

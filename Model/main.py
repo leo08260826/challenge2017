@@ -258,8 +258,12 @@ class GameEngine(object):
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
-                            if (distSquare < (stunDistance) ** 2) and playercheck.isMask == False:
-                                playercheck.freeze()
+                            if distSquare < (stunDistance) ** 2:
+                                if playercheck.isMask == False:
+                                    playercheck.freeze()
+                                else:
+                                    playercheck.maskTimer = 0
+                                    playercheck.isMask = False
                     return True
                 elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True
