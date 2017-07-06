@@ -219,6 +219,7 @@ class GraphicalView(object):
     def render_background(self):
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map, Pos_map)
+    def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
         pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
 
