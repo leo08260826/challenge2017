@@ -155,11 +155,14 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             score = rank[i].score
             height = score / maxscore * 350
-            pg.draw.rect(self.screen, Color_White, (290+200*i, 600-height, 120, height))
-            pg.draw.rect(self.screen, (255, 250, 200), (290+200*i, 550-height, 120, 50))
-            pg.draw.rect(self.screen, Player_Colors[rank[i].index], (300+200*i, 600-height, 10, height))
-            pg.draw.rect(self.screen, Player_Colors[rank[i].index], (390+200*i, 600-height, 10, height))
-            self.screen.blit(self.player_photo[rank[i].index], (290+200*i,600))
+            color = Player_Colors[rank[i].index]
+            pg.draw.rect(self.screen, Color_White, (230+200*i, 600-height, 120, height))
+            pg.draw.rect(self.screen, (255, 250, 200), (230+200*i, 550-height, 120, 50))
+            pg.draw.rect(self.screen, color, (300+200*i, 600-height, 10, height))
+            pg.draw.rect(self.screen, color, (390+200*i, 600-height, 10, height))
+            self.screen.blit(self.player_photo[rank[i].index], (230+200*i,600))
+            score_surface = self.smallfont.render(str(score), True, color)
+            self.blit_at_center(score_surface, (350+200*i, 575-height))
 
         # update surface
         pg.display.flip()
