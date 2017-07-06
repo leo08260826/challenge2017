@@ -21,7 +21,7 @@ class player(object):
         self.AI = AI
 
         # move data
-        self.position = playerInitPos[index]
+        self.position = list(playerInitPos[index])
 
         #debug part
         if index == 2:
@@ -39,7 +39,7 @@ class player(object):
 
         #invisible data
         self.isVisible = True
-        self.invisibleTime = 0
+        self.invisibleTimer = 0
 
     def freeze(self):
 
@@ -49,7 +49,7 @@ class player(object):
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
-                self.direction == (self.direction+4)%8
+                self.direction = (self.direction+4)%8
                 if self.direction == 0:
                     self.direction = 8
 
@@ -107,6 +107,11 @@ class player(object):
             self.maskTimer = self.maskTimer - 1
             if self.maskTimer <= 0:
                 self.isMask = False
+
+        if self.isVisible == False:
+            self.invisibleTimer = self.invisibleTimer - 1
+            if self.invisibleTimer <= 0:
+                self.isVisible = True
 
          
         self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
