@@ -152,10 +152,9 @@ class GameEngine(object):
 
         distToGoldenSnitch.sort()
         dist = min(distToGoldenSnitch)
-        print(dist)
         if dist[0] < distToCatchGoldenSnitch:
             self.players[dist[1]].score += scoreOfGoldenSnitch
-            self.evManager.Post(Event_TimeUp)
+            self.evManager.Post(Event_TimeUp())
 
         # player to quaffle
         for quaffle in self.quaffles:
@@ -210,7 +209,16 @@ class GameEngine(object):
             player.isMask = False
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        pass
+        # 0 = invisible
+        # 1 = empty power
+        # 2 = stun all enermy
+        # 3 = fake position
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
+            if skillIndex == 0:
+                player.invisible = True
+                player.invisibleTimer =  invisibleTime
+
 
     def ApplyAction(self, playerIndex, actionIndex):
         #ACTION_0 = 0   power throw / barrier

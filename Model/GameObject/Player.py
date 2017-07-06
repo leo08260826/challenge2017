@@ -39,7 +39,7 @@ class player(object):
 
         #invisible data
         self.isVisible = True
-        self.invisibleTime = 0
+        self.invisibleTimer = 0
 
     def freeze(self):
 
@@ -107,6 +107,11 @@ class player(object):
             self.maskTimer = self.maskTimer - 1
             if self.maskTimer <= 0:
                 self.isMask = False
+
+        if self.invisible == True:
+            self.invisibleTimer --
+            if self.invisibleTimer <= 0:
+                self.invisible = False
 
          
         self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
