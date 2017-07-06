@@ -107,7 +107,7 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             self.render_player_character(i)
             
-        for i in range(modelConst.modelConst.numberOfQuaffles):
+        for i in range(modelConst.numberOfQuaffles):
             self.render_quaffle(i)
         self.render_goldenSnitch()
 
