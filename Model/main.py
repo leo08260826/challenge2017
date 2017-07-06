@@ -212,7 +212,7 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower and self.players[playerIndex].isFreeze == False:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
