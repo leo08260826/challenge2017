@@ -36,6 +36,8 @@ class GraphicalView(object):
         self.love_images = []
         self.light_images = []
         self.not18_images = []
+        self.rose_images = []
+        self.rain_images = []
         
     def notify(self, event):
         """
@@ -204,7 +206,7 @@ class GraphicalView(object):
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['blue', 'red', 'yellow', 'green']
-        self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
+        self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
         self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
@@ -213,7 +215,9 @@ class GraphicalView(object):
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
-    
+        self.rain_images = [pg.image.load('View/image/visual_effect/rain/rain_'+str(i%4+1)+'.png') for i in range(4) ]
+        
+        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -259,7 +263,9 @@ class GraphicalView(object):
              self.screen.blit(self.player_status_P,(pos_x+150,pos_y + 110))
         elif player.mode == 0:
              self.screen.blit(self.player_status_A,(pos_x+150,pos_y + 110))
-         
+#       render effect
+        effect_type = player_visual_effect[index]
+        self.screen.blit(self.photo_effect[effect_type],(pos_x+20,pos_y+20))       
  #      mana and score and name
         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
@@ -304,6 +310,8 @@ class GraphicalView(object):
             self.blit_at_center(self.light_images[visual_temp], position)
         if player_visual_effect[index] == 3:
             self.blit_at_center(self.not18_images[visual_temp], position)
+        if player_visual_effect[index] == 5:
+            self.blit_at_center(self.rain_images[visual_temp], position)
             
         # mask
         if player.isMask == True:
