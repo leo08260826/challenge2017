@@ -179,7 +179,7 @@ class GoldenSnitch(OriginalBall):
         fleeDirectionList = []
         nearestPlayerDist = 10000
         nearestPlayerIndex = None
-
+        self.speed -= mc.goldenSnitchSpeedDecayPerTick
         for index, player in enumerate(players):
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
             if (distance <= mc.goldenSnitchAlertRadius):
