@@ -17,7 +17,12 @@ class Helper(object):
             else:
                 return -999
         return ((Pos2[1]-Pos1[1])/(Pos2[0]-Pos1[0]))
-
+    def CountDistToLine(pos,CoeffX,CoeffY,Cons,Multier):
+        X = pos[0]
+        Y = pos[1]
+        ans = (CoeffX*X+CoeffY*Y+Cons)*Multier
+        return (ans)
+    
     # map info
     def getCaptureDir(self, pos):
     	My_dir=[0,1,2,3,4,5,6,7,8]
@@ -55,8 +60,57 @@ class Helper(object):
                 return My_dir[5]
 
     def getScoringDir(self, goal_id):
-    	
-    
+    	x = sqrt2
+        CoeffX=[9999,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0]
+        CoeffY=[9999,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,1,1,1,1]
+        Cons=[9999,130,300,480,650,830,1000,1180,1350,610,440,260,90,-90,-260,-440,-610,110,280,460,630,110,280,460,630]
+        Multier=[9999,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,1,1,1,1,1,1,1,1]
+        lineToGoal=[[2,3,10,11,18,19],[6,7,10,11,22,23],[6,7,14,15,18,19],[2,3,14,15,22,23],[4,5,9,20,21],[8,12,13,20,24],[4,5,16,17,24],[1,12,13,17,21]]
+        
+
+        flag = 99
+        for i in range(8):
+            if (self.checkScoring(goal_id,i)) == True:
+                flag = i
+        if (flag!=99):
+            return flag
+
+        for i in range(len(lineToGoal)):
+            if (goal_id == i):
+                MinIndex = 0
+                Mini = 99999999
+                for j in range(len(lineToGoal[i])):
+                    tmp = self.CountDistToLine(self.players[self.index].position,CoeffX[lineToGoal[i][j]],CoeffY[lineToGoal[i][j]],-1*Cons[lineToGoal[i][j]],Multier[lineToGoal[i][j]])    
+                    if (abs)tmp < Mini:
+                        MinIndex = j
+                        Mini = tmp
+                        if tmp<0:
+                            Switchdir = 1
+                        else:
+                            Switchdir = 0
+
+        origin = [CoeffX[MinIndex],CoeffY[MinIndex]]
+        if origin[0] == 0 :
+            if Switchdir == 1 :
+                return 5
+            elif Switchdir == 0 :
+                return 1
+        elif origin[1] == 0:
+            if Switchdir == 1 :
+                return 3
+            elif Switchdir == 0 :
+                return 7
+        elif origin[0] == 1 and origin[1] == 1 :
+            if Switchdir == 1:
+                return 4
+            elif Switchdir == 0:
+                return 8
+        elif origin[0] == 1 and origin[0] == -1 :
+            if Switchdir == 1:
+                return 2
+            elif Switchdir == 0:
+                return 6
+
     def getNearestGoal(self, pos):
     	board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
         gate = [((board[2]+board[3])/2,board[0]),(board[5],(board[2]+board[3])/2),((board[2]+board[3])/2,board[5]),\
