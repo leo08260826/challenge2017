@@ -14,9 +14,9 @@ class player(object):
         self.skillcard = None
         self.takeball = -1
         if AI == None:
-            self.is_AI = False
+            self.Is_AI = False
         else:
-            self.is_AI = True
+            self.Is_AI = True
 
         self.AI = AI
 
