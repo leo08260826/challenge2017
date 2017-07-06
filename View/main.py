@@ -155,7 +155,7 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             score = rank[i].score
             height = score / maxscore * 400
-            pg.draw.rect(self.screen, Color_White, (500+200*i, 700-height,100 , height))
+            pg.draw.rect(self.screen, Color_White, (300+240*i, 700-height, 120, height))
 
         # update surface
         pg.display.flip()
