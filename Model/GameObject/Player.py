@@ -109,7 +109,7 @@ class player(object):
                 self.isMask = False
 
         if self.invisible == True:
-            self.invisibleTimer --
+            self.invisibleTimer = self.invisibleTimer - 1
             if self.invisibleTimer <= 0:
                 self.invisible = False
 

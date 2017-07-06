@@ -218,7 +218,15 @@ class GameEngine(object):
             player = self.players[playerIndex]
             if skillIndex == 0:
                 player.invisible = True
-                player.invisibleTimer =  invisibleTime
+                player.invisibleTimer =  invisibleTim
+            elif skillIndex == 1:
+                for player in self.players:
+                    player.power = 0
+            elif skillIndex == 2:
+                for player in self.players:
+                    player.isFreeze = True
+                    player.freezeTimer = 57
+
 
 
     def ApplyAction(self, playerIndex, actionIndex):
