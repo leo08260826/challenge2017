@@ -96,6 +96,7 @@ class GraphicalView(object):
         # draw backgound
         self.render_background()
         self.render_timebar()
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1),20])
 
         for i in range(PlayerNum):
             self.render_player_status(i)
@@ -221,6 +222,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1),20])
         pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
 
     def render_player_status(self, index):
