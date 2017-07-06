@@ -41,26 +41,16 @@ class player(object):
         self.isVisible = True
         self.invisibleTimer = 0
 
-    def freeze(self):
+    def freeze(self, directionIn = 0):
 
         if self.isFreeze == True and self.freezeTimer < 58:
             self.freezeTimer = freezeTime
         else:
             self.isFreeze = True
             self.freezeTimer = freezeTime
-            if self.direction != 0:
-                self.direction = (self.direction+4)%8
-                if self.direction == 0:
-                    self.direction = 8
-            """else:
-                if self.position[0] < 370 and self.position[1] < 370:
-                    self.direction = 4
-                elif self.position[0] < 370 and self.position[1] >= 370:
-                    self.direction = 2
-                elif self.position[0] >= 370 and self.position[1] < 370:
-                    self.direction = 6
-                elif self.position[0] >= 370 and self.position[1] >= 370:
-                    self.direction = 8"""
+            if directionIn != 0:
+                self.direction = directionIn
+                
 
 
     def hide(self):
