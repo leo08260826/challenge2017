@@ -100,6 +100,7 @@ class Quaffle(OriginalBall):
 
     def deprive(self, direction, position):
         self.state = 0
+        self.playerIndex = -1
         self.isStrengtheend = False
         if direction == 0:
             self.direction = 5
