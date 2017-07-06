@@ -11,43 +11,45 @@ class Helper(object):
     def CountDist(Pos1,Pos2):
         return (Pos2[0]-Pos1[0])**2+(Pos2[1]-Pos1[1])**2
     def CountTan(Pos1,Pos2):
-        return tan(Pos2[1]-Pos1[1]/Pos2[0]-Pos1[0])
+        if Pos2[0] == Pos1[0]:
+            return (Pos2[1]>Pos1[1])?999:-999
+        return (Pos2[1]-Pos1[1]/Pos2[0]-Pos1[0])
 
     # map info
     def getCaptureDir(self, pos):
     	My_dir=[0,1,2,3,4,5,6,7,8]
-        tan=[100,2.414213,0.414213,-0.414213,-2.414213,2.414213,0.414213,-0.414213,-2.414213]
+        My_tan=[100,2.414213,0.414213,-0.414213,-2.414213,2.414213,0.414213,-0.414213,-2.414213]
         Pos1 = self.model.players[self.index].position
         Pos2 = pos
-        tmpTan = CountTan(Pos1,Pos2)
+        tmpTan = self.CountTan(Pos1,Pos2)
         if Pos2[0] >= Pos1[0] and Pos2[1] >= Pos1[1]:
-            if tmpTan <= tan[1] and tmpTan >= tan[2]:
-                return My_dir[2]
-            elif tmpTan > tan[1]:
-                return My_dir[1]
-            elif tmpTan < tan[2]:
-                return My_dir[3]
-        elif Pos2[0] >= Pos1[0] and Pos2[1] <= Pos1[1]:
-            if tmpTan >= tan[3]:
-                return My_dir[3]
-            elif tmpTan >= tan[4] and tmpTan <= tan[3]:
+            if tmpTan >= My_tan[1]:
+                return My_dir[5]
+            elif tmpTan < My_tan[1] and tmpTan >= My_tan[2]:
                 return My_dir[4]
-            elif tmpTan <= tan[4]:
-                return My_dir[5]
-        elif Pos2[0] <= Pos1[0] and Pos2[1] <= Pos1[1]:
-            if tmpTan >= tan[5]:
-                return My_dir[5]
-            elif tmpTan >= tan[6] and tmpTan <= tan[5]:
-                return My_dir[6]
-            elif tmpTan <= tan[6]:
-                return My_dir[7]
-        elif Pos2[0] <= Pos1[0] and Pos2[1] >= Pos1[1]:
-            if tmpTan >= tan[7]:
-                return My_dir[7]
-            elif tmpTan <= tan[7] and tmpTan >= tan[8]:
-                return My_dir[8]:
-            elif tmpTan <= tan[8]:
+            elif tmpTan < My_tan[2]:
+                return My_dir[3]
+        elif Pos2[0] >= Pos1[0] and Pos2[1] < Pos1[1]:
+            if tmpTan >= My_tan[3]:
+                return My_dir[3]
+            elif tmpTan >= My_tan[4] and tmpTan < My_tan[3]:
+                return My_dir[2]
+            elif tmpTan < My_tan[4]:
                 return My_dir[1]
+        elif Pos2[0] < Pos1[0] and Pos2[1] < Pos1[1]:
+            if tmpTan >= My_tan[5]:
+                return My_dir[1]
+            elif tmpTan >= My_tan[6] and tmpTan < My_tan[5]:
+                return My_dir[8]
+            elif tmpTan < My_tan[6]:
+                return My_dir[7]
+        elif Pos2[0] < Pos1[0] and Pos2[1] >= Pos1[1]:
+            if tmpTan >= My_tan[7]:
+                return My_dir[7]
+            elif tmpTan < My_tan[7] and tmpTan >= My_tan[8]:
+                return My_dir[6]
+            elif tmpTan < My_tan[8]:
+                return My_dir[5]
 
     def getScoringDir(self, goal_id):
     	self.
@@ -61,8 +63,8 @@ class Helper(object):
         Mini = 99999999
         for i in range(8):
             tmp = [gate[i][0],gate[i][1]]
-            if (CountDist(tmp,pos) < Mini):
-                Mini = CountDist(tmp,pos)
+            if (self.CountDist(tmp,pos) < Mini):
+                Mini = self.CountDist(tmp,pos)
                 MinIndex = i
         return MinIndex
         
@@ -103,11 +105,11 @@ class Helper(object):
             tmp[2] = self.model.quaffles[i].state
             tmpDist = 99999999
             if tmp[2] == 1:
-                tmpDist = CountDist(self.model.players[self.model.quaffles[i].playerIndex].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position,self.model.players[self.index].position)
             elif tmp[2] == 0 or tmp[2] == 2:
-                tmpDist = CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
             tmp[3] = tmpDist
-        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,CountDist(self.model.goldenSnitch.position,self.model.players[self.index])]
+        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index])]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
         return Sort_Info 
