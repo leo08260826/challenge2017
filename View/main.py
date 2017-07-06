@@ -32,9 +32,6 @@ class GraphicalView(object):
         self.sound = []
         self.menu_music = None
         self.shoot_music = None
-
-        self.love_images = []
-        self.light_images = []
         
     def notify(self, event):
         """
@@ -99,7 +96,6 @@ class GraphicalView(object):
         # draw backgound
         self.render_background()
         self.render_timebar()
-        pg.draw.rect(self.screen, (136, 0, 21), [20,740,735,20])
 
         for i in range(PlayerNum):
             self.render_player_status(i)
@@ -208,12 +204,6 @@ class GraphicalView(object):
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
         self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
-
-        # visual effect
-        self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
-    
-        
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
                 direction = 5
@@ -231,8 +221,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1),20])
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+20,Pos_time[1]+20,735*(1-self.model.timer/modelConst.initTime),20])
 
     def render_player_status(self, index):
         player = self.model.players[index]
@@ -287,13 +276,6 @@ class GraphicalView(object):
         if ball != -1:
             self.blit_at_center(self.take_ball_images[ball], position)
 
-        #visual effect
-        
-        if player_visual_effect[index] == 1:
-            self.blit_at_center(self.love_images[self.get_frame() % 4], position)
-        if player_visual_effect[index] == 2:
-            self.blit_at_center(self.light_images[self.get_frame() % 4], position)
-            
         # mask
         if player.isMask == True:
             self.blit_at_center(self.mask_images[self.get_frame() % 12], position)
