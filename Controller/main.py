@@ -164,7 +164,7 @@ class Control(object):
         if event.type == pg.KEYDOWN:
             # space to pop the scoreboard
             if event.key == pg.K_SPACE:
-                self.evManager.Post(Event_StateChange(STATE_RECORD))
+                self.evManager.Post(Event_StateChange(model.STATE_RECORD))
 
     def ctrl_record(self, event):
         """
