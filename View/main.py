@@ -155,7 +155,8 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             score = rank[i].score
             height = score / maxscore * 400
-            pg.draw.rect(self.screen, Color_White, (300+240*i, 700-height, 120, height))
+            pg.draw.rect(self.screen, Color_White, (290+240*i, 600-height, 120, height))
+            self.screen.blit(self.player_photo[rank[i].index], (290+240*i,600))
 
         # update surface
         pg.display.flip()
@@ -250,7 +251,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],635*(1-self.model.timer/modelConst.initTime),40])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],637*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
