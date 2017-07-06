@@ -114,7 +114,7 @@ class GraphicalView(object):
         for barrier in self.model.barriers:
             self.render_barrier(barrier)
 
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1),20])
+        pg.draw.rect(self.screen, (136, 0, 21), [0,0,1200,800])
         # update surface
         pg.display.flip()
         
