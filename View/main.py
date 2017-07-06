@@ -76,7 +76,7 @@ class GraphicalView(object):
         self.screen.blit(menu,(0,0))
         # write some word
         somewords = self.smallfont.render(
-                    "Press 'Space' to play, 'Esc' to exits.", 
+                    "Press 'Space' to play, 'Esc' to exit.", 
                     True, (255,200, 14))
         (SurfaceX, SurfaceY) = somewords.get_size()
         pos_x = (ScreenSize[0] - SurfaceX)/2
