@@ -169,12 +169,12 @@ class GoldenSnitch(OriginalBall):
 
     def tickCheck(self, players):
         fleeDirectionList = []
-        # the golden snitch will flee if some player's distance to it is smaller than alertRadius
-        alertRadius = 50
+        # the golden snitch will flee if some player's distance to it is smaller than goldenSnitchAlertRadius
+        goldenSnitchAlertRadius = 50
 
         for player in players:
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
-            if (distance <= alertRadius):
+            if (distance <= mc.goldenSnitchAlertRadius):
                 fleeDirectionList.append((self.position[0] - player.position[0], self.position[1] - player.position[1]))
 
         # if there's no need to flee, don't change the direction. Move with half speed

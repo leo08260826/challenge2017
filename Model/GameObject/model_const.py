@@ -39,6 +39,8 @@ powerShotPowerCost = 18
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
 distToCatchGoldenSnitch = 60
+goldenSnitchAlertRadius = 150
+
 
 #dir const
 dirConst = [[0,0],[0,-1],[0.707,-0.707],[1,0],[0.707,0.707],[0,1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]

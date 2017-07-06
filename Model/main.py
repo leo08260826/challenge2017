@@ -150,7 +150,6 @@ class GameEngine(object):
 
         distToGoldenSnitch.sort()
         dist = min(distToGoldenSnitch)
-        print(dist)
         if dist[0] < distToCatchGoldenSnitch:
             self.players[dist[1]].score += scoreOfGoldenSnitch
             self.evManager.Post(Event_TimeUp)
