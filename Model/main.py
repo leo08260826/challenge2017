@@ -75,7 +75,9 @@ class GameEngine(object):
         elif isinstance(event, Event_SkillCard):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
-            self.ApplyAction(event.PlayerIndex, event.ActionIndex)
+            isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
+            if isConfirmed:
+                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
         self.AIList = []
@@ -222,10 +224,12 @@ class GameEngine(object):
                     if ballData != -1:
                         self.quaffles[ballData].throw(player.direction,player.position,True)
                         player.power -= powerShotPowerCost
+                        return True
                 elif player.mode == 1 and player.power >= barrierPowerCost:
                     ballData = self.players[playerIndex].setBarrier()
                     self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
                     player.power -= barrierPowerCost
+                    return True
 
             elif actionIndex == 1:
                 if player.mode == 0 and player.power >= stunPowerCost:
@@ -238,17 +242,18 @@ class GameEngine(object):
                                     (playercheck.position[1] - player.position[1]) ** 2
                             if (distSquare < (stunDistance) ** 2) and playercheck.isMask == False:
                                 playercheck.freeze()
-
+                    return True
                 elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True
                     player.maskTimer = maskTime
                     player.power -= maskPowerCost
-
+                    return True
             elif  actionIndex == 2 and player.mode == 0:
-
                 ballData = player.shot()
                 if ballData != -1:
                     self.quaffles[ballData].throw(player.direction, player.position)
+                return True
+            return False
 
     def run(self):
         """
