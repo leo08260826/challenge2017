@@ -30,6 +30,7 @@ class Interface(object):
     
     def API_play(self):
         for player in self.model.players:
+            # print(player.IS_AI)
             if player.IS_AI:
                 decide = player.AI.decide()
                 if decide == AI_U:
@@ -50,7 +51,7 @@ class Interface(object):
             print("Load ["+ str(index) +"]team_" + player.name + ".py")
             # init TeamAI class
             try:
-                player.ai = loadtmp.TeamAI( Helper(self.model, index) )
+                player.AI = loadtmp.TeamAI( Helper(self.model, index) )
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI __init__ is crashed." )
                 traceback.print_exc()
