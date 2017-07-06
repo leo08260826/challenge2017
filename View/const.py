@@ -9,7 +9,7 @@ Color_Green = (  0, 255,   0)
 Color_Red   = (255,   0,   0)
 Color_Gray  = (128, 128, 128)
 Color_Yellow= (200, 128,   0)
-player_colors = [Color_Red, Color_Green, Color_Yellow, Color_Blue]
+Player_Colors = [Color_Red, Color_Green, Color_Yellow, Color_Blue]
 
 # Object positions
 Pos_map = (0, 0)

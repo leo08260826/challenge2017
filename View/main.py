@@ -154,8 +154,11 @@ class GraphicalView(object):
         maxscore = rank[0].score
         for i in range(PlayerNum):
             score = rank[i].score
-            height = score / maxscore * 400
-            pg.draw.rect(self.screen, Color_White, (290+240*i, 600-height, 120, height))
+            height = score / maxscore * 350
+            pg.draw.rect(self.screen, Color_White, (290+200*i, 550-height, 120, height))
+            pg.draw.rect(self.screen, (255, 230, 200), (290+200*i, 550, 120, 50))
+            pg.draw.rect(self.screen, Player_Colors[rank[i].index], (310+200*i, 600-height, 20, height))
+            pg.draw.rect(self.screen, Player_Colors[rank[i].index], (370+200*i, 600-height, 20, height))
             self.screen.blit(self.player_photo[rank[i].index], (290+240*i,600))
 
         # update surface
