@@ -220,7 +220,7 @@ class GraphicalView(object):
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map, Pos_map)
         self.screen.blit(self.time, Pos_time)
-        pygame.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
 
     def render_player_status(self, index):
         player = self.model.players[index]
