@@ -76,8 +76,8 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-            if isConfirmed:
-                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+            #if isConfirmed:
+            #    self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
         self.AIList = []
@@ -150,11 +150,11 @@ class GameEngine(object):
                              (player.position[1] - self.goldenSnitch.position[1]) ** 2
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
 
-        distToGoldenSnitch.sort()
-        dist = min(distToGoldenSnitch)
-        if dist[0] < distToCatchGoldenSnitch:
-            self.players[dist[1]].score += scoreOfGoldenSnitch
-            self.evManager.Post(Event_TimeUp())
+        if distToGoldenSnitch:
+            dist = min(distToGoldenSnitch)
+            if dist[0] < distToCatchGoldenSnitch:
+                self.players[dist[1]].score += scoreOfGoldenSnitch
+                self.evManager.Post(Event_TimeUp())
 
         # player to quaffle
         for quaffle in self.quaffles:
