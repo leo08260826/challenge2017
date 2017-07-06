@@ -123,7 +123,7 @@ class Quaffle(OriginalBall):
                 self.state = 0
                 self.isStrengthened = False
                 self.speed = mc.quaffleSpeed
-                if checkGoal == self.playerIndex:
+                if checkGoal == tmpPlayerIndex:
                     tmpScore = 0
                 elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
