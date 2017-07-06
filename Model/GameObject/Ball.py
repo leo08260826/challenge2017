@@ -100,6 +100,7 @@ class Quaffle(OriginalBall):
 
     def deprive(self, direction, position):
         self.state = 0
+        self.playerIndex = -1
         self.isStrengtheend = False
         if direction == 0:
             self.direction = 5
@@ -123,12 +124,14 @@ class Quaffle(OriginalBall):
                 self.state = 0
                 self.isStrengthened = False
                 self.speed = mc.quaffleSpeed
-                if checkGoal == self.playerIndex:
+                if checkGoal == tmpPlayerIndex:
                     tmpScore = 0
                 elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
-                elif (checkGoal - self.playerIndex) in (-2, 2):
+                elif (checkGoal - tmpPlayerIndex) in (-2, 2):
                     tmpScore = mc.scoreOfQuaffles[4]
+                elif checkGoal == mc.reachWall:
+                    tmpScore = 0
                 else:
                     tmpScore = mc.scoreOfQuaffles[3]
 
