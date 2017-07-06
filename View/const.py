@@ -29,4 +29,4 @@ Player_Size = ( 100, 100)
 
 # visual effect
 ## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
-player_visual_effect = [3,1,2,0]
+player_visual_effect = [3,5,2,1]
