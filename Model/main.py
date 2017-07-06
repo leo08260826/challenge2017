@@ -172,17 +172,20 @@ class GameEngine(object):
         # barrier to quaffle
         for barrier in self.barriers:
             for quaffle in self.quaffles:
-                if barrier.bump(quaffle, quaffle.speed):
+                if quaffle.state in [0, 2] and barrier.bump(quaffle, quaffle.speed):
                     if quaffle.isStrengthened:
                         barrier.inactive()
-                    elif barrier.direction in (1,5):
-                        quaffle.direction = dirBounce[1][quaffle.direction]
-                    elif barrier.direction in (2,6):
-                        quaffle.direction = dirBounce[2][quaffle.direction]
-                    elif barrier.direction in (3,7):
-                        quaffle.direction = dirBounce[0][quaffle.direction]
-                    elif barrier.direction in (4,8):
-                        quaffle.direction = dirBounce[3][quaffle.direction]
+                    else:
+                        quaffle.state = 0
+                        quaffle.playerIndex = -1
+                        if barrier.direction in (1,5):
+                            quaffle.direction = dirBounce[1][quaffle.direction]
+                        if barrier.direction in (2,6):
+                            quaffle.direction = dirBounce[2][quaffle.direction]
+                        if barrier.direction in (3,7):
+                            quaffle.direction = dirBounce[0][quaffle.direction]
+                        if barrier.direction in (4,8):
+                            quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None:
