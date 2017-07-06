@@ -21,7 +21,7 @@ class player(object):
         self.AI = AI
 
         # move data
-        self.position = playerInitPos[index]
+        self.position = list(playerInitPos[index])
 
         #debug part
         if index == 2:
