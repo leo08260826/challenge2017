@@ -149,12 +149,13 @@ class GraphicalView(object):
         """
         Render the Soreboard
         """
+        self.screen.blit(self.ending_background, (0,0))
         rank = sorted(self.model.players, key=lambda player:-player.score)
         maxscore = rank[0].score
         for i in range(PlayerNum):
             score = rank[i].score
             height = score / maxscore * 400
-            pg.draw.rect(self.screen, Color_White, (500+200*i, 700-height,100, height))
+            pg.draw.rect(self.screen, Color_White, (500+200*i, 700-height,100 , height))
 
         # update surface
         pg.display.flip()
@@ -199,6 +200,7 @@ class GraphicalView(object):
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
+        self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
