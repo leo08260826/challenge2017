@@ -37,6 +37,7 @@ class GraphicalView(object):
 
         self.love_images = []
         self.light_images = []
+        self.18_images = []
         
     def notify(self, event):
         """
@@ -210,6 +211,7 @@ class GraphicalView(object):
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
     
         
         def get_player_image(colorname, direction, suffix):
@@ -288,6 +290,8 @@ class GraphicalView(object):
             self.blit_at_center(self.love_images[self.get_frame() % 4], position)
         if player_visual_effect[index] == 2:
             self.blit_at_center(self.light_images[self.get_frame() % 4], position)
+        if player_visual_effect[index] == 3:
+            self.blit_at_center(self.18_images[self.get_frame() % 4], position)
             
         # mask
         if player.isMask == True:

@@ -26,5 +26,5 @@ background_music_volume = 0.8
 menu_music_volume = 0.8
 
 # visual effect
-## none = 0 , love = 1 , light = 2
-player_visual_effect = [0,1,2,0]
+## none = 0 , love = 1 , light = 2 , not18 = 3
+player_visual_effect = [0,1,2,3]
