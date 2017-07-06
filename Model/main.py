@@ -152,7 +152,6 @@ class GameEngine(object):
 
         distToGoldenSnitch.sort()
         dist = min(distToGoldenSnitch)
-        print(dist)
         if dist[0] < distToCatchGoldenSnitch:
             self.players[dist[1]].score += scoreOfGoldenSnitch
             self.evManager.Post(Event_TimeUp())
@@ -269,7 +268,7 @@ class GameEngine(object):
                 ballData = player.shot()
                 if ballData != -1:
                     self.quaffles[ballData].throw(player.direction, player.position)
-                return True
+                    return True
             return False
 
     def run(self):
