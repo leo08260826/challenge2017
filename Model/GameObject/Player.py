@@ -129,13 +129,13 @@ class player(object):
                     targetFreeze = False
 
             if selfFreeze == True:
-                self.freeze()   
+                self.freeze(target.direction)   
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
             if targetFreeze == True:
-                target.freeze()
+                target.freeze(self.direction)
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
