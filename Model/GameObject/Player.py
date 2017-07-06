@@ -14,9 +14,9 @@ class player(object):
         self.skillcard = None
         self.takeball = -1
         if AI == None:
-        	self.is_AI = False
+            self.is_AI = False
         else:
-        	self.is_AI = True
+            self.is_AI = True
 
         self.AI = AI
 
@@ -49,9 +49,14 @@ class player(object):
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
-                self.direction = (self.direction+4)%8
+                self.direction = ( self.direction + 4 ) % 8
                 if self.direction == 0:
                     self.direction = 8
+            elif directionIn != 0:
+                self.direction = directionIn
+            else :
+                self.direction = 0
+                
                 
 
 
@@ -97,16 +102,16 @@ class player(object):
 
         speedmode = self.mode + self.isFreeze * 1
 
-        if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 47 \
-            or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 693 :
+        if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 40 \
+            or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 700 :
             self.direction = dirBounce[0][self.direction]
-        elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 47 \
-            or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 693 :
+        elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 40 \
+            or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 700 :
             self.direction = dirBounce[1][self.direction]
         else :
             self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
             self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
-            
+
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
             if self.maskTimer <= 0:
@@ -131,15 +136,16 @@ class player(object):
                     selfFreeze = False
                 elif target.mode == 1:
                     targetFreeze = False
-
+            selfNowDir = self.direction
+            targetNowDir = target.direction
             if selfFreeze == True and self.isFreeze == False:
-                self.freeze()   
+                self.freeze(targetNowDir)   
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
             if targetFreeze == True and target.isFreeze == False:
-                target.freeze()
+                target.freeze(selfNowDir)
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
