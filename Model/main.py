@@ -205,17 +205,18 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
+            player.power -= modeChangePower
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         # 0 = invisible
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.AIList[playerIndex].skill:
             player = self.players[playerIndex]
             if skillIndex == 0:
                 player.isvisible = False
@@ -257,8 +258,12 @@ class GameEngine(object):
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
-                            if (distSquare < (stunDistance) ** 2) and playercheck.isMask == False:
-                                playercheck.freeze()
+                            if distSquare < (stunDistance) ** 2:
+                                if playercheck.isMask == False:
+                                    playercheck.freeze()
+                                else:
+                                    playercheck.maskTimer = 0
+                                    playercheck.isMask = False
                     return True
                 elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True
