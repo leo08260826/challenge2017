@@ -34,6 +34,7 @@ maskTime = 100
 invisibleTime = 300
 
 #cost const
+modeChangePower = 10
 barrierPowerCost = 18
 stunPowerCost = 30
 maskPowerCost = 20
