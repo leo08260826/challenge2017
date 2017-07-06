@@ -76,8 +76,8 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-            #if isConfirmed:
-            #    self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+            if isConfirmed:
+                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
         self.AIList = []
