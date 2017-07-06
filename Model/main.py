@@ -66,6 +66,8 @@ class GameEngine(object):
         elif isinstance(event, Event_EverySec):
             if self.state.peek() == STATE_PLAY:
                 self.timer -= 1
+            if self.timer <= 0:
+                self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
