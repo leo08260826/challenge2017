@@ -50,6 +50,10 @@ class player(object):
             self.freezeTimer = freezeTime
             if directionIn != 0:
                 self.direction = directionIn
+            else :
+                self.direction = (self.direction + 4) % 8 
+                if self.direction == 0:
+                    self.direction = 8
                 
 
 
