@@ -35,6 +35,7 @@ class GameEngine(object):
         self.players = []
         self.quaffles = []
         self.barriers = []
+        self.goldenSnitch = None
         self.timer = 0
         self.TurnTo = 0
 
@@ -150,11 +151,11 @@ class GameEngine(object):
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
 
         distToGoldenSnitch.sort()
-        for dist in distToGoldenSnitch:
-            if dist[0] < distToCatchGoldenSnitch and not self.players[dist[1]].isFreeze:
-                self.players[playerIndex].score += scoreOfGoldenSnitch
-                self.evManager.Post(Event_Timeup)
-                break
+        dist = min(distToGoldenSnitch)
+        print(dist)
+        if dist[0] < distToCatchGoldenSnitch:
+            self.players[dist[1]].score += scoreOfGoldenSnitch
+            self.evManager.Post(Event_TimeUp)
 
         # player to quaffle
         for quaffle in self.quaffles:
