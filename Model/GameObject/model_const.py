@@ -21,13 +21,17 @@ gameRangeUpper = gameRangeLower + gameRange
 #player const
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 100
-freezeTime = 60
 playerBumpDistance = 25
 PlayerNum = 4
 MaxManualPlayer = 4
-stunFreezeTime = 60
 powerAdd = [1,2]
+
+
+#time const
+freezeTime = 60
+stunFreezeTime = 60
 maskTime = 100
+invisibleTime = 300
 
 #cost const
 barrierPowerCost = 18

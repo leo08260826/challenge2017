@@ -196,7 +196,16 @@ class GameEngine(object):
             player.isMask = False
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        pass
+        # 0 = invisible
+        # 1 = empty power
+        # 2 = stun all enermy
+        # 3 = fake position
+        if self.players[playerIndex] != None:
+            player = self.players[playerIndex]
+            if skillIndex == 0:
+                player.invisible = True
+                player.invisibleTimer =  invisibleTime
+
 
     def ApplyAction(self, playerIndex, actionIndex):
         #ACTION_0 = 0   power throw / barrier
