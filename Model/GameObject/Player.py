@@ -44,16 +44,14 @@ class player(object):
     def freeze(self, directionIn = 0):
 
         if self.isFreeze == True and self.freezeTimer < 58:
-            self.freezeTimer = freezeTime
-        else:
-            self.isFreeze = True
-            self.freezeTimer = freezeTime
-            if directionIn != 0:
-                self.direction = directionIn
-            else :
-                self.direction = (self.direction + 4) % 8 
-                if self.direction == 0:
-                    self.direction = 8
+             self.freezeTimer = freezeTime
+         else:
+             self.isFreeze = True
+             self.freezeTimer = freezeTime
+             if self.direction != 0:
+                  self.direction = (self.direction+4)%8
+                  if self.direction == 0:
+                      self.direction = 8
                 
 
 
@@ -81,7 +79,7 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            if self.freezeTimer < 58 and self.freezeTimer > 0:
+            if 0 < self.freezeTimer < 58 :
                 self.direction = 0
             elif self.freezeTimer == 0:
                 self.isFreeze = False
@@ -132,14 +130,14 @@ class player(object):
                 elif target.mode == 1:
                     targetFreeze = False
 
-            if selfFreeze == True:
-                self.freeze(target.direction)   
+            if selfFreeze == True and self.isFreeze == False:
+                self.freeze()   
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
-            if targetFreeze == True:
-                target.freeze(self.direction)
+            if targetFreeze == True and target.isFreeze == False:
+                target.freeze()
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
