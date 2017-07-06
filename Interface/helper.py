@@ -55,7 +55,6 @@ class Helper(object):
                 return My_dir[5]
 
     def getScoringDir(self, goal_id):
-    	
     
     def getNearestGoal(self, pos):
     	board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
@@ -155,38 +154,38 @@ class Helper(object):
     def checkMeProtected(self):
     	return self.model.players[self.index].isMask
 
-    def checkScoring(self, goal_id, dir):
+    def checkScoring(self, goal_id, myDir):
     	myPos = self.getMyPos()
-    	if dir == 1:#DIR_U
+    	if myDir == 1:#DIR_U
     		myPos[1] = gameRangeLower - 1
-    	elif dir == 2:#DIR_RU
+    	elif myDir == 2:#DIR_RU
     		if (gameRangeUpper - myPos[0]) > (myPos[1] - gameRangeLower):
     			tmp = myPos[1] - gameRangeLower + 1
     		else:
     			tmp = gameRangeUpper - myPos[0] + 1
     		myPos[0] = myPos[0] + tmp
     		myPos[1] = myPos[1] - tmp
-    	elif dir == 3:#DIR_R
+    	elif myDir == 3:#DIR_R
     		myPos[0] = gameRangeUpper + 1
-    	elif dir == 4:#DIR_RD
+    	elif myDir == 4:#DIR_RD
     		if (gameRangeUpper - myPos[0]) > (gameRangeUpper - myPos[1]):
     			tmp = gameRangeUpper - myPos[1] + 1
     		else:
     			tmp = gameRangeUpper - myPos[0] + 1
     		myPos[0] = myPos[0] + tmp
     		myPos[1] = myPos[1] + tmp
-    	elif dir == 5:#DIR_D
+    	elif myDir == 5:#DIR_D
     		myPos[1] = gameRangeUpper + 1
-    	elif dir == 6:#DIR_LD
+    	elif myDir == 6:#DIR_LD
     		if (myPos[0] - gameRangeLower) > (gameRangeUpper - myPos[1]):
     			tmp = gameRangeUpper - myPos[1] + 1
     		else:
     			tmp = myPos[0] - gameRangeLower + 1
     		myPos[0] = myPos[0] - tmp
     		myPos[1] = myPos[1] + tmp
-    	elif dir == 7:#DIR_L
+    	elif myDir == 7:#DIR_L
     		myPos[0] = gameRangeLower - 1
-    	elif dir == 8:#DIR_LU
+    	elif myDir == 8:#DIR_LU
     		if (myPos[0] - gameRangeLower) > (myPos[1] - gameRangeLower):
     			tmp = myPos[1] - gameRangeLower + 1
     		else:
@@ -221,21 +220,35 @@ class Helper(object):
     	else:
     		return False
 
-    def checkDir(self, dir):
-    	pass
+    def checkDir(self, myDir):
+        """
+        tmpPlayer = self.model.players[self.index]
+        tmpPlayer.direction = myDir
+        speedmode = tmpPlayer.mode + tmpPlayer.isFreeze * 1
+        for barrier in self.model.barriers:
+            if not barrier.playerIndex == self.index and barrier.bump(tmpPlayer, playerSpeed[self.getMyMode()]):
+                return True
+        if tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode] < 47 \
+            or tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode]> 693 :
+            return True
+        elif tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] < 47 \
+            or tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] > 693 :
+            return True
+        else:
+            return False
+        """
 
-    def getInvDir(self, dir):
-    	if dir < 5:
-    		return dir+4
+    def getInvDir(self, myDir):
+    	if myDir < 5:
+    		return myDir+4
     	else:
-    		return dir-4
-
+    		return myDir-4
 
     # player info
     def getPlayerPos(self, player_id):
     	return self.model.players[player_id].position
 
-    def getPlayerState(self, player_id):
+    def getPlayerMode(self, player_id):
     	return self.model.players[player_id].mode
 
     def getPlayerScore(self, player_id):
