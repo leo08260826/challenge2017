@@ -31,8 +31,8 @@ class OriginalBall(object):
         self.state = 2
         self.speed = mc.shotSpeed
         # add a safe distance to avoid re-catch the ball after shooting
-        self.position[0] = position[0] + mc.dirConst[direction][0] * 35
-        self.position[1] = position[1] + mc.dirConst[direction][1] * 35
+        self.position[0] = position[0] + mc.dirConst[self.direction][0] * 35
+        self.position[1] = position[1] + mc.dirConst[self.direction][1] * 35
 
     def modifyPosition(self):
         for index, element in enumerate(self.position):
