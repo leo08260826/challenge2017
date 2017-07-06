@@ -177,11 +177,16 @@ class GoldenSnitch(OriginalBall):
 
     def tickCheck(self, players):
         fleeDirectionList = []
+        nearestPlayerDist = 10000
+        nearestPlayerIndex = None
 
-        for player in players:
+        for index, player in enumerate(players):
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
             if (distance <= mc.goldenSnitchAlertRadius):
                 fleeDirectionList.append((self.position[0] - player.position[0], self.position[1] - player.position[1]))
+            if distance < nearestPlayerDist:
+                nearestPlayerDist = distance
+                nearestPlayerIndex = index
 
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
@@ -209,12 +214,24 @@ class GoldenSnitch(OriginalBall):
         self.direction[0] = vectorSum[0] * scaleFactor
         self.direction[1] = vectorSum[1] * scaleFactor
 
-        pendingPos = [self.position[0] + self.direction[0], self.position[1] + self.direction[1]]
+        pendingPosition = [self.position[0] + self.direction[0], self.position[1] + self.direction[1]]
 
         # check if pendingPos is in wall
-        if (self.isInWall(pendingPos)):
-            # if still in wall, rotate direction 90 degree
-            self.direction[0] , self.direction[1] = self.direction[1], self.direction[0]
+        if (self.isInWall(pendingPosition)):
+            # if still in wall, rotate direction +90 degree, and check if it is moving away from the nearest threat
+            pendingDirection = [None, None]
+            pendingDirection[0] , pendingDirection[1] = self.direction[1], self.direction[0]
+            pendingPosition = [self.position[0] + pendingDirection[0], self.position[1] + pendingDirection[1]]
+            
+              + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2)**0.5))
+            if (nearestPlayerDist ** 2 >\
+                 (players[nearestPlayerIndex].position[0] - pendingPosition[0]) ** 2\
+              + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2):
+                # if rotating +90 degree is not moving away from threat, rotate -90 degree instead
+                pendingDirection[0] *= -1
+                pendingDirection[1] *= -1
+
+            self.direction[0], self.direction[1] = pendingDirection[0], pendingDirection[1]
 
         # update position
         self.position[0] += self.direction[0]
