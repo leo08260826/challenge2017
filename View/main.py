@@ -46,11 +46,13 @@ class GraphicalView(object):
             cur_state = self.model.state.peek()
             if cur_state == model.STATE_MENU:
                 self.render_menu()
-            if cur_state == model.STATE_PLAY:
+            elif cur_state == model.STATE_PLAY:
                 self.render_play()
-            if cur_state == model.STATE_STOP:
+            elif cur_state == model.STATE_STOP:
                 self.render_stop()
-            if cur_state == model.STATE_RECORD:
+            elif cur_state == model.STATE_PRERECORD:
+                self.render_prerecord()
+            elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
             self.display_fps()
@@ -144,6 +146,12 @@ class GraphicalView(object):
         self.screen.blit(somewords, (pos_x, pos_y))
         # update surface
         pg.display.flip()
+
+    def render_prerecord(self):
+        pass
+
+    def render_record(self):
+        pass
 
     def display_fps(self):
         """Show the programs FPS in the window handle."""
