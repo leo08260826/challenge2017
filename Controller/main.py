@@ -125,9 +125,7 @@ class Control(object):
         if event.type == pg.KEYDOWN:
             # escape to back the menu
             if event.key == pg.K_ESCAPE:
-                self.evManager.Post(Event_StateChange(None))
-                self.evManager.Post(Event_StateChange(None))
-                self.evManager.Post(Event_StateChange(None))
+                self.evManager.Post(Event_StateChange(model.STATE_RESTART))
                 self.evManager.Post(Event_Restart())
 
     def initialize(self):
