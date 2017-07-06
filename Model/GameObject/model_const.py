@@ -74,8 +74,8 @@ ticktime = 30
 #speed
 quaffleSpeed = 3
 goldenSnitchSpeed = 8
-goldenSnitchTerminalSpeed = 4
-goldenSnitchSpeedDecayPerTick = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / (initTime  * ticktime)
+goldenSnitchTerminalSpeed = 3
+goldenSnitchSpeedDecayPerSec = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / initTime
 playerSpeed = [3,5,12]
 shotSpeed = 6
 depriveSpeed = 5

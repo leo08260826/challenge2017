@@ -64,6 +64,7 @@ class GameEngine(object):
                 self.UpdateObjects()
                 self.Bump()
         elif isinstance(event, Event_EverySec):
+            self.goldenSnitch.decaySpeed()
             if self.state.peek() == STATE_PLAY:
                 self.timer -= 1
             if self.timer <= 0:
