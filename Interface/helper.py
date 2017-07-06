@@ -72,7 +72,7 @@ class Helper(object):
         return MinIndex
         
     def getTimeLeft(self):
-    	return self.model.time
+    	return self.model.timer
  
     # ball info
     def getFreeBallPos(self):
@@ -112,6 +112,7 @@ class Helper(object):
             elif tmp[2] == 0 or tmp[2] == 2:
                 tmpDist = self.CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
             tmp[3] = tmpDist
+            Info_list.append(tmp)
         tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index])]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
@@ -138,7 +139,7 @@ class Helper(object):
     	for i in range(PlayerNum):
     		if i != self.index:
     			tmpPos = self.model.players[i].position
-    			if self.CountDist(myPos, tmpPos) < stunDistance ** 2 and self.checkPlayerProtected(i) == False:
+    			if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.checkPlayerProtected(i) == False:
     				result.append(i)
     	return result
 
@@ -204,12 +205,12 @@ class Helper(object):
     	if myMode == 0:
     		if action_id == 0 and myMana >= powerShotPowerCost:
     			return True
-    		elif action_id == 1 and myMana >= stunPowerCost:
+            elif action_id == 1 and myMana >= stunPowerCost:
     			return True
-                elif action_id == 2:
+            elif action_id == 2:
     			return True
-                else:
-                        return False
+            else:
+                return False
     	elif myMode == 1:
     		if action_id == 0 and myMana >= barrierPowerCost:
     			return True
