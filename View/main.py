@@ -290,13 +290,22 @@ class GraphicalView(object):
             self.blit_at_center(self.take_ball_images[ball], position)
 
         #visual effect
-        
+        visual_temp = self.get_frame % 12
+        if visual_temp <=2:
+            visual_temp = 0
+        elif visual_temp <= 5:
+            visual_temp = 1
+        elif visual_temp <= 8:
+            visual_temp = 2
+        elif visual_temp <= 11:
+            visual_temp = 3
+            
         if player_visual_effect[index] == 1:
-            self.blit_at_center(self.love_images[self.get_frame() % 4], position)
+            self.blit_at_center(self.love_images[visual_temp], position)
         if player_visual_effect[index] == 2:
-            self.blit_at_center(self.light_images[self.get_frame() % 4], position)
+            self.blit_at_center(self.light_images[visual_temp], position)
         if player_visual_effect[index] == 3:
-            self.blit_at_center(self.18_images[self.get_frame() % 4], position)
+            self.blit_at_center(self.18_images[visual_temp], position)
             
         # mask
         if player.isMask == True:
