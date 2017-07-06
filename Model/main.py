@@ -3,7 +3,8 @@ import random
 import itertools
 
 from EventManager import *
-from Model.GameObject.model_const import *
+from Model.const import *
+
 from Model.StateMachine import *
 from Model.GameObject.Player import *
 from Model.GameObject.Ball import *
