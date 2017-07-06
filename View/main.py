@@ -102,14 +102,14 @@ class GraphicalView(object):
         self.render_background()
         self.render_timebar()
 
-        for i in range(PlayerNum):
+        for i in range(modelConst.PlayerNum):
             self.render_player_status(i)
 
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
-        for i in range(PlayerNum):
+        for i in range(modelConst.PlayerNum):
             self.render_player_character(i)
             
         for i in range(modelConst.numberOfQuaffles):
@@ -177,14 +177,14 @@ class GraphicalView(object):
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
-        self.stuns = [[(0,0),-1] for _ in range(PlayerNum)]
+        self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
-        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(PlayerNum) ]
+        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -196,7 +196,7 @@ class GraphicalView(object):
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
-        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(PlayerNum) ]
+        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(modelConst.PlayerNum) ]
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(modelConst.numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles) ]
@@ -207,8 +207,8 @@ class GraphicalView(object):
         colors = ['blue', 'red', 'yellow', 'green']
         self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
-        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
-        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
+        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
+        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
 
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
@@ -227,7 +227,7 @@ class GraphicalView(object):
                 return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+'_'+colorname+suffix+'.png'), 1, 0)
             else:
                 return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
-        self.player_images = [ [pg.transform.scale(get_player_image(colors[i],direction,''), Player_Size) for direction in range(9)] for i in range(PlayerNum) ]
+        self.player_images = [ [pg.transform.scale(get_player_image(colors[i],direction,''), Player_Size) for direction in range(9)] for i in range(modelConst.PlayerNum) ]
         self.player_invisible_images = [ [pg.transform.scale(get_player_image(colors[i],direction,'_invisible'), Player_Size) for direction in range(9)] for i in range(4) ]
 
     def render_background(self):
