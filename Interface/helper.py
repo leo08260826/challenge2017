@@ -16,7 +16,7 @@ class Helper(object):
                 return 999
             else:
                 return -999
-        return (Pos2[1]-Pos1[1]/Pos2[0]-Pos1[0])
+        return ((Pos2[1]-Pos1[1])/(Pos2[0]-Pos1[0]))
 
     # map info
     def getCaptureDir(self, pos):
