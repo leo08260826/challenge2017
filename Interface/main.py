@@ -3,7 +3,9 @@ import imp, traceback
 import Model.main as model
 from EventManager import *
 from const_main import *
-#from Interface.helper import Helper
+from Interface.helper import Helper
+from Interface.const import *
+from Controller.const import *
 
 class Interface(object):
     def __init__(self, evManager, model):
@@ -29,7 +31,9 @@ class Interface(object):
     def API_play(self):
         for player in self.model.players:
             if player.IS_AI:
-                player.ai.decide()
+                decide = player.AI.decide()
+                if decide == AI_U:
+                    self.evManager.Post(Event_Move(player.index, DIR_U))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):

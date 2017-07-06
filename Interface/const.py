@@ -1,6 +1,3 @@
-"""
-const of AI code use.
-"""
 AI_U  = 1
 AI_RU = 2
 AI_R  = 3
@@ -18,13 +15,3 @@ AI_MODECHANGE = 12
 AI_SKILLCARD_1 = 13
 AI_SKILLCARD_2 = 14
 AI_SKILLCARD_3 = 15
-"""
-a base of AI.
-"""
-class BaseAI:
-    def __init__( self , helper ):
-        self.skill = []
-        self.helper = helper
-
-    def decide( self ):
-        pass
