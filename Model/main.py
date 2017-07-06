@@ -252,7 +252,7 @@ class GameEngine(object):
                 ballData = player.shot()
                 if ballData != -1:
                     self.quaffles[ballData].throw(player.direction, player.position)
-                return True
+                    return True
             return False
 
     def run(self):
