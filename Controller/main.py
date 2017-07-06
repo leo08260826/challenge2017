@@ -61,6 +61,7 @@ class Control(object):
             # escape to pop the menu
             if event.key == pg.K_ESCAPE:
                 self.evManager.Post(Event_StateChange(None))
+                self.evManager.Post(Event_Restart())
             # space to stop the game
             elif event.key == pg.K_SPACE:    
                 self.evManager.Post(Event_StateChange(model.STATE_STOP))

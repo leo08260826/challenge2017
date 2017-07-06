@@ -55,11 +55,9 @@ class GameEngine(object):
                 self.state.push(event.state)
         elif isinstance(event, Event_Quit):
             self.running = False
-        elif isinstance(event, Event_Initialize):
-            self.SetPlayer()
-            self.SetQuaffle()
-            self.SetGoldenSnitch()
-            self.timer = initTime
+        elif isinstance(event, Event_Initialize) or \
+             isinstance(event, Event_Restart):
+            self.Initialize()
         elif isinstance(event, Event_EveryTick):
             if self.state.peek() == STATE_PLAY:
                 self.UpdateObjects()
@@ -77,6 +75,16 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             self.ApplyAction(event.PlayerIndex, event.ActionIndex)
+
+    def Initialize(self):
+        self.AIList = []
+        self.players = []
+        self.quaffles = []
+        self.barriers = []
+        self.SetPlayer()
+        self.SetQuaffle()
+        self.SetGoldenSnitch()
+        self.timer = initTime
 
     def SetPlayer(self):
         count = 0

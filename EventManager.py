@@ -17,6 +17,12 @@ class Event_Initialize(BaseEvent):
     def __str__(self):
         return self.name
 
+class Event_Restart(BaseEvent):
+    def __init__(self):
+        self.name = "Restart event"
+    def __str__(self):
+        return self.name
+
 class Event_Quit(BaseEvent):
     """
     Quit event.
