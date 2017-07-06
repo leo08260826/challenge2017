@@ -11,47 +11,106 @@ class Helper(object):
     def CountDist(Pos1,Pos2):
         return (Pos2[0]-Pos1[0])**2+(Pos2[1]-Pos1[1])**2
     def CountTan(Pos1,Pos2):
-        return tan(Pos2[1]-Pos1[1]/Pos2[0]-Pos1[0])
-
+        if Pos2[0] == Pos1[0]:
+            if Pos2[1] > Pos1[1]:
+                return 999
+            else:
+                return -999
+        return ((Pos2[1]-Pos1[1])/(Pos2[0]-Pos1[0]))
+    def CountDistToLine(pos,CoeffX,CoeffY,Cons,Multier):
+        X = pos[0]
+        Y = pos[1]
+        ans = (CoeffX*X+CoeffY*Y+Cons)*Multier
+        return (ans)
+    
     # map info
     def getCaptureDir(self, pos):
     	My_dir=[0,1,2,3,4,5,6,7,8]
-        tan=[100,2.414213,0.414213,-0.414213,-2.414213,2.414213,0.414213,-0.414213,-2.414213]
+        My_tan=[100,2.414213,0.414213,-0.414213,-2.414213,2.414213,0.414213,-0.414213,-2.414213]
         Pos1 = self.model.players[self.index].position
         Pos2 = pos
-        tmpTan = CountTan(Pos1,Pos2)
+        tmpTan = self.CountTan(Pos1,Pos2)
         if Pos2[0] >= Pos1[0] and Pos2[1] >= Pos1[1]:
-            if tmpTan <= tan[1] and tmpTan >= tan[2]:
-                return My_dir[2]
-            elif tmpTan > tan[1]:
-                return My_dir[1]
-            elif tmpTan < tan[2]:
-                return My_dir[3]
-        elif Pos2[0] >= Pos1[0] and Pos2[1] <= Pos1[1]:
-            if tmpTan >= tan[3]:
-                return My_dir[3]
-            elif tmpTan >= tan[4] and tmpTan <= tan[3]:
+            if tmpTan >= My_tan[1]:
+                return My_dir[5]
+            elif tmpTan < My_tan[1] and tmpTan >= My_tan[2]:
                 return My_dir[4]
-            elif tmpTan <= tan[4]:
-                return My_dir[5]
-        elif Pos2[0] <= Pos1[0] and Pos2[1] <= Pos1[1]:
-            if tmpTan >= tan[5]:
-                return My_dir[5]
-            elif tmpTan >= tan[6] and tmpTan <= tan[5]:
-                return My_dir[6]
-            elif tmpTan <= tan[6]:
-                return My_dir[7]
-        elif Pos2[0] <= Pos1[0] and Pos2[1] >= Pos1[1]:
-            if tmpTan >= tan[7]:
-                return My_dir[7]
-            elif tmpTan <= tan[7] and tmpTan >= tan[8]:
-                return My_dir[8]:
-            elif tmpTan <= tan[8]:
+            elif tmpTan < My_tan[2]:
+                return My_dir[3]
+        elif Pos2[0] >= Pos1[0] and Pos2[1] < Pos1[1]:
+            if tmpTan >= My_tan[3]:
+                return My_dir[3]
+            elif tmpTan >= My_tan[4] and tmpTan < My_tan[3]:
+                return My_dir[2]
+            elif tmpTan < My_tan[4]:
                 return My_dir[1]
+        elif Pos2[0] < Pos1[0] and Pos2[1] < Pos1[1]:
+            if tmpTan >= My_tan[5]:
+                return My_dir[1]
+            elif tmpTan >= My_tan[6] and tmpTan < My_tan[5]:
+                return My_dir[8]
+            elif tmpTan < My_tan[6]:
+                return My_dir[7]
+        elif Pos2[0] < Pos1[0] and Pos2[1] >= Pos1[1]:
+            if tmpTan >= My_tan[7]:
+                return My_dir[7]
+            elif tmpTan < My_tan[7] and tmpTan >= My_tan[8]:
+                return My_dir[6]
+            elif tmpTan < My_tan[8]:
+                return My_dir[5]
 
     def getScoringDir(self, goal_id):
-    	self.
-    
+    	x = sqrt2
+        CoeffX=[9999,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0]
+        CoeffY=[9999,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,1,1,1,1]
+        Cons=[9999,130,300,480,650,830,1000,1180,1350,610,440,260,90,-90,-260,-440,-610,110,280,460,630,110,280,460,630]
+        Multier=[9999,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,1,1,1,1,1,1,1,1]
+        lineToGoal=[[2,3,10,11,18,19],[6,7,10,11,22,23],[6,7,14,15,18,19],[2,3,14,15,22,23],[4,5,9,20,21],[8,12,13,20,24],[4,5,16,17,24],[1,12,13,17,21]]
+        
+
+        flag = 99
+        for i in range(8):
+            if (self.checkScoring(goal_id,i)) == True:
+                flag = i
+        if (flag!=99):
+            return flag
+
+        for i in range(len(lineToGoal)):
+            if (goal_id == i):
+                MinIndex = 0
+                Mini = 99999999
+                for j in range(len(lineToGoal[i])):
+                    tmp = self.CountDistToLine(self.players[self.index].position,CoeffX[lineToGoal[i][j]],CoeffY[lineToGoal[i][j]],-1*Cons[lineToGoal[i][j]],Multier[lineToGoal[i][j]])    
+                    if (abs)tmp < Mini:
+                        MinIndex = j
+                        Mini = tmp
+                        if tmp<0:
+                            Switchdir = 1
+                        else:
+                            Switchdir = 0
+
+        origin = [CoeffX[MinIndex],CoeffY[MinIndex]]
+        if origin[0] == 0 :
+            if Switchdir == 1 :
+                return 5
+            elif Switchdir == 0 :
+                return 1
+        elif origin[1] == 0:
+            if Switchdir == 1 :
+                return 3
+            elif Switchdir == 0 :
+                return 7
+        elif origin[0] == 1 and origin[1] == 1 :
+            if Switchdir == 1:
+                return 4
+            elif Switchdir == 0:
+                return 8
+        elif origin[0] == 1 and origin[0] == -1 :
+            if Switchdir == 1:
+                return 2
+            elif Switchdir == 0:
+                return 6
+
     def getNearestGoal(self, pos):
     	board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
         gate = [((board[2]+board[3])/2,board[0]),(board[5],(board[2]+board[3])/2),((board[2]+board[3])/2,board[5]),\
@@ -61,13 +120,13 @@ class Helper(object):
         Mini = 99999999
         for i in range(8):
             tmp = [gate[i][0],gate[i][1]]
-            if (CountDist(tmp,pos) < Mini):
-                Mini = CountDist(tmp,pos)
+            if (self.CountDist(tmp,pos) < Mini):
+                Mini = self.CountDist(tmp,pos)
                 MinIndex = i
         return MinIndex
         
     def getTimeLeft(self):
-    	return self.model.time
+    	return self.model.timer
  
     # ball info
     def getFreeBallPos(self):
@@ -97,17 +156,18 @@ class Helper(object):
     def getNearBallInfo(self):
         Info_list=[]
         for i in range(numberOfQuaffles):
-            tmp = []
+            tmp = [0,0,0,0]
             tmp[0] = self.model.quaffles[i].position[0]
             tmp[1] = self.model.quaffles[i].position[1]
             tmp[2] = self.model.quaffles[i].state
             tmpDist = 99999999
             if tmp[2] == 1:
-                tmpDist = CountDist(self.model.players[self.model.quaffles[i].playerIndex].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position,self.model.players[self.index].position)
             elif tmp[2] == 0 or tmp[2] == 2:
-                tmpDist = CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
             tmp[3] = tmpDist
-        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,CountDist(self.model.goldenSnitch.position,self.model.players[self.index])]
+            Info_list.append(tmp)
+        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
         return Sort_Info 
@@ -133,7 +193,7 @@ class Helper(object):
     	for i in range(PlayerNum):
     		if i != self.index:
     			tmpPos = self.model.players[i].position
-    			if self.CountDist(myPos, tmpPos) < stunDistance ** 2 and self.checkPlayerProtected(i) == False:
+    			if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.checkPlayerProtected(i) == False:
     				result.append(i)
     	return result
 
@@ -149,38 +209,38 @@ class Helper(object):
     def checkMeProtected(self):
     	return self.model.players[self.index].isMask
 
-    def checkScoring(self, goal_id, dir):
+    def checkScoring(self, goal_id, myDir):
     	myPos = self.getMyPos()
-    	if dir == 1:#DIR_U
+    	if myDir == 1:#DIR_U
     		myPos[1] = gameRangeLower - 1
-    	elif dir == 2:#DIR_RU
+    	elif myDir == 2:#DIR_RU
     		if (gameRangeUpper - myPos[0]) > (myPos[1] - gameRangeLower):
     			tmp = myPos[1] - gameRangeLower + 1
     		else:
     			tmp = gameRangeUpper - myPos[0] + 1
     		myPos[0] = myPos[0] + tmp
     		myPos[1] = myPos[1] - tmp
-    	elif dir == 3:#DIR_R
+    	elif myDir == 3:#DIR_R
     		myPos[0] = gameRangeUpper + 1
-    	elif dir == 4:#DIR_RD
+    	elif myDir == 4:#DIR_RD
     		if (gameRangeUpper - myPos[0]) > (gameRangeUpper - myPos[1]):
     			tmp = gameRangeUpper - myPos[1] + 1
     		else:
     			tmp = gameRangeUpper - myPos[0] + 1
     		myPos[0] = myPos[0] + tmp
     		myPos[1] = myPos[1] + tmp
-    	elif dir == 5:#DIR_D
+    	elif myDir == 5:#DIR_D
     		myPos[1] = gameRangeUpper + 1
-    	elif dir == 6:#DIR_LD
+    	elif myDir == 6:#DIR_LD
     		if (myPos[0] - gameRangeLower) > (gameRangeUpper - myPos[1]):
     			tmp = gameRangeUpper - myPos[1] + 1
     		else:
     			tmp = myPos[0] - gameRangeLower + 1
     		myPos[0] = myPos[0] - tmp
     		myPos[1] = myPos[1] + tmp
-    	elif dir == 7:#DIR_L
+    	elif myDir == 7:#DIR_L
     		myPos[0] = gameRangeLower - 1
-    	elif dir == 8:#DIR_LU
+    	elif myDir == 8:#DIR_LU
     		if (myPos[0] - gameRangeLower) > (myPos[1] - gameRangeLower):
     			tmp = myPos[1] - gameRangeLower + 1
     		else:
@@ -199,10 +259,12 @@ class Helper(object):
     	if myMode == 0:
     		if action_id == 0 and myMana >= powerShotPowerCost:
     			return True
-    		elif action_id == 1 and myMana >= stunPowerCost:
+            elif action_id == 1 and myMana >= stunPowerCost:
     			return True
-    		else:
-    			return False
+            elif action_id == 2:
+    			return True
+            else:
+                return False
     	elif myMode == 1:
     		if action_id == 0 and myMana >= barrierPowerCost:
     			return True
@@ -213,21 +275,35 @@ class Helper(object):
     	else:
     		return False
 
-    def checkDir(self, dir):
-    	pass
+    def checkDir(self, myDir):
+        """
+        tmpPlayer = self.model.players[self.index]
+        tmpPlayer.direction = myDir
+        speedmode = tmpPlayer.mode + tmpPlayer.isFreeze * 1
+        for barrier in self.model.barriers:
+            if not barrier.playerIndex == self.index and barrier.bump(tmpPlayer, playerSpeed[self.getMyMode()]):
+                return True
+        if tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode] < 47 \
+            or tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode]> 693 :
+            return True
+        elif tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] < 47 \
+            or tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] > 693 :
+            return True
+        else:
+            return False
+        """
 
-    def getInvDir(self, dir):
-    	if dir < 5:
-    		return dir+4
+    def getInvDir(self, myDir):
+    	if myDir < 5:
+    		return myDir+4
     	else:
-    		return dir-4
-
+    		return myDir-4
 
     # player info
     def getPlayerPos(self, player_id):
     	return self.model.players[player_id].position
 
-    def getPlayerState(self, player_id):
+    def getPlayerMode(self, player_id):
     	return self.model.players[player_id].mode
 
     def getPlayerScore(self, player_id):

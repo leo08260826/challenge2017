@@ -6,12 +6,6 @@ quaffleSize = 35
 scoreOfQuaffles = [1,0,4,8,12,16]
 distToCatchQuaffle = 30
 
-#speed
-quaffleSpeed = 3
-goldenSnitchSpeed = 8
-playerSpeed = [3,5,12]
-shotSpeed = 6
-depriveSpeed = 5
 
 #view const
 gameRange = 700
@@ -21,15 +15,20 @@ gameRangeUpper = gameRangeLower + gameRange
 #player const
 playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 100
-freezeTime = 60
 playerBumpDistance = 25
 PlayerNum = 4
 MaxManualPlayer = 4
-stunFreezeTime = 60
 powerAdd = [1,2]
+
+
+#time const
+freezeTime = 60
+stunFreezeTime = 60
 maskTime = 100
+invisibleTime = 300
 
 #cost const
+modeChangePower = 10
 barrierPowerCost = 18
 stunPowerCost = 30
 maskPowerCost = 20
@@ -38,7 +37,9 @@ powerShotPowerCost = 18
 #golden snitch
 goldenSnitchSize = 10
 scoreOfGoldenSnitch = 32
-distToCatchGoldenSnitch = 10
+distToCatchGoldenSnitch = 20
+goldenSnitchAlertRadius = 150
+
 
 #dir const
 dirConst = [[0,0],[0,-1],[0.707,-0.707],[1,0],[0.707,0.707],[0,1],[-0.707,0.707],[-1,0],[-0.707,-0.707]]
@@ -68,3 +69,12 @@ reachWall = 10
 #game const
 initTime = 180
 ticktime = 30
+
+#speed
+quaffleSpeed = 3
+goldenSnitchSpeed = 8
+goldenSnitchTerminalSpeed = 4
+goldenSnitchSpeedDecayPerTick = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / (initTime  * ticktime)
+playerSpeed = [3,5,12]
+shotSpeed = 6
+depriveSpeed = 5
