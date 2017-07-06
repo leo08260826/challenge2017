@@ -49,7 +49,7 @@ class player(object):
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
-                self.direction == (self.direction+4)%8
+                self.direction = (self.direction+4)%8
                 if self.direction == 0:
                     self.direction = 8
 
