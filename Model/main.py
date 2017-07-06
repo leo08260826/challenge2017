@@ -204,7 +204,7 @@ class GameEngine(object):
                             quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
             player.direction = direction;
 
