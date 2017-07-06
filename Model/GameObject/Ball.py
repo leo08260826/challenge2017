@@ -223,7 +223,6 @@ class GoldenSnitch(OriginalBall):
             pendingDirection[0] , pendingDirection[1] = self.direction[1], self.direction[0]
             pendingPosition = [self.position[0] + pendingDirection[0], self.position[1] + pendingDirection[1]]
             
-              + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2)**0.5))
             if (nearestPlayerDist ** 2 >\
                  (players[nearestPlayerIndex].position[0] - pendingPosition[0]) ** 2\
               + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2):
