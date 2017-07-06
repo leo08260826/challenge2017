@@ -153,7 +153,7 @@ class GameEngine(object):
         print(dist)
         if dist[0] < distToCatchGoldenSnitch:
             self.players[dist[1]].score += scoreOfGoldenSnitch
-            self.evManager.Post(Event_TimeUp)
+            self.evManager.Post(Event_TimeUp())
 
         # player to quaffle
         for quaffle in self.quaffles:
