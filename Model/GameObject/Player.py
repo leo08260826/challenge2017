@@ -46,12 +46,12 @@ class player(object):
         if self.isFreeze == True and self.freezeTimer < 58:
              self.freezeTimer = freezeTime
          else:
-             self.isFreeze = True
-             self.freezeTimer = freezeTime
-             if self.direction != 0:
-                  self.direction = (self.direction+4)%8
-                  if self.direction == 0:
-                      self.direction = 8
+            self.isFreeze = True
+            self.freezeTimer = freezeTime
+            if self.direction != 0:
+                self.direction = (self.direction+4)%8
+                if self.direction == 0:
+                    self.direction = 8
                 
 
 
