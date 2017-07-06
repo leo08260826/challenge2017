@@ -128,7 +128,7 @@ class Quaffle(OriginalBall):
                     tmpScore = 0
                 elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
-                elif (checkGoal - self.playerIndex) in (-2, 2):
+                elif (checkGoal - tmpPlayerIndex) in (-2, 2):
                     tmpScore = mc.scoreOfQuaffles[4]
                 elif checkGoal == mc.reachWall:
                     tmpScore = 0
