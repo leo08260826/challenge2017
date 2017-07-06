@@ -2,7 +2,6 @@ import pygame as pg
 
 import Model.main as model
 from EventManager import *
-from const_main import *
 from Controller.const import *
 
 class Control(object):

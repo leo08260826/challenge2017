@@ -2,7 +2,7 @@ import imp, traceback
 
 import Model.main as model
 from EventManager import *
-from const_main import *
+
 from Interface.helper import Helper
 from Interface.const import *
 from Controller.const import *
