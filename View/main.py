@@ -141,8 +141,24 @@ class GraphicalView(object):
         pos_x = (ScreenSize[0] - SurfaceX)/2
         pos_y = (ScreenSize[1] - SurfaceY)/2
         self.screen.blit(somewords, (pos_x, pos_y))
+        self.render_record()
         # update surface
         pg.display.flip()
+    
+    def render_record(self):
+        """
+        Render the Soreboard
+        """
+        rank = sorted(self.model.players, key=lambda player:-player.score)
+        maxscore = rank[0].score
+        for i in range(PlayerNum):
+            score = rank[i].score
+            height = score / maxscore * 400
+            pg.draw.rect(self.screen, Color_White, (500+200*i, 700-height,100, height))
+
+        # update surface
+        pg.display.flip()
+
 
     def display_fps(self):
         """Show the programs FPS in the window handle."""
