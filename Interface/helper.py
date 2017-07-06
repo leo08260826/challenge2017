@@ -206,8 +206,10 @@ class Helper(object):
     			return True
     		elif action_id == 1 and myMana >= stunPowerCost:
     			return True
-    		else:
-    			return False
+                elif action_id == 2:
+    			return True
+                else:
+                        return False
     	elif myMode == 1:
     		if action_id == 0 and myMana >= barrierPowerCost:
     			return True
