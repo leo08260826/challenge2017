@@ -159,7 +159,7 @@ class GraphicalView(object):
             pg.draw.rect(self.screen, Color_White, (250+200*i, 600-height, 120, height))
             pg.draw.rect(self.screen, (255, 250, 200), (250+200*i, 550-height, 120, 50))
             pg.draw.rect(self.screen, color, (260+200*i, 600-height, 10, height))
-            pg.draw.rect(self.screen, color, (330+200*i, 600-height, 10, height))
+            pg.draw.rect(self.screen, color, (350+200*i, 600-height, 10, height))
             self.screen.blit(self.player_photo[rank[i].index], (250+200*i,600))
             score_surface = self.smallfont.render(str(score), True, color)
             self.blit_at_center(score_surface, (310+200*i, 575-height))
