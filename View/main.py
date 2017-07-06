@@ -96,6 +96,7 @@ class GraphicalView(object):
         # draw backgound
         self.render_background()
         self.render_timebar()
+        pg.draw.rect(self.screen, (136, 0, 21), [20,740,735,20])
 
         for i in range(PlayerNum):
             self.render_player_status(i)
@@ -114,7 +115,6 @@ class GraphicalView(object):
         for barrier in self.model.barriers:
             self.render_barrier(barrier)
 
-        pg.draw.rect(self.screen, (136, 0, 21), [0,0,1200,800])
         # update surface
         pg.display.flip()
         
