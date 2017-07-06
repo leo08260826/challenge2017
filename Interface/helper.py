@@ -8,21 +8,23 @@ class Helper(object):
         self.model = model
         self.index = index
 
-    def CountDist(Pos1,Pos2):
-        return (Pos2[0]-Pos1[0])**2+(Pos2[1]-Pos1[1])**2
-    def CountTan(Pos1,Pos2):
+    def CountDist(Pos1, Pos2):
+        return ((Pos2[0]-Pos1[0])**2 + (Pos2[1]-Pos1[1])**2)
+
+    def CountTan(Pos1, Pos2):
         if Pos2[0] == Pos1[0]:
             if Pos2[1] > Pos1[1]:
                 return 999
             else:
                 return -999
-        return ((Pos2[1]-Pos1[1])/(Pos2[0]-Pos1[0]))
-    def CountDistToLine(pos,CoeffX,CoeffY,Cons,Multier):
+        return ((Pos2[1]-Pos1[1]) / (Pos2[0]-Pos1[0]))
+
+    def CountDistToLine(pos, CoeffX, CoeffY, Cons, Multier):
         X = pos[0]
         Y = pos[1]
-        ans = (CoeffX*X+CoeffY*Y+Cons)*Multier
-        return (ans)
-    
+        ans = (CoeffX*X + CoeffY*Y + Cons) * Multier
+        return ans
+
     # map info
     def getCaptureDir(self, pos):
         My_dir=[0,1,2,3,4,5,6,7,8]
@@ -179,6 +181,9 @@ class Helper(object):
     def getMyPos(self):
         return self.model.players[self.index].position
 
+    def getMyDir(self):
+        return self.model.players[self.index].direction
+
     def getMyMode(self):
         return self.model.players[self.index].mode
 
@@ -197,8 +202,8 @@ class Helper(object):
                     result.append(i)
         return result
 
-    def getMyCD(self):
-        return self.model.players[self.index].modeTimer
+    def checkMeModeChange(self):
+        return (self.model.players[self.index].power >= modeChangePower)
 
     def checkMeHold(self):
         return self.model.players[self.index].takeball > -1
@@ -303,6 +308,9 @@ class Helper(object):
     def getPlayerPos(self, player_id):
         return self.model.players[player_id].position
 
+    def getPlayerDir(self, player_id):
+        return self.model.players[player_id].direction
+
     def getPlayerMode(self, player_id):
         return self.model.players[player_id].mode
 
@@ -312,8 +320,8 @@ class Helper(object):
     def getPlayerMana(self, player_id):
         return self.model.players[player_id].power
 
-    def getPlayerCD(self, player_id):
-        return self.model.players[player_id].modeTimer
+    def checkPlayerModeChange(self, player_id):
+        return (self.model.players[player_id].power > modeChangePower)
 
     def checkPlayerHold(self, player_id):
         return self.model.players[player_id].takeball > -1
