@@ -14,7 +14,7 @@ ACTION_1 = 1 # stun / mask
 ACTION_2 = 2 # general throw
 
 # [up, right, down, left, chmod, act0, act1,act2 ]
-PlayerKeyList = [
+PlayerKeys = [
     [pg.K_w, pg.K_d, pg.K_s, pg.K_a, pg.K_c, pg.K_v, pg.K_b, pg.K_n],
     [pg.K_UP, pg.K_RIGHT, pg.K_DOWN, pg.K_LEFT, pg.K_RIGHTBRACKET, pg.K_LEFTBRACKET, pg.K_p, pg.K_o],
     [-1, -1, -1, -1, -1, -1, -1, -1],

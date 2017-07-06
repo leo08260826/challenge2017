@@ -74,8 +74,8 @@ class Control(object):
                     continue
                 DirKeys = PlayerKeys[player.index][0:4]
                 if event.key in DirKeys:
-                    NowPressedKeys = self.GetPressIn(DirKeys)
-                    DirHashValue = self.GetDirHashValue(NowPressedKeys, DirKeys)
+                    NowPressedKeys = self.Get_KeyPressIn(DirKeys)
+                    DirHashValue = self.Get_DirHashValue(NowPressedKeys, DirKeys)
                     if DirHash[DirHashValue] != 0:
                         self.evManager.Post(Event_Move(player.index, DirHash[DirHashValue]))
                 # change mode 
