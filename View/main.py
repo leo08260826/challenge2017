@@ -204,7 +204,7 @@ class GraphicalView(object):
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['blue', 'red', 'yellow', 'green']
-        self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
+        self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
         self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
