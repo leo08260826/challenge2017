@@ -174,6 +174,7 @@ class GoldenSnitch(OriginalBall):
 
         return False
 
+
     def tickCheck(self, players):
         fleeDirectionList = []
 
@@ -211,7 +212,7 @@ class GoldenSnitch(OriginalBall):
         pendingPos = [self.position[0] + self.direction[0], self.position[1] + self.direction[1]]
 
         # check if pendingPos is in wall
-        if (isInWall(pendingPos)):
+        if (self.isInWall(pendingPos)):
             # if still in wall, rotate direction 90 degree
             self.direction[0] , self.direction[1] = self.direction[1], self.direction[0]
 
