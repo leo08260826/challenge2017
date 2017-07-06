@@ -6,9 +6,7 @@ from EventManager import *
 from const_main import *
 from View.const import *
 
-# import Model.GameObject.model_const as mc
-
-numberOfQuaffles = 2
+import Model.GameObject.model_const as modelConst
 
 class GraphicalView(object):
     """
@@ -47,6 +45,8 @@ class GraphicalView(object):
                 self.render_play()
             if cur_state == model.STATE_STOP:
                 self.render_stop()
+            if cur_state == model.STATE_RECORD:
+                self.render_record()
 
             self.display_fps()
             # limit the redraw speed to 30 frames per second
@@ -95,6 +95,7 @@ class GraphicalView(object):
         
         # draw backgound
         self.render_background()
+        self.render_timebar()
 
         for i in range(PlayerNum):
             self.render_player_status(i)
@@ -106,7 +107,7 @@ class GraphicalView(object):
         for i in range(PlayerNum):
             self.render_player_character(i)
             
-        for i in range(numberOfQuaffles):
+        for i in range(modelConst.modelConst.numberOfQuaffles):
             self.render_quaffle(i)
         self.render_goldenSnitch()
 
@@ -192,11 +193,11 @@ class GraphicalView(object):
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
         self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(PlayerNum) ]
         ''' balls '''
-        self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(numberOfQuaffles) ]
-        self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles) ]
+        self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(modelConst.modelConst.numberOfQuaffles) ]
+        self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(modelConst.modelConst.numberOfQuaffles) ]
         self.goldenSnitch_images = [ pg.image.load('View/image/ball/goldball_'+str(i+1)+'.png') for i in range(2) ]
         ''' characters '''
-        self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(numberOfQuaffles)]
+        self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.modelConst.numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['blue', 'red', 'yellow', 'green']
         self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
@@ -213,13 +214,14 @@ class GraphicalView(object):
             else:
                 return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
         self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(PlayerNum) ]
-        self.player_invisable_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
+        self.player_invisible_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
 
     def render_background(self):
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map, Pos_map)
         self.screen.blit(self.time, Pos_time)
-        
+        pygame.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
+
     def render_player_status(self, index):
         player = self.model.players[index]
         pos_x , pos_y = 750 , (20 + 180*index)
