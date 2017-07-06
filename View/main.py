@@ -6,7 +6,7 @@ from EventManager import *
 from const_main import *
 from View.const import *
 
-import Model.GameObject.model_const as modelConst
+import Model.const as modelConst
 
 class GraphicalView(object):
     """
