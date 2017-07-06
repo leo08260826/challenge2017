@@ -86,7 +86,6 @@ class GameEngine(object):
                 self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
-        self.AIList = []
         self.players = []
         self.quaffles = []
         self.barriers = []
