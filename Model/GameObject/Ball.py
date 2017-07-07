@@ -19,6 +19,7 @@ class OriginalBall(object):
         self.tickTime = -1
         self.isStrengthened = False
         self.hasCaught = []
+        self.hasPassed = [[False] * 4 for _ in range(4)]
 
     def throw(self, direction, position, isStrengthened = False):
         # invalid request prevention
@@ -94,14 +95,27 @@ class Quaffle(OriginalBall):
         self.ballsize = mc.quaffleSize / 2
 
     def catch(self, playerIndex):
+        prevPlayerIndex = self.playerIndex
+        prevState = self.state
         self.playerIndex = playerIndex
         self.state = 1
         self.isStrengthened = False
-        if playerIndex in self.hasCaught:
-            return True
+        
+        if prevPlayerIndex == -1 and prevState == 0:
+            if playerIndex in self.hasCaught:
+                return True
+            else:
+                self.hasCaught.append(playerIndex)
+                return False
+        elif prevPlayerIndex != -1 and prevState == 2:
+            if self.hasPassed[prevPlayerIndex][playerIndex]:
+                return True
+            else:
+                self.hasPassed[prevPlayerIndex][playerIndex] = True
+                return False
         else:
-            self.hasCaught.append(playerIndex)
-            return False
+            assert False, "Model's Ball Bug"
+            
 
     def deprive(self, direction, position):
         self.state = 0
@@ -144,6 +158,7 @@ class Quaffle(OriginalBall):
                     self.modifyPosition()
                 else:
                     self.hasCaught = []
+                    self.hasPassed = [[False] * 4 for _ in range(4)]
                     self.tickTime = 60
                     self.state = 3
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
