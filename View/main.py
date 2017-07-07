@@ -39,6 +39,7 @@ class GraphicalView(object):
         self.not18_images = []
         self.rose_images = []
         self.rain_images = []
+        self.boss_images = []
         
     def notify(self, event):
         """
@@ -276,6 +277,7 @@ class GraphicalView(object):
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.boss_images = [pg.image.load('View/image/visual_effect/boss/boss_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
         
@@ -375,6 +377,8 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
+        if player_visual_effect[index] == 99:
+            self.blit_at_center(self.boss_images[visual_temp], position)
         
         # mode
         self.blit_at_center(self.mode_images[player.mode], position)
