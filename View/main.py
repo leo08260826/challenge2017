@@ -184,10 +184,10 @@ class GraphicalView(object):
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,600-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
-            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 50))
+            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 70))
             self.screen.blit(self.rank_images[rank], (260+200*i,600-height))
             score_surface = self.smallfont.render(str(score), True, color)
-            self.blit_at_center(score_surface, (320+200*i, 670-height))
+            self.blit_at_center(score_surface, (320+200*i, 660-height))
 
         # update surface
         pg.display.flip()
