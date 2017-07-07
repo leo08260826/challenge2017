@@ -231,7 +231,7 @@ class GraphicalView(object):
         self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         self.pennant_images = [ pg.image.load('View/image/scoreboard/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
-        self.rank_images = [ pg.image.load('View/image/background/ranktag_'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.rank_images = [ pg.image.load('View/image/scoreboard/ranktag_'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
