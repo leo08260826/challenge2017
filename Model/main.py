@@ -259,8 +259,15 @@ class GameEngine(object):
                         player.power -= powerShotPowerCost
                         return True
                 elif player.mode == 1 and player.power >= barrierPowerCost:
-                    ballData = self.players[playerIndex].setBarrier()
-                    self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    self.players[playerIndex].setBarrier()
+                    if playerIndex == 0:
+                        self.barriers.append(Barrier(playerIndex,[370, 0],1))
+                    elif playerIndex == 1:
+                        self.barriers.append(Barrier(playerIndex,[720, 370],3))
+                    elif playerIndex == 2:
+                        self.barriers.append(Barrier(playerIndex,[370, 720],5))
+                    elif playerIndex == 3:
+                        self.barriers.append(Barrier(playerIndex,[0, 370],7))
                     return True
 
             elif actionIndex == 1:
