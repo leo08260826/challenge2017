@@ -120,6 +120,7 @@ class GraphicalView(object):
         self.render_background()
             
         self.render_timebar()
+        self.screen.blit(self.logo,(750,740))
 
         for i in range(modelConst.PlayerNum):
             self.render_player_status(i)
@@ -274,6 +275,7 @@ class GraphicalView(object):
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         self.pennant_images = [ pg.image.load('View/image/scoreboard/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
         self.rank_images = [ pg.image.load('View/image/scoreboard/ranktag_'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.logo = pg.image.load('View/image/logo/logo_proto.png')
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
