@@ -13,6 +13,10 @@ ACTION_0 = 0 # power throw / barrier
 ACTION_1 = 1 # stun / mask
 ACTION_2 = 2 # general throw
 
+SKILLCARD_0 = 0 # invisible
+SKILLCARD_1 = 1 # empty power
+SKILLCARD_2 = 2 # stun all enermy
+
 # [up, right, down, left, chmod, act0, act1,act2 ]
 PlayerKeys = [
     [pg.K_w, pg.K_d, pg.K_s, pg.K_a, pg.K_c, pg.K_v, pg.K_b, pg.K_n],

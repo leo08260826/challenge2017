@@ -35,6 +35,34 @@ class Interface(object):
                 decide = player.AI.decide()
                 if decide == AI_U:
                     self.evManager.Post(Event_Move(player.index, DIR_U))
+                elif decide == AI_RU:
+                    self.evManager.Post(Event_Move(player.index, DIR_RU))
+                elif decide == AI_R:
+                    self.evManager.Post(Event_Move(player.index, DIR_R))
+                elif decide == AI_RD:
+                    self.evManager.Post(Event_Move(player.index, DIR_RD))
+                elif decide == AI_D:
+                    self.evManager.Post(Event_Move(player.index, DIR_D))
+                elif decide == AI_LD:
+                    self.evManager.Post(Event_Move(player.index, DIR_LD))
+                elif decide == AI_L:
+                    self.evManager.Post(Event_Move(player.index, DIR_L))
+                elif decide == AI_LU:
+                    self.evManager.Post(Event_Move(player.index, DIR_LU))
+                elif decide == AI_ACTION_1:
+                    self.evManager.Post(Event_Action(player.index, ACTION_0))
+                elif decide == AI_ACTION_2:
+                    self.evManager.Post(Event_Action(player.index, ACTION_1))
+                elif decide == AI_THROW:
+                    self.evManager.Post(Event_Action(player.index, ACTION_2))
+                elif decide == AI_MODECHANGE:
+                    self.evManager.Post(Event_ModeChange(player.index))
+                elif decide == AI_SKILLCARD_HIDE:
+                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_0))
+                elif decide == AI_SKILLCARD_DEMENTOR:
+                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_1))
+                elif decide == AI_SKILLCARD_STUNALL:
+                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_2))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):
