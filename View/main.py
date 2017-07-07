@@ -72,7 +72,7 @@ class GraphicalView(object):
         elif isinstance(event, Event_SkillCard):
             play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
         elif isinstance(event, Event_CallMe):
-            jumpstatus[event.PlayerIndex] = 0
+            jump_status[event.PlayerIndex] = 0
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -191,10 +191,6 @@ class GraphicalView(object):
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height+1))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,610-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
-            ##visual
-            effect_type = player_visual_effect[i]
-            self.screen.blit(self.photo_effect[effect_type],(260+200*i,600))
-            
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 70))
             self.screen.blit(self.rank_images[rank], (260+200*i,600-height))
             score_surface = self.smallfont.render(str(score), True, color)
@@ -255,7 +251,7 @@ class GraphicalView(object):
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
         self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
-        self.jump_status = [-1 for _ in range(modelConst.PlayerNum)]
+        self.jump_status = [jump_frame for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
         directions = ['_leftup', '_left', '_leftdown', '_down']
@@ -300,7 +296,7 @@ class GraphicalView(object):
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.boss_images = [pg.image.load('View/image/visual_effect/boss3/boss3_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.boss_images = [pg.image.load('View/image/visual_effect/boss2/boss2_'+str(i%4+1)+'.png') for i in range(4) ]
         self.fly_images = [pg.image.load('View/image/visual_effect/fly/fly_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rose_images = [pg.image.load('View/image/visual_effect/rose/rose_'+str(i%4+1)+'.png') for i in range(4) ]
         
