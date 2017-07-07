@@ -58,11 +58,11 @@ class Interface(object):
                 elif decide == AI_MODECHANGE:
                     self.evManager.Post(Event_ModeChange(player.index))
                 elif decide == AI_SKILLCARD_HIDE:
-                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_0))
+                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_0))
                 elif decide == AI_SKILLCARD_DEMENTOR:
-                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_1))
+                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_1))
                 elif decide == AI_SKILLCARD_STUNALL:
-                    self.evManager.Post(Event_Event_SkillCard(SKILLCARD_2))
+                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):
@@ -74,7 +74,7 @@ class Interface(object):
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI can't load." )
-                player.name, player.IS_AI, player.ai= "Error" , False, None
+                player.name, player.IS_AI, player.AI= "Error" , False, None
                 continue
             print("Load ["+ str(index) +"]team_" + player.name + ".py")
             # init TeamAI class
@@ -83,7 +83,7 @@ class Interface(object):
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI __init__ is crashed." )
                 traceback.print_exc()
-                player.name, player.IS_AI, player.ai= "Error" , False, None
+                player.name, player.IS_AI, player.AI= "Error" , False, None
                 continue
             print("Successful to Load ["+ str(index) +"]team_" + player.name + ".py")
     
