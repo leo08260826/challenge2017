@@ -179,6 +179,9 @@ class Helper(object):
     def getMyPos(self):
         return self.model.players[self.index].position
 
+    def getMyDir(self):
+        return self.model.players[self.index].direction
+
     def getMyMode(self):
         return self.model.players[self.index].mode
 
@@ -197,8 +200,8 @@ class Helper(object):
                     result.append(i)
         return result
 
-    def getMyCD(self):
-        return self.model.players[self.index].modeTimer
+    def checkMeModeChange(self):
+        return (self.model.players[self.index].power >= modeChangePower)
 
     def checkMeHold(self):
         return self.model.players[self.index].takeball > -1
@@ -303,6 +306,9 @@ class Helper(object):
     def getPlayerPos(self, player_id):
         return self.model.players[player_id].position
 
+    def getPlayerDir(self, player_id):
+        return self.model.players[player_id].direction
+
     def getPlayerMode(self, player_id):
         return self.model.players[player_id].mode
 
@@ -312,8 +318,8 @@ class Helper(object):
     def getPlayerMana(self, player_id):
         return self.model.players[player_id].power
 
-    def getPlayerCD(self, player_id):
-        return self.model.players[player_id].modeTimer
+    def checkPlayerModeChange(self, player_id):
+        return (self.model.players[player_id].power > modeChangePower)
 
     def checkPlayerHold(self, player_id):
         return self.model.players[player_id].takeball > -1
