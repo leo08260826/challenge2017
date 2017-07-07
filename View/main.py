@@ -51,7 +51,7 @@ class GraphicalView(object):
             elif cur_state == model.STATE_STOP:
                 self.render_stop()
             elif cur_state == model.STATE_PRERECORD:
-                self.render_prerecord()
+                self.render_record()
             elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
