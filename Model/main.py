@@ -75,7 +75,7 @@ class GameEngine(object):
                 self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
-        elif isinstance(event, Event_PlayerModeChange):
+        elif isinstance(event, Event_ModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_TimeUp):
             self.evManager.Post(Event_StateChange(STATE_PRERECORD))
