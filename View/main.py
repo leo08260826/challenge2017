@@ -279,7 +279,7 @@ class GraphicalView(object):
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
         self.boss_images = [pg.image.load('View/image/visual_effect/boss/boss_'+str(i%4+1)+'.png') for i in range(4) ]
         
-        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
+        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -377,7 +377,7 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
-        if player_visual_effect[index] == 99:
+        if player_visual_effect[index] == 7:
             self.blit_at_center(self.boss_images[visual_temp], position)
         
         # mode
