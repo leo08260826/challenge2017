@@ -66,6 +66,10 @@ class Interface(object):
                     self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_1))
                 elif decide == AI_SKILLCARD_STUNALL:
                     self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
+                elif decide == AI_CallMe:
+                    self.evManager.Post(Event_CallMe())
+                elif decide == AI_NoUseSkillCard:
+                    self.evManager.Post(Event_NoUseSkillCard())
         
     def initialize(self):
         for index, player in enumerate(self.model.players):

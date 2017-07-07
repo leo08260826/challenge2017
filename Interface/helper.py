@@ -159,7 +159,7 @@ class Helper(object):
         return Pos_list
 
     def getGoldBallPos(self):
-        return self.model.goldenSnitch.position
+        return list(self.model.goldenSnitch.position)
         
     def getNearBallInfo(self):
         Info_list=[]
@@ -312,7 +312,7 @@ class Helper(object):
 
     # player info
     def getPlayerPos(self, player_id):
-        return self.model.players[player_id].position
+        return list(self.model.players[player_id].position)
 
     def getPlayerDir(self, player_id):
         return self.model.players[player_id].direction
@@ -372,13 +372,5 @@ class Helper(object):
     def askGodPos(self, god_name):
         pass
 
-    def callme(self):
+    def callme(self)
         pass
-
-    #skillcard
-    def SkillHide(self):
-        self.model.evManager.Post(Event_SkillCard(self.index,0))
-    def dkillDementor(slef):
-        self.model.evManager.Post(Event_SkillCard(self.index,1))
-    def skillStunAll(self):
-        self.model.evManager.Post(Event_SkillCard(self.index,2))
