@@ -130,9 +130,13 @@ class GameEngine(object):
             player.tickCheck()
         # Update quaffles
         for quaffle in self.quaffles:
-            score, playerIndex = quaffle.tickCheck()
+            score, playerIndex, minusScore, beShotPlayer = quaffle.tickCheck()
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
+            if beShotPlayer in range(PlayerNum):
+                self.players[beShotPlayer].score += minusScore
+                if self.players[beShotPlayer].score < 0:
+                    self.players[beShotPlayer].score = 0
         # Update golden snitch
         self.goldenSnitch.tickCheck(self.players)
         # Update barriers
@@ -219,14 +223,14 @@ class GameEngine(object):
             player.power -= modeChangePower
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        # 0 = invisible
+        # 0 = inVisible
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
         if self.players[playerIndex] != None and skillIndex in self.players[playerIndex].AI.skill:
             Nowplayer = self.players[playerIndex]
             if skillIndex == 0:
-                Nowplayer.isvisible = False
+                Nowplayer.isVisible = False
                 Nowplayer.invisibleTimer = invisibleTime
             elif skillIndex == 1:
                 for player in self.players:
@@ -255,21 +259,37 @@ class GameEngine(object):
                         player.power -= powerShotPowerCost
                         return True
                 elif player.mode == 1 and player.power >= barrierPowerCost:
-                    ballData = self.players[playerIndex].setBarrier()
-                    self.barriers.append(Barrier(playerIndex,ballData[0],ballData[1]))
+                    self.players[playerIndex].setBarrier()
+                    if playerIndex == 0:
+                        self.barriers.append(Barrier(playerIndex,[370, 0],1))
+                    elif playerIndex == 1:
+                        self.barriers.append(Barrier(playerIndex,[720, 370],3))
+                    elif playerIndex == 2:
+                        self.barriers.append(Barrier(playerIndex,[370, 720],5))
+                    elif playerIndex == 3:
+                        self.barriers.append(Barrier(playerIndex,[0, 370],7))
                     return True
 
             elif actionIndex == 1:
                 if player.mode == 0 and player.power >= stunPowerCost:
                     player.power -= stunPowerCost
                     for playercheck in self.players:
-                        if playercheck == self.players[playerIndex]:
+                        if playercheck == player:
                             continue
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
                             if distSquare < (stunDistance) ** 2:
                                 if playercheck.isMask == False:
+                                    if playercheck.takeball != -1:
+                                        ballData = playercheck.takeball
+                                        if player.takeball != -1:
+                                            playercheck.takeball = -1
+                                            self.quaffles[ballData].deprive(playercheck.direction, playercheck.position)
+                                        else:
+                                            playercheck.takeball = -1
+                                            player.takeball = ballData
+                                            self.quaffles[ballData].playerIndex = player.index
                                     playercheck.freeze()
                                 else:
                                     playercheck.maskTimer = 0

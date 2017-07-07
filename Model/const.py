@@ -3,7 +3,7 @@ ballRandomLower = 270
 ballRandomUpper = 470
 numberOfQuaffles = 2
 quaffleSize = 35
-scoreOfQuaffles = [1,0,4,8,12,16]
+scoreOfQuaffles = [10,-40,20,80,120,40]
 distToCatchQuaffle = 30
 
 
@@ -19,7 +19,7 @@ powerMax = 100
 playerBumpDistance = 25
 PlayerNum = 4
 MaxManualPlayer = 4
-powerAdd = [1,2]
+powerAdd = [2,3]
 
 
 #time const
@@ -30,14 +30,14 @@ invisibleTime = 300
 
 #cost const
 modeChangePower = 10
-barrierPowerCost = 18
-stunPowerCost = 30
-maskPowerCost = 20
-powerShotPowerCost = 18
+barrierPowerCost = 15
+stunPowerCost = 10
+maskPowerCost = 10
+powerShotPowerCost = 15
 
 #golden snitch
 goldenSnitchSize = 10
-scoreOfGoldenSnitch = 32
+scoreOfGoldenSnitch = 600
 distToCatchGoldenSnitch = 20
 goldenSnitchAlertRadius = 150
 
@@ -56,7 +56,7 @@ cornerGoalRangeLower = gameRangeLower + cornerGoalRange
 cornerGoalRangeUpper = gameRangeUpper - cornerGoalRange
 
 #barrier const
-barrierTimer = 120
+barrierTimer = 60
 barrierWidth = 180
 
 #stun const
@@ -76,6 +76,6 @@ quaffleSpeed = 3
 goldenSnitchSpeed = 8
 goldenSnitchTerminalSpeed = 3
 goldenSnitchSpeedDecayPerSec = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / initTime
-playerSpeed = [3,5,12]
+playerSpeed = [4,5,12]
 shotSpeed = 6
-depriveSpeed = 6
+depriveSpeed = quaffleSpeed

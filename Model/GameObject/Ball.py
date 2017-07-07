@@ -132,11 +132,13 @@ class Quaffle(OriginalBall):
     def tickCheck(self):
         tmpScore = 0
         tmpPlayerIndex = self.playerIndex
+        checkGoal = -1
         if self.state in (0, 2):
 
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
             self.position[1] += mc.dirConst[self.direction][1] * self.speed
             checkGoal = self.checkWhoseGoal(self.position)
+
 
             if checkGoal != mc.reachNothing:
                 self.playerIndex = -1
@@ -170,7 +172,7 @@ class Quaffle(OriginalBall):
             elif self.tickTime <= 0:
                 self.state = 0
                 self.tickTime = -1
-        return (tmpScore, tmpPlayerIndex)
+        return (tmpScore, tmpPlayerIndex, mc.scoreOfQuaffles[1], checkGoal)
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
