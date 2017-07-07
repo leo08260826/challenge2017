@@ -129,7 +129,7 @@ class Event_CallMe():
     """
     def __init__(self,PlayerIndex):
         self.name = "CallMe event"
-        self.playerIndex = PlayerIndex 
+        self.PlayerIndex = PlayerIndex 
     def __str__(self):
         return "Call me maybe"
 
