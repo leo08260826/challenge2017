@@ -75,7 +75,7 @@ class GameEngine(object):
                 self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
-        elif isinstance(event, Event_PlayerModeChange):
+        elif isinstance(event, Event_ModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_TimeUp):
             self.evManager.Post(Event_StateChange(STATE_PRERECORD))
@@ -159,6 +159,7 @@ class GameEngine(object):
         if distToGoldenSnitch:
             dist = min(distToGoldenSnitch)
             if dist[0] < distToCatchGoldenSnitch:
+                self.players[playerIndex].takeball = 100
                 self.players[dist[1]].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
@@ -206,7 +207,7 @@ class GameEngine(object):
                             quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
             player.direction = direction;
 
