@@ -155,7 +155,7 @@ class GraphicalView(object):
         self.screen.blit(self.ending_background, (0,0))
         rank = sorted(self.model.players, key=lambda player:-player.score)
         maxscore = max(rank[0].score, 1)
-        for i in range(PlayerNum):
+        for i in range(modelConst.PlayerNum):
             score = rank[i].score
             height = score / maxscore * 400
             color = Player_Colors[rank[i].index]
