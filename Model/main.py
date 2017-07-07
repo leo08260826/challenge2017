@@ -130,9 +130,13 @@ class GameEngine(object):
             player.tickCheck()
         # Update quaffles
         for quaffle in self.quaffles:
-            score, playerIndex = quaffle.tickCheck()
+            score, playerIndex, minusScore, beShotPlayer = quaffle.tickCheck()
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
+            if beShotPalyer in range(PlayerNum):
+                self.players[beShotPlayer].score += minusScore
+                if self.players[beShotPlayer].score < 0:
+                    self.players[beShotPlayer].score = 0
         # Update golden snitch
         self.goldenSnitch.tickCheck(self.players)
         # Update barriers
