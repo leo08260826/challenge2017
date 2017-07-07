@@ -16,7 +16,7 @@ class TeamAI( BaseAI ):
         return ((pos2[0]-pos1[0])**2+(pos2[1]-pos1[1])**2)**0.5        
 
     def IsInRebornArea(self):
-        pos = helper.getMyPos()
+        pos = self.helper.getMyPos()
         if pos[0] > 470 or pos[0] < 270 :
             return 0
         if pos[1] > 470 or pos[1] < 270 :
@@ -31,10 +31,10 @@ class TeamAI( BaseAI ):
             return 1
     
     def GetNearestPlayerInfo(self):
-        NearestId = helper.getNearPlayer()
-        Pos = helper.getPlayerPos(NearestId[0])
-        Mode = helper.getPlayerPos(NearestId[0])
-        Score = helper.getPlayerPos(NearestId[0])
+        NearestId = self.helper.getNearPlayer()
+        Pos = self.helper.getPlayerPos(NearestId[0])
+        Mode = self.helper.getPlayerPos(NearestId[0])
+        Score = self.helper.getPlayerPos(NearestId[0])
         Dist = self.CountTwoPointDist(helper.getMyPos,Pos)
         Info = []
         Info.append(Pos)
