@@ -233,7 +233,7 @@ class GraphicalView(object):
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.rain_images = [pg.image.load('View/image/visual_effect/rain/rain_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
         
@@ -304,13 +304,7 @@ class GraphicalView(object):
         else:
             direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
-        # mode
-        self.blit_at_center(self.mode_images[player.mode], position)
-        # ball
-        ball = player.takeball
-        if ball != -1:
-            self.blit_at_center(self.take_ball_images[ball], position)
-
+        
         #visual effect
         visual_temp = self.get_frame() % 12
         if visual_temp <=2:
@@ -330,6 +324,13 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
+        
+        # mode
+        self.blit_at_center(self.mode_images[player.mode], position)
+        # ball
+        ball = player.takeball
+        if ball != -1:
+            self.blit_at_center(self.take_ball_images[ball], position)
             
         # mask
         if player.isMask == True:
