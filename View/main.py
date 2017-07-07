@@ -176,7 +176,7 @@ class GraphicalView(object):
 
     def render_prerecord(self):
         self.render_play()
-        somewords = self.smallfont.render( 'GameSet', True, (256, 1, 1))
+        somewords = self.smallfont.render( 'GameSet', True, (255, 0, 1))
         self.blit_at_center(somewords, (ScreenSize[0]/2, ScreenSize[1]/2))
 
 
