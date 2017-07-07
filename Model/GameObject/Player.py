@@ -1,4 +1,5 @@
-from Model.GameObject.model_const import *
+from Model.const import *
+
 class player(object):
     def __init__(self, name, index, AI = None):
         # basic data
@@ -14,9 +15,9 @@ class player(object):
         self.skillcard = None
         self.takeball = -1
         if AI == None:
-        	self.is_AI = False
+            self.IS_AI = False
         else:
-        	self.is_AI = True
+            self.IS_AI = True
 
         self.AI = AI
 
@@ -41,26 +42,23 @@ class player(object):
         self.isVisible = True
         self.invisibleTimer = 0
 
-    def freeze(self):
+    def freeze(self, directionIn = 0):
 
         if self.isFreeze == True and self.freezeTimer < 58:
-            self.freezeTimer = freezeTime
+             self.freezeTimer = freezeTime
         else:
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
-                self.direction = (self.direction+4)%8
+                self.direction = ( self.direction + 4 ) % 8
                 if self.direction == 0:
                     self.direction = 8
-            else:
-                if self.position[0] < 370 and self.position[1] < 370:
-                    self.direction = 4
-                elif self.position[0] < 370 and self.position[1] >= 370:
-                    self.direction = 2
-                elif self.position[0] >= 370 and self.position[1] < 370:
-                    self.direction = 6
-                elif self.position[0] >= 370 and self.position[1] >= 370:
-                    self.direction = 8
+            elif directionIn != 0:
+                self.direction = directionIn
+            else :
+                self.direction = 0
+                
+                
 
 
     def hide(self):
@@ -87,7 +85,7 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            if self.freezeTimer < 58 and self.freezeTimer > 0:
+            if 0 < self.freezeTimer < 58 :
                 self.direction = 0
             elif self.freezeTimer == 0:
                 self.isFreeze = False
@@ -105,12 +103,15 @@ class player(object):
 
         speedmode = self.mode + self.isFreeze * 1
 
-        if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 47 \
-            or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 693 :
+        if self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode] < 40 \
+            or self.position[0] + dirConst[self.direction][0]*playerSpeed[speedmode]> 700 :
             self.direction = dirBounce[0][self.direction]
-        elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 47 \
-            or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 693 :
+        elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 40 \
+            or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 700 :
             self.direction = dirBounce[1][self.direction]
+        else :
+            self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
+            self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
 
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
@@ -123,8 +124,7 @@ class player(object):
                 self.isVisible = True
 
          
-        self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
-        self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
+        
 
     def bump(self, target):
         outData = []
@@ -137,15 +137,16 @@ class player(object):
                     selfFreeze = False
                 elif target.mode == 1:
                     targetFreeze = False
-
-            if selfFreeze == True:
-                self.freeze()   
+            selfNowDir = self.direction
+            targetNowDir = target.direction
+            if selfFreeze == True and self.isFreeze == False:
+                self.freeze(targetNowDir)   
                 if self.takeball != -1:
                     outData.append( (self.takeball, self.direction, self.position) )
                     self.takeball = -1
 
-            if targetFreeze == True:
-                target.freeze()
+            if targetFreeze == True and target.isFreeze == False:
+                target.freeze(selfNowDir)
                 if target.takeball != -1:
                     outData.append( (target.takeball, target.direction, target.position) )
                     target.takeball = -1
