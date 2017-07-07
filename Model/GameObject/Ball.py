@@ -132,6 +132,7 @@ class Quaffle(OriginalBall):
     def tickCheck(self):
         tmpScore = 0
         tmpPlayerIndex = self.playerIndex
+        checkGoal = -1
         if self.state in (0, 2):
 
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
