@@ -159,6 +159,7 @@ class GameEngine(object):
         if distToGoldenSnitch:
             dist = min(distToGoldenSnitch)
             if dist[0] < distToCatchGoldenSnitch:
+                self.players[playerIndex].takeball = 100
                 self.players[dist[1]].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
