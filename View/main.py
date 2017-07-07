@@ -41,6 +41,7 @@ class GraphicalView(object):
         self.rain_images = []
         self.boss_images = []
         self.fly_images = []
+        self.jump_status = []
 
         self.using_magic = []
         
@@ -70,6 +71,8 @@ class GraphicalView(object):
                 self.stuns[player.index] = [player.position, 0]
         elif isinstance(event, Event_SkillCard):
             play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
+        elif isinstance(event, Event_CallMe):
+            jumpstatus[event.PlayerIndex] = 0
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -248,6 +251,7 @@ class GraphicalView(object):
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
         self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
+        self.jump_status = [-1 for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
         directions = ['_leftup', '_left', '_leftdown', '_down']
@@ -327,9 +331,11 @@ class GraphicalView(object):
 
  #      player photo display
         if player.isFreeze :
-             self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20))
+             self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
         else:
-             self.screen.blit(self.player_photo[index],(pos_x+20,pos_y+20))
+             self.screen.blit(self.player_photo[index],(pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
+        if self.jump_status[index] != jump_frames:
+            self.jump_status[index] += 1
          
  #       icon display       
         if player.isFreeze:
