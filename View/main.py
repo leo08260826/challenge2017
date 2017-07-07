@@ -73,11 +73,13 @@ class GraphicalView(object):
         """
         Render the game menu.
         """
-        #music
-        pg.mixer.music.pause()
-        if pg.mixer.get_busy() == False:
-            self.menu_music.play()
-        
+        try:
+            #music
+            pg.mixer.music.pause()
+            if pg.mixer.get_busy() == False:
+                self.menu_music.play()
+        except:
+            pass
         # draw backgound
         menu = pg.image.load('View/image/background/menu.png')
         self.screen.blit(menu,(0,0))
@@ -96,10 +98,12 @@ class GraphicalView(object):
         """
         Render the game play.
         """
-        # music
-        pg.mixer.music.unpause()
-        self.menu_music.stop()
-        
+        try:
+            # music
+            pg.mixer.music.unpause()
+            self.menu_music.stop()
+        except:
+            pass
         # draw backgound
         self.render_background()
         self.render_timebar()
@@ -129,9 +133,11 @@ class GraphicalView(object):
         """
         Render the stop screen.
         """
-        # music
-        pg.mixer.music.pause()
-        
+        try:
+            # music
+            pg.mixer.music.pause()
+        except:
+            pass
         # draw background
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map_gray,(0,0))
@@ -162,21 +168,26 @@ class GraphicalView(object):
         """
         Set up the pygame graphical display and loads graphical resources.
         """
-        #music
-        pg.mixer.init()
-        self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
-        choose_music=random.randint(1,5)
-        pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
-        self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
-        for i in range(5):
-            self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
+        try:
+            #music
+            pg.mixer.init()
+            self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
+            choose_music=random.randint(1,5)
+            pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
+            self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
+            for i in range(5):
+                self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
 
-        self.menu_music.set_volume(menu_music_volume)
-        pg.mixer.music.set_volume(background_music_volume)
-        
-        #playmusic
-        pg.mixer.music.play(-1)
-        pg.mixer.music.pause()
+            self.menu_music.set_volume(menu_music_volume)
+            pg.mixer.music.set_volume(background_music_volume)
+            
+            #playmusic
+            pg.mixer.music.play(-1)
+            pg.mixer.music.pause()
+            
+        except:
+            pass
+        #playmusic_end
         
         result = pg.init()
         pg.font.init()
