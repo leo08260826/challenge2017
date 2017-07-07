@@ -31,12 +31,15 @@ class GraphicalView(object):
         self.sound = []
         self.menu_music = None
         self.shoot_music = None
+        self.record_music = None
+        self.record_haveplay = 0
 
         self.love_images = []
         self.light_images = []
         self.not18_images = []
         self.rose_images = []
         self.rain_images = []
+        self.boss_images = []
         
     def notify(self, event):
         """
@@ -99,9 +102,12 @@ class GraphicalView(object):
         Render the game play.
         """
         try:
+            
             # music
             pg.mixer.music.unpause()
             self.menu_music.stop()
+            self.record_music.stop()
+            self.record_haveplay = 0
         except:
             pass
         # draw backgound
@@ -158,6 +164,15 @@ class GraphicalView(object):
         """
         Render the Soreboard
         """
+        try:
+            pg.mixer.music.pause()
+            self.menu_music.stop()
+            if pg.mixer.get_busy() == False and self.record_haveplay == 0:
+                self.record_haveplay =1
+                self.record_music.play(0)
+        except:
+            pass
+        
         self.screen.blit(self.ending_background, (0,0))
         rank = sorted(self.model.players, key=lambda player:-player.score)
         maxscore = max(rank[0].score, 1)
@@ -187,14 +202,21 @@ class GraphicalView(object):
         """
         Set up the pygame graphical display and loads graphical resources.
         """
+        #music
         try:
-            #music
             pg.mixer.init()
             self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
-            choose_music=random.randint(1,5)
-            pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
+            if is_boss_music == 1:
+                self.record_music=pg.mixer.Sound('View/music/laugh.ogg')
+            else:
+                self.record_music=pg.mixer.Sound('View/music/goldenhorse.ogg')
+            choose_music=random.randint(1,4)
+            if is_final_music == 1 or is_boss_music == 1:
+                pg.mixer.music.load('View/music/finalgame.ogg')
+            else:
+                pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
             self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
-            for i in range(5):
+            for i in range(4):
                 self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
 
             self.menu_music.set_volume(menu_music_volume)
@@ -203,9 +225,8 @@ class GraphicalView(object):
             #playmusic
             pg.mixer.music.play(-1)
             pg.mixer.music.pause()
-            
         except:
-            pass
+            print("no audio")
         #playmusic_end
         
         result = pg.init()
@@ -256,8 +277,9 @@ class GraphicalView(object):
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.boss_images = [pg.image.load('View/image/visual_effect/boss2/boss2_'+str(i%4+1)+'.png') for i in range(4) ]
         
-        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
+        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -355,6 +377,8 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
+        if player_visual_effect[index] == 7:
+            self.blit_at_center(self.boss_images[visual_temp], position)
         
         # mode
         self.blit_at_center(self.mode_images[player.mode], position)
