@@ -75,7 +75,7 @@ class GraphicalView(object):
         elif isinstance(event, Event_SkillCard):
             self.play_magic(event.PlayerIndex,event.SkillIndex)
         elif isinstance(event, Event_CallMe):
-            jump_status[event.PlayerIndex] = 0
+            self.jump_status[event.PlayerIndex] = 0
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -351,7 +351,7 @@ class GraphicalView(object):
              self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
         else:
              self.screen.blit(self.player_photo[index],(pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
-        if self.jump_status[index] != jump_frames:
+        if self.jump_status[index] != jump_frame:
             self.jump_status[index] += 1
          
         if index == self.winner:
