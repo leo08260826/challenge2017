@@ -41,7 +41,6 @@ class GraphicalView(object):
         self.rain_images = []
         self.boss_images = []
         self.fly_images = []
-        self.rose_images = []
         
     def notify(self, event):
         """
@@ -67,6 +66,8 @@ class GraphicalView(object):
             player = self.model.players[event.PlayerIndex]
             if event.ActionIndex == 1 and player.mode == 0:
                 self.stuns[player.index] = [player.position, 0]
+        elif isinstance(event, Event_SkillCard):
+            play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -423,3 +424,8 @@ class GraphicalView(object):
 
     def get_frame(self):
         return int(pg.time.get_ticks()*FramePerSec/1000)
+    def play_magic(self,index_of_player,index_of_music):
+        try:
+            self.sound[index_of_music].play(0)
+        except:
+            pass
