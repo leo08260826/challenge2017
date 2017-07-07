@@ -73,7 +73,7 @@ class GraphicalView(object):
             if event.ActionIndex == 1 and player.mode == 0:
                 self.stuns[player.index] = [player.position, 0]
         elif isinstance(event, Event_SkillCard):
-            play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
+            self.play_magic(event.PlayerIndex,event.SkillIndex)
         elif isinstance(event, Event_CallMe):
             jump_status[event.PlayerIndex] = 0
         elif isinstance(event, Event_Quit):
@@ -454,15 +454,16 @@ class GraphicalView(object):
         return int(pg.time.get_ticks()*FramePerSec/1000)
 
     def play_magic(self,index_player,index_magic):
-        try:
-            self.sound[index_magic].play(0)
-        except:
-            pass
-        if not index_magic == 3:
-            self.using_magic[index_player] = index_magic
-            self.magic_timer[index_player] = 50
-        else:
-            self.winner = index_player
+        if (index_magic+10) in self.model.players[index_player].AI.skill:
+            try:
+                self.sound[index_magic].play(0)
+            except:
+                pass
+            if not index_magic == 3:
+                self.using_magic[index_player] = index_magic
+                self.magic_timer[index_player] = 50
+            else:
+                self.winner = index_player
             
     def render_magic_effect(self):
         
