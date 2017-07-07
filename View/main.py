@@ -145,12 +145,11 @@ class GraphicalView(object):
         # display words
         somewords = self.smallfont.render(
                     'Pause',
-                    True, (0, 255, 0))
+                    True, (255, 0, 0))
         (SurfaceX, SurfaceY) = somewords.get_size()
         pos_x = (ScreenSize[0] - SurfaceX)/2
         pos_y = (ScreenSize[1] - SurfaceY)/2
         self.screen.blit(somewords, (pos_x, pos_y))
-        self.render_record()
         # update surface
         pg.display.flip()
     
