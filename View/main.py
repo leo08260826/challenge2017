@@ -182,10 +182,10 @@ class GraphicalView(object):
             height = score / maxscore * 400
             color = Player_Colors[ranked[i].index]
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
-            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 50))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,600-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
-            self.screen.blit(self.rank_images[rank], (260+200*i,630))
+            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 50))
+            self.screen.blit(self.rank_images[rank], (260+200*i,630-height))
             score_surface = self.smallfont.render(str(score), True, color)
             self.blit_at_center(score_surface, (320+200*i, 625-height))
 
