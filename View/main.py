@@ -51,7 +51,7 @@ class GraphicalView(object):
             elif cur_state == model.STATE_STOP:
                 self.render_stop()
             elif cur_state == model.STATE_PRERECORD:
-                self.render_prerecord()
+                self.render_play()
             elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
@@ -150,13 +150,32 @@ class GraphicalView(object):
         pos_x = (ScreenSize[0] - SurfaceX)/2
         pos_y = (ScreenSize[1] - SurfaceY)/2
         self.screen.blit(somewords, (pos_x, pos_y))
+        self.render_record()
+        # update surface
+        pg.display.flip()
+    
+    def render_record(self):
+        """
+        Render the Soreboard
+        """
+        self.screen.blit(self.ending_background, (0,0))
+        rank = sorted(self.model.players, key=lambda player:-player.score)
+        maxscore = max(rank[0].score, 1)
+        for i in range(modelConst.PlayerNum):
+            score = rank[i].score
+            height = score / maxscore * 400
+            color = Player_Colors[rank[i].index]
+            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
+            self.screen.blit(self.pennant_images[rank[i].index], (260+200*i,600-height))
+            self.screen.blit(self.player_photo[rank[i].index], (260+200*i,600))
+            score_surface = self.smallfont.render(str(score), True, color)
+            self.blit_at_center(score_surface, (320+200*i, 625-height))
+
         # update surface
         pg.display.flip()
 
-    def render_prerecord(self):
-        pass
 
-    def render_record(self):
+    def render_prerecord(self):
         pass
 
     def display_fps(self):
@@ -199,11 +218,15 @@ class GraphicalView(object):
         self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
+        directions = ['_leftup', '_left', '_leftdown', '_down']
+        colors = ['blue', 'red', 'yellow', 'green']
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
-        self.time = pg.image.load('View/image/background/time.png')
+        self.time = pg.image.load('View/image/background/timebar.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
+        self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.pennant_images = [ pg.image.load('View/image/background/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -222,8 +245,7 @@ class GraphicalView(object):
         self.goldenSnitch_images = [ pg.image.load('View/image/ball/goldball_'+str(i+1)+'.png') for i in range(2) ]
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles)]
-        directions = ['_leftup', '_left', '_leftdown', '_down']
-        colors = ['blue', 'red', 'yellow', 'green']
+        self.take_goldenSnitch_image = pg.image.load('View/image/icon/icon_havegolden.png')
         self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
@@ -254,7 +276,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],635*(1-self.model.timer/modelConst.initTime),40])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+63,Pos_time[1],634*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
@@ -304,7 +326,16 @@ class GraphicalView(object):
         else:
             direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
-        
+
+        # mode
+        self.blit_at_center(self.mode_images[player.mode], position)
+        # ball
+        ball = player.takeball
+        if ball == 100:
+            self.blit_at_center(self.take_goldenSnitch_image, position)
+        elif ball != -1:
+            self.blit_at_center(self.take_ball_images[ball], position)
+
         #visual effect
         visual_temp = self.get_frame() % 12
         if visual_temp <=2:
