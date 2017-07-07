@@ -78,4 +78,4 @@ goldenSnitchTerminalSpeed = 3
 goldenSnitchSpeedDecayPerSec = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) / initTime
 playerSpeed = [3,5,12]
 shotSpeed = 6
-depriveSpeed = 5
+depriveSpeed = 6
