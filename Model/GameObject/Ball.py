@@ -48,13 +48,13 @@ class OriginalBall(object):
     def tickCheck(self):
         pass
 
-    def checkWhoseGoal(self, position):
+    def checkWhoseGoal(self, position, barriers):
         checkGoal = mc.reachNothing
         if position[0] < mc.gameRangeLower:
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 3
             elif position[1] > mc.cornerGoalRangeUpper:
-                checkGoal = 6                 
+                checkGoal = 6
             elif position[1] < mc.cornerGoalRangeLower:
                 checkGoal = 7
             else:
@@ -63,7 +63,7 @@ class OriginalBall(object):
             if mc.goalRangeLower < position[1] < mc.goalRangeUpper:
                 checkGoal = 1
             elif position[1] > mc.cornerGoalRangeUpper:
-                checkGoal = 5    
+                checkGoal = 5
             elif position[1] < mc.cornerGoalRangeLower:
                 checkGoal = 4
             else:
@@ -86,6 +86,11 @@ class OriginalBall(object):
                 checkGoal = 6
             else:
                 checkGoal = mc.reachWall
+        if not self.isStrengthened:
+            for barrier in barriers:
+                if checkGoal == barrier.playerIndex:
+                    checkGoal = mc.reachWall
+                    break
         return checkGoal
 
 class Quaffle(OriginalBall):
@@ -100,7 +105,7 @@ class Quaffle(OriginalBall):
         self.playerIndex = playerIndex
         self.state = 1
         self.isStrengthened = False
-        
+
         if prevPlayerIndex == -1 and prevState == 0:
             if playerIndex in self.hasCaught:
                 return True
@@ -115,12 +120,12 @@ class Quaffle(OriginalBall):
                 return False
         else:
             assert False, "Model's Ball Bug"
-            
+
 
     def deprive(self, direction, position):
         self.state = 0
         self.playerIndex = -1
-        self.isStrengtheend = False
+        self.isStrengthened = False
         if direction == 0:
             self.direction = 5
         else:
@@ -129,14 +134,16 @@ class Quaffle(OriginalBall):
         self.position[0] = position[0] + mc.dirConst[direction][0] * 35
         self.position[1] = position[1] + mc.dirConst[direction][1] * 35
 
-    def tickCheck(self):
+    def tickCheck(self, barriers):
         tmpScore = 0
         tmpPlayerIndex = self.playerIndex
+        checkGoal = -1
         if self.state in (0, 2):
 
             self.position[0] += mc.dirConst[self.direction][0] * self.speed
             self.position[1] += mc.dirConst[self.direction][1] * self.speed
-            checkGoal = self.checkWhoseGoal(self.position)
+            checkGoal = self.checkWhoseGoal(self.position, barriers)
+
 
             if checkGoal != mc.reachNothing:
                 self.playerIndex = -1
@@ -170,7 +177,7 @@ class Quaffle(OriginalBall):
             elif self.tickTime <= 0:
                 self.state = 0
                 self.tickTime = -1
-        return (tmpScore, tmpPlayerIndex)
+        return (tmpScore, tmpPlayerIndex, mc.scoreOfQuaffles[1], checkGoal)
 
 class GoldenSnitch(OriginalBall):
     def __init__(self, index):
@@ -245,7 +252,7 @@ class GoldenSnitch(OriginalBall):
             pendingDirection = [None, None]
             pendingDirection[0] , pendingDirection[1] = self.direction[1], self.direction[0]
             pendingPosition = [self.position[0] + pendingDirection[0], self.position[1] + pendingDirection[1]]
-            
+
             if (nearestPlayerDist ** 2 >\
                  (players[nearestPlayerIndex].position[0] - pendingPosition[0]) ** 2\
               + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2):

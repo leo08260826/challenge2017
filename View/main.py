@@ -43,7 +43,10 @@ class GraphicalView(object):
         self.fly_images = []
         self.jump_status = []
 
-        self.using_magic = []
+        self.using_magic = [-1,-1,-1,-1]
+        self.magic_timer = [0,0,0,0]
+
+        self.winner = -1
         
     def notify(self, event):
         """
@@ -122,6 +125,7 @@ class GraphicalView(object):
         self.render_background()
             
         self.render_timebar()
+        self.screen.blit(self.logo,(750,740))
 
         for i in range(modelConst.PlayerNum):
             self.render_player_status(i)
@@ -146,7 +150,9 @@ class GraphicalView(object):
                 self.screen.blit(self.new_barrier_images_horizontal,(280,720))
             elif barrier.playerIndex == 3:
                 self.screen.blit(self.new_barrier_images_vertical,(0,280))
-
+                
+        self.render_magic_effect()
+        
         # update surface
         pg.display.flip()
         
@@ -271,6 +277,7 @@ class GraphicalView(object):
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         self.pennant_images = [ pg.image.load('View/image/scoreboard/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
         self.rank_images = [ pg.image.load('View/image/scoreboard/ranktag_'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.logo = pg.image.load('View/image/logo/logo_proto.png')
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -298,7 +305,8 @@ class GraphicalView(object):
         self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
 
         # using magic
-        self.using_magic = [0,0,0,0]
+        self.magic_effect_image = [pg.image.load('View/image/magic/magic_'+str(i)+'.png') for i in range(3)]
+        self.win_hat = pg.image.load('View/image/magic/win_hat.png')
         
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
@@ -346,6 +354,9 @@ class GraphicalView(object):
         if self.jump_status[index] != jump_frames:
             self.jump_status[index] += 1
          
+        if index == self.winner:
+            self.screen.blit(self.win_hat,(pos_x+20,pos_y+20))
+            
  #       icon display       
         if player.isFreeze:
              self.screen.blit(self.player_status0,(pos_x+150,pos_y + 20))
@@ -416,13 +427,7 @@ class GraphicalView(object):
         if player_visual_effect[index] == 7:
             self.blit_at_center(self.boss_images[visual_temp], position)
         
-        # mode
-        self.blit_at_center(self.mode_images[player.mode], position)
-        # ball
-        ball = player.takeball
-        if ball != -1:
-            self.blit_at_center(self.take_ball_images[ball], position)
-            
+
         # mask
         if player.isMask == True:
             self.blit_at_center(self.mask_images[self.get_frame() % 12], position)
@@ -447,11 +452,29 @@ class GraphicalView(object):
 
     def get_frame(self):
         return int(pg.time.get_ticks()*FramePerSec/1000)
-    def play_magic(self,index_of_player,index_of_music):
+
+    def play_magic(self,index_player,index_magic):
         try:
-            self.sound[index_of_music].play(0)
+            self.sound[index_magic].play(0)
         except:
             pass
-        self.using_magic[index_of_player] = 1
+        if not index_magic == 3:
+            self.using_magic[index_player] = index_magic
+            self.magic_timer[index_player] = 50
+        else:
+            self.winner = index_player
+            
+    def render_magic_effect(self):
+        
+        for index in range(modelConst.PlayerNum):
+            if not self.using_magic[index] == -1:
+                self.magic_timer[index] = self.magic_timer[index] - 1
+                if self.magic_timer[index] == 0:
+                    self.using_magic[index] = -1
+
+        for index in range(modelConst.PlayerNum):
+            if not self.using_magic[index] == -1:
+                pos_y = 20 + 180*index
+                self.screen.blit(self.magic_effect_image[self.using_magic[index]],(0,pos_y))
 
         

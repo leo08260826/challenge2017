@@ -1,5 +1,6 @@
 from Model.const import *
-import math
+from math import sqrt
+from operator import itemgetter
 """
 define Application Programming Interface(API) 
 """
@@ -8,10 +9,11 @@ class Helper(object):
         self.model = model
         self.index = index
 
-    def CountDist(Pos1, Pos2):
+    # helper function
+    def CountDist(self, Pos1, Pos2):
         return ((Pos2[0]-Pos1[0])**2 + (Pos2[1]-Pos1[1])**2)
 
-    def CountTan(Pos1, Pos2):
+    def CountTan(self, Pos1, Pos2):
         if Pos2[0] == Pos1[0]:
             if Pos2[1] > Pos1[1]:
                 return 999
@@ -19,7 +21,7 @@ class Helper(object):
                 return -999
         return ((Pos2[1]-Pos1[1]) / (Pos2[0]-Pos1[0]))
 
-    def CountDistToLine(pos, CoeffX, CoeffY, Cons, Multier):
+    def CountDistToLine(self, pos, CoeffX, CoeffY, Cons, Multier):
         X = pos[0]
         Y = pos[1]
         ans = (CoeffX*X + CoeffY*Y + Cons) * Multier
@@ -62,34 +64,31 @@ class Helper(object):
                 return My_dir[5]
 
     def getScoringDir(self, goal_id):
-        x = sqrt2
+        x = sqrt(2)
         CoeffX=[9999,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0]
         CoeffY=[9999,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,1,1,1,1]
         Cons=[9999,130,300,480,650,830,1000,1180,1350,610,440,260,90,-90,-260,-440,-610,110,280,460,630,110,280,460,630]
         Multier=[9999,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,1,1,1,1,1,1,1,1]
         lineToGoal=[[2,3,10,11,18,19],[6,7,10,11,22,23],[6,7,14,15,18,19],[2,3,14,15,22,23],[4,5,9,20,21],[8,12,13,20,24],[4,5,16,17,24],[1,12,13,17,21]]
-        
 
-        flag = 99
         for i in range(8):
             if (self.checkScoring(goal_id,i)) == True:
-                flag = i
-        if (flag!=99):
-            return flag
+                return i
 
-        for i in range(len(lineToGoal)):
-            if (goal_id == i):
-                MinIndex = 0
-                Mini = 99999999
-                for j in range(len(lineToGoal[i])):
-                    tmp = self.CountDistToLine(self.players[self.index].position,CoeffX[lineToGoal[i][j]],CoeffY[lineToGoal[i][j]],-1*Cons[lineToGoal[i][j]],Multier[lineToGoal[i][j]])    
-                    if abs(tmp) < Mini:
-                        MinIndex = j
-                        Mini = tmp
-                        if tmp<0:
-                            Switchdir = 1
-                        else:
-                            Switchdir = 0
+        # for i in range(len(lineToGoal)):
+            # if (goal_id == i):
+        i = goal_id
+        MinIndex = 0
+        Mini = 99999999
+        for j in range(len(lineToGoal[i])):
+            tmp = self.CountDistToLine(self.getMyPos(),CoeffX[lineToGoal[i][j]],CoeffY[lineToGoal[i][j]],-1*Cons[lineToGoal[i][j]],Multier[lineToGoal[i][j]])    
+            if abs(tmp) < Mini:
+                MinIndex = lineToGoal[i][j]
+                Mini = tmp
+                if tmp<0:
+                    Switchdir = 1
+                else:
+                    Switchdir = 0
 
         origin = [CoeffX[MinIndex],CoeffY[MinIndex]]
         if origin[0] == 0 :
@@ -114,10 +113,17 @@ class Helper(object):
                 return 6
 
     def getNearestGoal(self, pos):
-        board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
-        gate = [((board[2]+board[3])/2,board[0]),(board[5],(board[2]+board[3])/2),((board[2]+board[3])/2,board[5]),\
-                 (board[0],(board[2]+board[3])/2),((board[4]+board[5])/2,(board[0]+board[1])/2),((board[4]+board[5])/2,(board[4]+board[5])/2),\
-                 ((board[0]+board[1])/2,(board[4]+board[5])/2),((board[0],board[1])/2,(board[0]+board[1])/2)]
+        board = [gameRangeLower,cornerGoalRangeLower,goalRangeLower,goalRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
+        gate = [
+            ((board[2]+board[3])/2,board[0]),
+            (board[5],(board[2]+board[3])/2),
+            ((board[2]+board[3])/2,board[5]),
+            (board[0],(board[2]+board[3])/2),
+            ((board[4]+board[5])/2,(board[0]+board[1])/2),
+            ((board[4]+board[5])/2,(board[4]+board[5])/2),
+            ((board[0]+board[1])/2,(board[4]+board[5])/2),
+            ((board[0]+board[1])/2,(board[0]+board[1])/2)
+        ]
         MinIndex = 0
         Mini = 99999999
         for i in range(8):
@@ -153,7 +159,7 @@ class Helper(object):
         return Pos_list
 
     def getGoldBallPos(self):
-        return self.goldenSnitch.position
+        return list(self.model.goldenSnitch.position)
         
     def getNearBallInfo(self):
         Info_list=[]
@@ -179,7 +185,7 @@ class Helper(object):
         return self.index
 
     def getMyPos(self):
-        return self.model.players[self.index].position
+        return list(self.model.players[self.index].position)
 
     def getMyDir(self):
         return self.model.players[self.index].direction
@@ -306,7 +312,7 @@ class Helper(object):
 
     # player info
     def getPlayerPos(self, player_id):
-        return self.model.players[player_id].position
+        return list(self.model.players[player_id].position)
 
     def getPlayerDir(self, player_id):
         return self.model.players[player_id].direction
@@ -366,13 +372,5 @@ class Helper(object):
     def askGodPos(self, god_name):
         pass
 
-    def callme(self):
+    def callme(self)
         pass
-
-    #skillcard
-    def SkillHide(self):
-        self.model.evManager.Post(Event_SkillCard(self.index,0))
-    def dkillDementor(slef):
-        self.model.evManager.Post(Event_SkillCard(self.index,1))
-    def skillStunAll(self):
-        self.model.evManager.Post(Event_SkillCard(self.index,2))

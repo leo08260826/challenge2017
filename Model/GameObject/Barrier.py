@@ -8,11 +8,8 @@ def cross(a, b):
 class Barrier(object):
     def __init__(self, playerIndex, position, direction):
         self.playerIndex = playerIndex
-        self.position = position[:]
-        if direction == 0:
-            self.direction = 5
-        else:
-            self.direction = direction
+        self.position = list(position)
+        self.direction = direction
         self.timer = barrierTimer
 
     def tickCheck(self):
@@ -24,6 +21,7 @@ class Barrier(object):
             return True
         else:
             return False
+
     def inactive(self):
         self.timer = -1
 
@@ -31,7 +29,6 @@ class Barrier(object):
         if isinstance(target, Quaffle) and self.playerIndex == target.playerIndex:
             # Don't block self's quaffle
             return False
-
         a = []
         b = []
         c = []
