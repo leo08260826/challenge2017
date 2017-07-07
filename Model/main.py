@@ -130,7 +130,10 @@ class GameEngine(object):
             player.tickCheck()
         # Update quaffles
         for quaffle in self.quaffles:
-            score, playerIndex, minusScore, beShotPlayer = quaffle.tickCheck()
+            score, playerIndex, minusScore, beShotPlayer = quaffle.tickCheck(self.barriers)
+            for barrier in self.barriers:
+                if beShotPlayer == barrier.playerIndex:
+                    barrier.inactive()
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
             if beShotPlayer in range(PlayerNum):
@@ -141,7 +144,7 @@ class GameEngine(object):
         self.goldenSnitch.tickCheck(self.players)
         # Update barriers
         for barrier in self.barriers:
-            # if barrier is inacitve, remove it.
+            # if barrier is inactive, remove it.
             if not barrier.tickCheck():
                 self.barriers.remove(barrier)
 
@@ -185,6 +188,7 @@ class GameEngine(object):
                         hasCaught = quaffle.catch(playerIndex)
                         if not hasCaught:
                             self.players[playerIndex].score += scoreOfQuaffles[tmpQuaffleState]
+        """
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
@@ -209,6 +213,7 @@ class GameEngine(object):
                             quaffle.direction = dirBounce[0][quaffle.direction]
                         if barrier.direction in (4,8):
                             quaffle.direction = dirBounce[3][quaffle.direction]
+    """
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
