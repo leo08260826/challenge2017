@@ -66,6 +66,8 @@ class GraphicalView(object):
             player = self.model.players[event.PlayerIndex]
             if event.ActionIndex == 1 and player.mode == 0:
                 self.stuns[player.index] = [player.position, 0]
+        elif isinstance(event, Event_SkillCard):
+            play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -225,6 +227,7 @@ class GraphicalView(object):
                 self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
 
             self.menu_music.set_volume(menu_music_volume)
+            self.record_music.set_volume(record_music_volume)
             pg.mixer.music.set_volume(background_music_volume)
             
             #playmusic
@@ -285,6 +288,7 @@ class GraphicalView(object):
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
         self.boss_images = [pg.image.load('View/image/visual_effect/boss2/boss2_'+str(i%4+1)+'.png') for i in range(4) ]
         self.fly_images = [pg.image.load('View/image/visual_effect/fly/fly_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.rose_images = [pg.image.load('View/image/visual_effect/rose/rose_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
         
@@ -382,6 +386,8 @@ class GraphicalView(object):
             self.blit_at_center(self.light_images[visual_temp], position)
         if player_visual_effect[index] == 3:
             self.blit_at_center(self.not18_images[visual_temp], position)
+        if player_visual_effect[index] == 4:
+            self.blit_at_center(self.rose_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
         if player_visual_effect[index] == 6:
@@ -423,3 +429,8 @@ class GraphicalView(object):
 
     def get_frame(self):
         return int(pg.time.get_ticks()*FramePerSec/1000)
+    def play_magic(self,index_of_player,index_of_music):
+        try:
+            self.sound[index_of_music].play(0)
+        except:
+            pass

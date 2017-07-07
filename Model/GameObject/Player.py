@@ -1,7 +1,7 @@
 from Model.const import *
 
 class player(object):
-    def __init__(self, name, index, AI = None):
+    def __init__(self, name, index):
         # basic data
         self.name = name
         self.index = index
@@ -14,12 +14,8 @@ class player(object):
         self.score = 0
         self.skillcard = None
         self.takeball = -1
-        if AI == None:
-            self.IS_AI = False
-        else:
-            self.IS_AI = True
-
-        self.AI = AI
+        self.IS_AI = False
+        self.AI = None
 
         # move data
         self.position = list(playerInitPos[index])

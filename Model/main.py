@@ -223,18 +223,21 @@ class GameEngine(object):
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
-        if self.players[playerIndex] != None and self.AIList[playerIndex].skill:
-            player = self.players[playerIndex]
+        if self.players[playerIndex] != None and skillIndex in self.players[playerIndex].AI.skill:
+            Nowplayer = self.players[playerIndex]
             if skillIndex == 0:
-                player.isvisible = False
-                player.invisibleTimer =  invisibleTim
+                Nowplayer.isvisible = False
+                Nowplayer.invisibleTimer = invisibleTime
             elif skillIndex == 1:
                 for player in self.players:
-                    player.power = 0
+                    if player.index !=  playerIndex:
+                        player.power = 0
             elif skillIndex == 2:
                 for player in self.players:
-                    player.isFreeze = True
-                    player.freezeTimer = 57
+                    if player.index !=  playerIndex:
+                        player.isFreeze = True
+                        player.freezeTimer = 57
+            self.players[playerIndex].AI.skill.remove(skillIndex)
 
 
 

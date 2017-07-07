@@ -22,10 +22,13 @@ class Interface(object):
         Receive events posted to the message queue. 
         """
         if isinstance(event, Event_EveryTick):
-            self.API_play()
+            cur_state = self.model.state.peek()
+            if cur_state == model.STATE_PLAY:
+                self.API_play()
         elif isinstance(event, Event_Quit):
             pass
-        elif isinstance(event, Event_Initialize):
+        elif isinstance(event, Event_Initialize) or \
+             isinstance(event, Event_Restart):
             self.initialize()
     
     def API_play(self):
