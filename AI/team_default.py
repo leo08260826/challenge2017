@@ -6,4 +6,4 @@ class TeamAI( BaseAI ):
         self.skill = []
 
     def decide( self ):
-        return DIR_U
+        return AI_U

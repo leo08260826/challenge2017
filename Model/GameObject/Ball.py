@@ -1,5 +1,5 @@
 import random
-import Model.GameObject.model_const as mc
+import Model.const as mc
 
 class OriginalBall(object):
     def __init__(self, index):
@@ -31,8 +31,8 @@ class OriginalBall(object):
         self.state = 2
         self.speed = mc.shotSpeed
         # add a safe distance to avoid re-catch the ball after shooting
-        self.position[0] = position[0] + mc.dirConst[direction][0] * 35
-        self.position[1] = position[1] + mc.dirConst[direction][1] * 35
+        self.position[0] = position[0] + mc.dirConst[self.direction][0] * 35
+        self.position[1] = position[1] + mc.dirConst[self.direction][1] * 35
 
     def modifyPosition(self):
         for index, element in enumerate(self.position):
@@ -100,6 +100,7 @@ class Quaffle(OriginalBall):
 
     def deprive(self, direction, position):
         self.state = 0
+        self.playerIndex = -1
         self.isStrengtheend = False
         if direction == 0:
             self.direction = 5
@@ -123,12 +124,14 @@ class Quaffle(OriginalBall):
                 self.state = 0
                 self.isStrengthened = False
                 self.speed = mc.quaffleSpeed
-                if checkGoal == self.playerIndex:
+                if checkGoal == tmpPlayerIndex:
                     tmpScore = 0
                 elif checkGoal in (4, 5, 6, 7):
                     tmpScore = mc.scoreOfQuaffles[5]
-                elif (checkGoal - self.playerIndex) in (-2, 2):
+                elif (checkGoal - tmpPlayerIndex) in (-2, 2):
                     tmpScore = mc.scoreOfQuaffles[4]
+                elif checkGoal == mc.reachWall:
+                    tmpScore = 0
                 else:
                     tmpScore = mc.scoreOfQuaffles[3]
 
@@ -164,15 +167,26 @@ class GoldenSnitch(OriginalBall):
                 self.position[index] = mc.gameRangeUpper * 2 - element
                 self.direction[index] *= -1
 
+    def isInWall(self, pos):
+        for element in pos:
+            if element < mc.gameRangeLower or element > mc.gameRangeUpper:
+                return True
+
+        return False
+
+
     def tickCheck(self, players):
         fleeDirectionList = []
-        # the golden snitch will flee if some player's distance to it is smaller than alertRadius
-        alertRadius = 50
-
-        for player in players:
+        nearestPlayerDist = 10000
+        nearestPlayerIndex = None
+        self.speed -= mc.goldenSnitchSpeedDecayPerTick
+        for index, player in enumerate(players):
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
-            if (distance <= alertRadius):
+            if (distance <= mc.goldenSnitchAlertRadius):
                 fleeDirectionList.append((self.position[0] - player.position[0], self.position[1] - player.position[1]))
+            if distance < nearestPlayerDist:
+                nearestPlayerDist = distance
+                nearestPlayerIndex = index
 
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
@@ -187,7 +201,7 @@ class GoldenSnitch(OriginalBall):
             vectorSum[1] += vector[1]
 
 
-        # if 2 players are approaching form opposite direction
+        # if 2 players are approaching from opposite direction
         if (len(fleeDirectionList) >= 2 and\
             (((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5) == 0 or\
              (fleeDirectionList[0][0] / fleeDirectionList[1][0] == fleeDirectionList[1][0] / fleeDirectionList[1][1]\
@@ -199,6 +213,24 @@ class GoldenSnitch(OriginalBall):
         scaleFactor = self.speed / ((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5)
         self.direction[0] = vectorSum[0] * scaleFactor
         self.direction[1] = vectorSum[1] * scaleFactor
+
+        pendingPosition = [self.position[0] + self.direction[0], self.position[1] + self.direction[1]]
+
+        # check if pendingPos is in wall
+        if (self.isInWall(pendingPosition)):
+            # if still in wall, rotate direction +90 degree, and check if it is moving away from the nearest threat
+            pendingDirection = [None, None]
+            pendingDirection[0] , pendingDirection[1] = self.direction[1], self.direction[0]
+            pendingPosition = [self.position[0] + pendingDirection[0], self.position[1] + pendingDirection[1]]
+            
+            if (nearestPlayerDist ** 2 >\
+                 (players[nearestPlayerIndex].position[0] - pendingPosition[0]) ** 2\
+              + (players[nearestPlayerIndex].position[1] - pendingPosition[1]) ** 2):
+                # if rotating +90 degree is not moving away from threat, rotate -90 degree instead
+                pendingDirection[0] *= -1
+                pendingDirection[1] *= -1
+
+            self.direction[0], self.direction[1] = pendingDirection[0], pendingDirection[1]
 
         # update position
         self.position[0] += self.direction[0]

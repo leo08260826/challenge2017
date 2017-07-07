@@ -1,8 +1,10 @@
 # State machine constants for the StateMachine class below
+STATE_RESTART = 0
 STATE_MENU = 1
 STATE_STOP = 2
 STATE_PLAY = 3
-STATE_RECORD = 4
+STATE_PRERECORD = 4
+STATE_RECORD = 5
 
 class StateMachine(object):
     """
@@ -43,3 +45,9 @@ class StateMachine(object):
         """
         self.statestack.append(state)
         return state
+
+    def clear(self):
+        """
+        Clear the stack.
+        """
+        self.statestack = []

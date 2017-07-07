@@ -17,6 +17,12 @@ class Event_Initialize(BaseEvent):
     def __str__(self):
         return self.name
 
+class Event_Restart(BaseEvent):
+    def __init__(self):
+        self.name = "Restart event"
+    def __str__(self):
+        return self.name
+
 class Event_Quit(BaseEvent):
     """
     Quit event.
@@ -101,6 +107,17 @@ class Event_Action(BaseEvent):
     """
     def __init__(self, player, action):
         self.name = "Action event"
+        self.PlayerIndex = player
+        self.ActionIndex = action
+    def __str__(self):
+        return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name, self.PlayerIndex, self.ActionIndex)
+
+class Event_ConfirmAction():
+    """
+    Confirm action event.
+    """
+    def __init__(self, player, action):
+        self.name = "ConfirmAction event"
         self.PlayerIndex = player
         self.ActionIndex = action
     def __str__(self):

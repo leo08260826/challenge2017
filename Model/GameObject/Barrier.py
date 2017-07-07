@@ -1,5 +1,6 @@
 import random
-from Model.GameObject.model_const import *
+from Model.const import *
+from Model.GameObject.Ball import *
 
 def cross(a, b):
     return a[0] * b[1] - a[1] * b[0]
@@ -27,6 +28,10 @@ class Barrier(object):
         self.timer = -1
 
     def bump(self, target, speed):
+        if isinstance(target, Quaffle) and self.playerIndex == target.playerIndex:
+            # Don't block self's quaffle
+            return False
+
         a = []
         b = []
         c = []

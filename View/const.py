@@ -1,3 +1,6 @@
+GameCaption = "Challenge 2017"
+ScreenSize = (1200, 800)
+
 # FPS
 FramePerSec = 30
 
@@ -15,9 +18,6 @@ Player_Colors = [Color_Blue, Color_Red, Color_Yellow, Color_Green]
 Pos_map = (0, 0)
 Pos_time = (20, 740)
 
-# some rand
-biasrand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
-
 # barrier
 barrier_size = 180
 
@@ -28,5 +28,5 @@ menu_music_volume = 0.8
 Player_Size = ( 100, 100)
 
 # visual effect
-## none = 0 , love = 1 , light = 2 , not18 = 3
-player_visual_effect = [3,1,2,0]
+## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
+player_visual_effect = [3,5,2,1]
