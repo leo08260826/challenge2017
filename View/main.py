@@ -165,8 +165,10 @@ class GraphicalView(object):
             height = score / maxscore * 400
             color = Player_Colors[ranked[i].index]
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
+            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 50))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,600-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
+            self.screen.blit(self.rank_images[rank], (260+200*i,630))
             score_surface = self.smallfont.render(str(score), True, color)
             self.blit_at_center(score_surface, (320+200*i, 625-height))
 
@@ -228,7 +230,8 @@ class GraphicalView(object):
         self.background = pg.image.load('View/image/background/backgroundfill.png')
         self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
-        self.pennant_images = [ pg.image.load('View/image/background/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
+        self.pennant_images = [ pg.image.load('View/image/scoreboard/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
+        self.rank_images = [ pg.image.load('View/image/background/ranktag_'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
