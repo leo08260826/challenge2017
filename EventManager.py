@@ -127,8 +127,9 @@ class Event_CallMe():
     """
     CallMe event
     """
-    def __init__(self):
+    def __init__(self,PlayerIndex):
         self.name = "CallMe event"
+        self.playerIndex = PlayerIndex 
     def __str__(self):
         return "Call me maybe"
 

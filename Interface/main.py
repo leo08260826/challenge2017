@@ -70,7 +70,7 @@ class Interface(object):
                     if SKILLCARD_2 in self.model.players[player.index].AI.skill:
                         self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
                 elif decide == AI_CallMe:
-                    self.evManager.Post(Event_CallMe())
+                    self.evManager.Post(Event_CallMe(player.index))
                 elif decide == AI_NoUseSkillCard:
                     self.evManager.Post(Event_NoUseSkillCard())
         
