@@ -138,7 +138,14 @@ class GraphicalView(object):
         self.render_goldenSnitch()
 
         for barrier in self.model.barriers:
-            self.render_barrier(barrier)
+            if barrier.playerIndex == 0:
+                self.screen.blit(self.new_barrier_images_horizontal,(280,0))
+            elif barrier.playerIndex == 1:
+                self.screen.blit(self.new_barrier_images_vertical,(720,280))
+            elif barrier.playerIndex == 2:
+                self.screen.blit(self.new_barrier_images_horizontal,(280,720))
+            elif barrier.playerIndex == 3:
+                self.screen.blit(self.new_barrier_images_vertical,(0,280))
 
         # update surface
         pg.display.flip()
@@ -276,6 +283,8 @@ class GraphicalView(object):
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
         self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(modelConst.PlayerNum) ]
+        self.new_barrier_images_vertical = pg.image.load('View/image/barrier/barrier_vertical.png')
+        self.new_barrier_images_horizontal = pg.image.load('View/image/barrier/barrier_horizontal.png')
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(modelConst.numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles) ]
@@ -431,9 +440,6 @@ class GraphicalView(object):
             frame = self.get_frame() % 2
             self.blit_at_center(self.goldenSnitch_images[frame], self.model.goldenSnitch.position)
             
-
-    def render_barrier(self,barrier):
-        self.blit_at_center(self.barrier_images[barrier.playerIndex][barrier.direction], barrier.position)
         
     def blit_at_center(self, surface, position):
         (Xsize, Ysize) = surface.get_size()
