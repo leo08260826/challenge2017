@@ -216,8 +216,8 @@ class GraphicalView(object):
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
         self.ending_background = pg.image.load('View/image/background/ending.png')
-        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(PlayerNum) ]
-        self.pennant_images = [ pg.image.load('View/image/background/pennant_'+colors[i]+'.png') for i in range(PlayerNum) ]
+        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.pennant_images = [ pg.image.load('View/image/background/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
