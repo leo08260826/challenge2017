@@ -123,6 +123,24 @@ class Event_ConfirmAction():
     def __str__(self):
         return "{0} => Playerindex={1}, ActionIndex={2}".format(self.name, self.PlayerIndex, self.ActionIndex)
 
+class Event_CallMe():
+    """
+    CallMe event
+    """
+    def __init__(self):
+        self.name = "CallMe event"
+    def __str__(self):
+        return "Call me maybe"
+
+class Event_NoUseSkillCard():
+    """
+    NouseSkillCard Event
+    """
+    def __init__(self):
+        self.name = "NoUseSkillCard event"
+    def __str__(self):
+        return "This is a trash"
+
 class EventManager(object):
     """
     We coordinate communication between the Model, View, and Controller.

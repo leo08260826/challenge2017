@@ -15,3 +15,6 @@ AI_MODECHANGE = 12
 AI_SKILLCARD_HIDE = 13 # invisible
 AI_SKILLCARD_DEMENTOR = 14 # empty power
 AI_SKILLCARD_STUNALL = 15 # stun all enermy
+
+AI_CallMe = 16
+AI_NoUseSkillCard = 17
