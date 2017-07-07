@@ -22,6 +22,8 @@ Pos_time = (20, 740)
 barrier_size = 180
 
 # music volume
+is_final_music = 0
+is_boss_music = 0
 background_music_volume = 0.8
 menu_music_volume = 0.8
 
@@ -29,4 +31,5 @@ Player_Size = ( 65, 65)
 
 # visual effect
 ## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
-player_visual_effect = [3,5,2,1]
+## fly = 6 , boss = 7
+player_visual_effect = [3,7,6,1]

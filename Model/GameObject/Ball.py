@@ -18,6 +18,8 @@ class OriginalBall(object):
         self.playerIndex = -1
         self.tickTime = -1
         self.isStrengthened = False
+        self.hasCaught = []
+        self.hasPassed = [[False] * 4 for _ in range(4)]
 
     def throw(self, direction, position, isStrengthened = False):
         # invalid request prevention
@@ -45,7 +47,6 @@ class OriginalBall(object):
 
     def tickCheck(self):
         pass
-
 
     def checkWhoseGoal(self, position):
         checkGoal = mc.reachNothing
@@ -94,9 +95,27 @@ class Quaffle(OriginalBall):
         self.ballsize = mc.quaffleSize / 2
 
     def catch(self, playerIndex):
+        prevPlayerIndex = self.playerIndex
+        prevState = self.state
         self.playerIndex = playerIndex
         self.state = 1
         self.isStrengthened = False
+        
+        if prevPlayerIndex == -1 and prevState == 0:
+            if playerIndex in self.hasCaught:
+                return True
+            else:
+                self.hasCaught.append(playerIndex)
+                return False
+        elif prevPlayerIndex != -1 and prevState == 2:
+            if self.hasPassed[prevPlayerIndex][playerIndex]:
+                return True
+            else:
+                self.hasPassed[prevPlayerIndex][playerIndex] = True
+                return False
+        else:
+            assert False, "Model's Ball Bug"
+            
 
     def deprive(self, direction, position):
         self.state = 0
@@ -138,6 +157,8 @@ class Quaffle(OriginalBall):
                 if checkGoal == mc.reachWall:
                     self.modifyPosition()
                 else:
+                    self.hasCaught = []
+                    self.hasPassed = [[False] * 4 for _ in range(4)]
                     self.tickTime = 60
                     self.state = 3
                     self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
@@ -174,12 +195,14 @@ class GoldenSnitch(OriginalBall):
 
         return False
 
+    def decaySpeed(self):
+        self.speed -= mc.goldenSnitchSpeedDecayPerSec
 
     def tickCheck(self, players):
         fleeDirectionList = []
         nearestPlayerDist = 10000
         nearestPlayerIndex = None
-        self.speed -= mc.goldenSnitchSpeedDecayPerTick
+
         for index, player in enumerate(players):
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
             if (distance <= mc.goldenSnitchAlertRadius):

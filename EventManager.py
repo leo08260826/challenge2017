@@ -80,7 +80,7 @@ class Event_Move(BaseEvent):
     def __str__(self):
         return "{0} => Playerindex={1}, DirectionTo:{2}".format(self.name, self.PlayerIndex, self.Direction)
 
-class Event_PlayerModeChange(BaseEvent):
+class Event_ModeChange(BaseEvent):
     """
     Mode change event.
     """

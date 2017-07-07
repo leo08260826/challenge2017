@@ -68,13 +68,14 @@ class GameEngine(object):
                 self.UpdateObjects()
                 self.Bump()
         elif isinstance(event, Event_EverySec):
+            self.goldenSnitch.decaySpeed()
             if self.state.peek() == STATE_PLAY:
                 self.timer -= 1
             if self.timer <= 0:
                 self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
-        elif isinstance(event, Event_PlayerModeChange):
+        elif isinstance(event, Event_ModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
         elif isinstance(event, Event_TimeUp):
             self.evManager.Post(Event_StateChange(STATE_PRERECORD))
@@ -86,7 +87,6 @@ class GameEngine(object):
                 self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
-        self.AIList = []
         self.players = []
         self.quaffles = []
         self.barriers = []
@@ -157,9 +157,10 @@ class GameEngine(object):
                 distToGoldenSnitch.append((distSquare ** (1/2), player.index))
 
         if distToGoldenSnitch:
-            dist = min(distToGoldenSnitch)
-            if dist[0] < distToCatchGoldenSnitch:
-                self.players[dist[1]].score += scoreOfGoldenSnitch
+            dist, playerIndex = min(distToGoldenSnitch)
+            if dist < distToCatchGoldenSnitch:
+                self.players[playerIndex].takeball = 100
+                self.players[playerIndex].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
         # player to quaffle
@@ -175,9 +176,11 @@ class GameEngine(object):
                     dist = min(distToQuaffle)
                     playerIndex = dist[1]
                     if dist[0] < distToCatchQuaffle:
-                        self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
                         self.players[playerIndex].takeball = quaffle.index
-                        quaffle.catch(playerIndex)
+                        tmpQuaffleState = quaffle.state
+                        hasCaught = quaffle.catch(playerIndex)
+                        if not hasCaught:
+                            self.players[playerIndex].score += scoreOfQuaffles[tmpQuaffleState]
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
@@ -204,12 +207,12 @@ class GameEngine(object):
                             quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:
             player = self.players[playerIndex]
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower and self.players[playerIndex].isFreeze == False:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
