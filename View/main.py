@@ -211,7 +211,7 @@ class GraphicalView(object):
         colors = ['blue', 'red', 'yellow', 'green']
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
-        self.time = pg.image.load('View/image/background/time.png')
+        self.time = pg.image.load('View/image/background/timebar.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
         self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
@@ -264,7 +264,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],637*(1-self.model.timer/modelConst.initTime),40])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+63,Pos_time[1],634*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
