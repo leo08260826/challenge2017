@@ -40,6 +40,7 @@ class GraphicalView(object):
         self.rose_images = []
         self.rain_images = []
         self.boss_images = []
+        self.fly_images = []
         
     def notify(self, event):
         """
@@ -278,6 +279,7 @@ class GraphicalView(object):
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
         self.boss_images = [pg.image.load('View/image/visual_effect/boss2/boss2_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.fly_images = [pg.image.load('View/image/visual_effect/fly/fly_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
         
@@ -377,6 +379,8 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
+        if player_visual_effect[index] == 6:
+            self.blit_at_center(self.fly_images[visual_temp], position)
         if player_visual_effect[index] == 7:
             self.blit_at_center(self.boss_images[visual_temp], position)
         

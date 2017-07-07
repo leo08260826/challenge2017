@@ -31,5 +31,5 @@ Player_Size = ( 65, 65)
 
 # visual effect
 ## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
-## boss = 7
-player_visual_effect = [3,7,2,1]
+## fly = 6 , boss = 7
+player_visual_effect = [3,7,6,1]
