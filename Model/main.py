@@ -246,7 +246,9 @@ class GameEngine(object):
                     if player.index !=  playerIndex:
                         player.isFreeze = True
                         player.freezeTimer = 57
-            self.players[playerIndex].AI.skill.remove(skillIndex)
+            addindex = self.players[playerIndex].AI.skill.index(skillIndex)
+            self.players[playerIndex].AI.skill[addindex] += 10
+
 
 
 
