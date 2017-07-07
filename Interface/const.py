@@ -7,11 +7,11 @@ AI_LD = 6
 AI_L  = 7
 AI_LU = 8
 
-AI_ACTION_1 = 9
-AI_ACTION_2 = 10
-AI_ACTION_3 = 11
+AI_ACTION_1 = 9 # power throw / barrier
+AI_ACTION_2 = 10 # stun / mask
+AI_THROW = 11 # general throw
 
 AI_MODECHANGE = 12
-AI_SKILLCARD_1 = 13
-AI_SKILLCARD_2 = 14
-AI_SKILLCARD_3 = 15
+AI_SKILLCARD_HIDE = 13 # invisible
+AI_SKILLCARD_DEMENTOR = 14 # empty power
+AI_SKILLCARD_STUNALL = 15 # stun all enermy
