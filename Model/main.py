@@ -223,14 +223,14 @@ class GameEngine(object):
             player.power -= modeChangePower
 
     def ApplySkillCard(self, playerIndex, skillIndex):
-        # 0 = invisible
+        # 0 = inVisible
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
         if self.players[playerIndex] != None and skillIndex in self.players[playerIndex].AI.skill:
             Nowplayer = self.players[playerIndex]
             if skillIndex == 0:
-                Nowplayer.isvisible = False
+                Nowplayer.isVisible = False
                 Nowplayer.invisibleTimer = invisibleTime
             elif skillIndex == 1:
                 for player in self.players:
