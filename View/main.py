@@ -351,7 +351,7 @@ class GraphicalView(object):
         player = self.model.players[index]
         position = player.position
         # body
-        if player.isVisible == True:
+        if player.isVisible == False:
             direction = player.direction
             self.blit_at_center(self.player_invisible_images[index][direction], position)
         elif player.isFreeze == 1:
