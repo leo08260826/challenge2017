@@ -51,7 +51,7 @@ class GraphicalView(object):
             elif cur_state == model.STATE_STOP:
                 self.render_stop()
             elif cur_state == model.STATE_PRERECORD:
-                self.render_prerecord()
+                self.render_play()
             elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
@@ -73,11 +73,13 @@ class GraphicalView(object):
         """
         Render the game menu.
         """
-        #music
-        pg.mixer.music.pause()
-        if pg.mixer.get_busy() == False:
-            self.menu_music.play()
-        
+        try:
+            #music
+            pg.mixer.music.pause()
+            if pg.mixer.get_busy() == False:
+                self.menu_music.play()
+        except:
+            pass
         # draw backgound
         menu = pg.image.load('View/image/background/menu.png')
         self.screen.blit(menu,(0,0))
@@ -96,10 +98,12 @@ class GraphicalView(object):
         """
         Render the game play.
         """
-        # music
-        pg.mixer.music.unpause()
-        self.menu_music.stop()
-        
+        try:
+            # music
+            pg.mixer.music.unpause()
+            self.menu_music.stop()
+        except:
+            pass
         # draw backgound
         self.render_background()
         self.render_timebar()
@@ -129,9 +133,11 @@ class GraphicalView(object):
         """
         Render the stop screen.
         """
-        # music
-        pg.mixer.music.pause()
-        
+        try:
+            # music
+            pg.mixer.music.pause()
+        except:
+            pass
         # draw background
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map_gray,(0,0))
@@ -144,13 +150,32 @@ class GraphicalView(object):
         pos_x = (ScreenSize[0] - SurfaceX)/2
         pos_y = (ScreenSize[1] - SurfaceY)/2
         self.screen.blit(somewords, (pos_x, pos_y))
+        self.render_record()
+        # update surface
+        pg.display.flip()
+    
+    def render_record(self):
+        """
+        Render the Soreboard
+        """
+        self.screen.blit(self.ending_background, (0,0))
+        rank = sorted(self.model.players, key=lambda player:-player.score)
+        maxscore = max(rank[0].score, 1)
+        for i in range(modelConst.PlayerNum):
+            score = rank[i].score
+            height = score / maxscore * 400
+            color = Player_Colors[rank[i].index]
+            pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
+            self.screen.blit(self.pennant_images[rank[i].index], (260+200*i,600-height))
+            self.screen.blit(self.player_photo[rank[i].index], (260+200*i,600))
+            score_surface = self.smallfont.render(str(score), True, color)
+            self.blit_at_center(score_surface, (320+200*i, 625-height))
+
         # update surface
         pg.display.flip()
 
-    def render_prerecord(self):
-        pass
 
-    def render_record(self):
+    def render_prerecord(self):
         pass
 
     def display_fps(self):
@@ -162,21 +187,26 @@ class GraphicalView(object):
         """
         Set up the pygame graphical display and loads graphical resources.
         """
-        #music
-        pg.mixer.init()
-        self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
-        choose_music=random.randint(1,5)
-        pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
-        self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
-        for i in range(5):
-            self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
+        try:
+            #music
+            pg.mixer.init()
+            self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
+            choose_music=random.randint(1,5)
+            pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
+            self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
+            for i in range(5):
+                self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
 
-        self.menu_music.set_volume(menu_music_volume)
-        pg.mixer.music.set_volume(background_music_volume)
-        
-        #playmusic
-        pg.mixer.music.play(-1)
-        pg.mixer.music.pause()
+            self.menu_music.set_volume(menu_music_volume)
+            pg.mixer.music.set_volume(background_music_volume)
+            
+            #playmusic
+            pg.mixer.music.play(-1)
+            pg.mixer.music.pause()
+            
+        except:
+            pass
+        #playmusic_end
         
         result = pg.init()
         pg.font.init()
@@ -188,11 +218,15 @@ class GraphicalView(object):
         self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
+        directions = ['_leftup', '_left', '_leftdown', '_down']
+        colors = ['blue', 'red', 'yellow', 'green']
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
-        self.time = pg.image.load('View/image/background/time.png')
+        self.time = pg.image.load('View/image/background/timebar.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
+        self.ending_background = pg.image.load('View/image/background/ending.png')
         self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
+        self.pennant_images = [ pg.image.load('View/image/background/pennant_'+colors[i]+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -211,8 +245,7 @@ class GraphicalView(object):
         self.goldenSnitch_images = [ pg.image.load('View/image/ball/goldball_'+str(i+1)+'.png') for i in range(2) ]
         ''' characters '''
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles)]
-        directions = ['_leftup', '_left', '_leftdown', '_down']
-        colors = ['blue', 'red', 'yellow', 'green']
+        self.take_goldenSnitch_image = pg.image.load('View/image/icon/icon_havegolden.png')
         self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
@@ -222,7 +255,7 @@ class GraphicalView(object):
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.rain_images = [pg.image.load('View/image/visual_effect/rain/rain_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
         
@@ -243,7 +276,7 @@ class GraphicalView(object):
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],635*(1-self.model.timer/modelConst.initTime),40])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+63,Pos_time[1],634*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
@@ -293,11 +326,14 @@ class GraphicalView(object):
         else:
             direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
+
         # mode
         self.blit_at_center(self.mode_images[player.mode], position)
         # ball
         ball = player.takeball
-        if ball != -1:
+        if ball == 100:
+            self.blit_at_center(self.take_goldenSnitch_image, position)
+        elif ball != -1:
             self.blit_at_center(self.take_ball_images[ball], position)
 
         #visual effect
@@ -319,6 +355,13 @@ class GraphicalView(object):
             self.blit_at_center(self.not18_images[visual_temp], position)
         if player_visual_effect[index] == 5:
             self.blit_at_center(self.rain_images[visual_temp], position)
+        
+        # mode
+        self.blit_at_center(self.mode_images[player.mode], position)
+        # ball
+        ball = player.takeball
+        if ball != -1:
+            self.blit_at_center(self.take_ball_images[ball], position)
             
         # mask
         if player.isMask == True:

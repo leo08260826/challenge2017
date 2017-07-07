@@ -11,15 +11,12 @@ Color_Blue  = (  0,   0, 255)
 Color_Green = (  0, 255,   0)
 Color_Red   = (255,   0,   0)
 Color_Gray  = (128, 128, 128)
-Color_Yellow= (200, 128,   0)
-player_colors = [Color_Red, Color_Green, Color_Yellow, Color_Blue]
+Color_Yellow= (230, 150,   0)
+Player_Colors = [Color_Blue, Color_Red, Color_Yellow, (20,160,50)]
 
 # Object positions
 Pos_map = (0, 0)
 Pos_time = (20, 740)
-
-# some rand
-biasrand = [0, 20, 10+FramePerSec, 20+FramePerSec*2]
 
 # barrier
 barrier_size = 180
@@ -28,7 +25,7 @@ barrier_size = 180
 background_music_volume = 0.8
 menu_music_volume = 0.8
 
-Player_Size = ( 100, 100)
+Player_Size = ( 65, 65)
 
 # visual effect
 ## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
