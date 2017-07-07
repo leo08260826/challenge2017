@@ -3,7 +3,8 @@ import random
 import itertools
 
 from EventManager import *
-from Model.GameObject.model_const import *
+from Model.const import *
+
 from Model.StateMachine import *
 from Model.GameObject.Player import *
 from Model.GameObject.Ball import *
@@ -47,10 +48,13 @@ class GameEngine(object):
         """
         if isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
-            if not event.state:
+            if event.state == None:
                 # false if no more states are left
                 if not self.state.pop():
                     self.evManager.Post(Event_Quit())
+            elif event.state == STATE_RESTART:
+                self.state.clear()
+                self.state.push(STATE_MENU)
             else:
                 # push a new state on the stack
                 self.state.push(event.state)
@@ -64,8 +68,11 @@ class GameEngine(object):
                 self.UpdateObjects()
                 self.Bump()
         elif isinstance(event, Event_EverySec):
+            self.goldenSnitch.decaySpeed()
             if self.state.peek() == STATE_PLAY:
                 self.timer -= 1
+            if self.timer <= 0:
+                self.evManager.Post(Event_TimeUp())
         elif isinstance(event, Event_Move):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_PlayerModeChange):
@@ -76,11 +83,10 @@ class GameEngine(object):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-            #if isConfirmed:
-            #    self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+            if isConfirmed:
+                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
 
     def Initialize(self):
-        self.AIList = []
         self.players = []
         self.quaffles = []
         self.barriers = []
@@ -153,6 +159,7 @@ class GameEngine(object):
         if distToGoldenSnitch:
             dist = min(distToGoldenSnitch)
             if dist[0] < distToCatchGoldenSnitch:
+                self.players[playerIndex].takeball = 100
                 self.players[dist[1]].score += scoreOfGoldenSnitch
                 self.evManager.Post(Event_TimeUp())
 
@@ -169,9 +176,10 @@ class GameEngine(object):
                     dist = min(distToQuaffle)
                     playerIndex = dist[1]
                     if dist[0] < distToCatchQuaffle:
-                        self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
                         self.players[playerIndex].takeball = quaffle.index
-                        quaffle.catch(playerIndex)
+                        hasCaught = quaffle.catch(playerIndex)
+                        if not hasCaught:
+                            self.players[playerIndex].score += scoreOfQuaffles[quaffle.state]
         # barrier to player
         for barrier in self.barriers:
             for player in self.players:
@@ -203,17 +211,18 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
+            player.power -= modeChangePower
 
     def ApplySkillCard(self, playerIndex, skillIndex):
         # 0 = invisible
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
-        if self.players[playerIndex] != None:
+        if self.players[playerIndex] != None and self.AIList[playerIndex].skill:
             player = self.players[playerIndex]
             if skillIndex == 0:
                 player.isvisible = False
@@ -255,8 +264,12 @@ class GameEngine(object):
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
-                            if (distSquare < (stunDistance) ** 2) and playercheck.isMask == False:
-                                playercheck.freeze()
+                            if distSquare < (stunDistance) ** 2:
+                                if playercheck.isMask == False:
+                                    playercheck.freeze()
+                                else:
+                                    playercheck.maskTimer = 0
+                                    playercheck.isMask = False
                     return True
                 elif player.mode == 1 and player.power >= maskPowerCost:
                     player.isMask = True

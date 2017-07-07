@@ -3,10 +3,9 @@ import random
 
 import Model.main as model
 from EventManager import *
-from const_main import *
 from View.const import *
 
-import Model.GameObject.model_const as modelConst
+import Model.const as modelConst
 
 class GraphicalView(object):
     """
@@ -35,6 +34,9 @@ class GraphicalView(object):
 
         self.love_images = []
         self.light_images = []
+        self.not18_images = []
+        self.rose_images = []
+        self.rain_images = []
         
     def notify(self, event):
         """
@@ -44,11 +46,13 @@ class GraphicalView(object):
             cur_state = self.model.state.peek()
             if cur_state == model.STATE_MENU:
                 self.render_menu()
-            if cur_state == model.STATE_PLAY:
+            elif cur_state == model.STATE_PLAY:
                 self.render_play()
-            if cur_state == model.STATE_STOP:
+            elif cur_state == model.STATE_STOP:
                 self.render_stop()
-            if cur_state == model.STATE_RECORD:
+            elif cur_state == model.STATE_PRERECORD:
+                self.render_prerecord()
+            elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
             self.display_fps()
@@ -79,7 +83,7 @@ class GraphicalView(object):
         self.screen.blit(menu,(0,0))
         # write some word
         somewords = self.smallfont.render(
-                    "Press 'Space' to play, 'Esc' to exits.", 
+                    "Press 'Space' to play, 'Esc' to exit.", 
                     True, (255,200, 14))
         (SurfaceX, SurfaceY) = somewords.get_size()
         pos_x = (ScreenSize[0] - SurfaceX)/2
@@ -99,16 +103,15 @@ class GraphicalView(object):
         # draw backgound
         self.render_background()
         self.render_timebar()
-        pg.draw.rect(self.screen, (136, 0, 21), [20,740,735,20])
 
-        for i in range(PlayerNum):
+        for i in range(modelConst.PlayerNum):
             self.render_player_status(i)
 
         for stun in self.stuns:
             if stun[1] in range(9):
                 self.blit_at_center(self.stun_images[stun[1]], stun[0])
                 stun[1] += 1
-        for i in range(PlayerNum):
+        for i in range(modelConst.PlayerNum):
             self.render_player_character(i)
             
         for i in range(modelConst.numberOfQuaffles):
@@ -144,6 +147,12 @@ class GraphicalView(object):
         # update surface
         pg.display.flip()
 
+    def render_prerecord(self):
+        pass
+
+    def render_record(self):
+        pass
+
     def display_fps(self):
         """Show the programs FPS in the window handle."""
         caption = "{} - FPS: {:.2f}".format(GameCaption, self.clock.get_fps())
@@ -176,14 +185,14 @@ class GraphicalView(object):
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
         self.isinitialized = True
-        self.stuns = [[(0,0),-1] for _ in range(PlayerNum)]
+        self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
         # load images
         ''' backgrounds '''
         self.map = pg.image.load('View/image/background/map.png')
         self.map_gray = pg.image.load('View/image/background/map_grayscale.png')
         self.time = pg.image.load('View/image/background/time.png')
         self.background = pg.image.load('View/image/background/backgroundfill.png')
-        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(PlayerNum) ]
+        self.playerInfo = [ pg.image.load('View/image/background/info'+str(i+1)+'.png') for i in range(modelConst.PlayerNum) ]
         ''' icons '''
         self.mode_images = [ pg.image.load('View/image/icon/icon_attack.png'),
                             pg.image.load('View/image/icon/icon_protectmode.png')]
@@ -195,7 +204,7 @@ class GraphicalView(object):
         ''' skills '''
         self.stun_images = [ pg.image.load('View/image/skill/magicfield_'+str(i+1)+'.png') for i in range(9) ]
         self.mask_images = [ pg.image.load('View/image/skill/shield_'+str(i+1)+'.png' )for i in range(12) ]
-        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(PlayerNum) ]
+        self.barrier_images = [ [pg.image.load('View/image/barrierSimple/barrier'+str(j%4+1)+'.png') for j in range(9)] for i in range(modelConst.PlayerNum) ]
         ''' balls '''
         self.ball_powered_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'_powered.png') for i in range(modelConst.numberOfQuaffles) ]
         self.ball_normal_images = [ pg.image.load('View/image/ball/ball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles) ]
@@ -204,15 +213,18 @@ class GraphicalView(object):
         self.take_ball_images = [ pg.image.load('View/image/icon/icon_haveball'+str(i%2+1)+'.png') for i in range(modelConst.numberOfQuaffles)]
         directions = ['_leftup', '_left', '_leftdown', '_down']
         colors = ['blue', 'red', 'yellow', 'green']
-        self.player_freeze_images = [pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png') for i in range(4)]
+        self.player_freeze_images = [pg.transform.scale(pg.image.load('View/image/player/player_down_'+colors[i]+'_frost.png'),Player_Size) for i in range(4)]
         charactor_name =['cat','black','shining','silver']
-        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(PlayerNum)]
-        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(PlayerNum)]
+        self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
+        self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
 
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
-    
+        self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.rain_images = [pg.image.load('View/image/visual_effect/rain/rain_'+str(i%4+1)+'.png') for i in range(4) ]
+        
+        self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(6)]
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -223,16 +235,15 @@ class GraphicalView(object):
                 return pg.transform.flip(pg.image.load('View/image/player/player'+directions[direction-2]+'_'+colorname+suffix+'.png'), 1, 0)
             else:
                 return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
-        self.player_images = [ [get_player_image(colors[i],direction,'') for direction in range(9)] for i in range(PlayerNum) ]
-        self.player_invisible_images = [ [get_player_image(colors[i],direction,'_invisible') for direction in range(9)] for i in range(4) ]
+        self.player_images = [ [pg.transform.scale(get_player_image(colors[i],direction,''), Player_Size) for direction in range(9)] for i in range(modelConst.PlayerNum) ]
+        self.player_invisible_images = [ [pg.transform.scale(get_player_image(colors[i],direction,'_invisible'), Player_Size) for direction in range(9)] for i in range(4) ]
 
     def render_background(self):
         self.screen.blit(self.background,(0,0))
         self.screen.blit(self.map, Pos_map)
     def render_timebar(self):
         self.screen.blit(self.time, Pos_time)
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1),20])
-        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0],Pos_time[1]+60,735*(1-self.model.timer/modelConst.initTime),20])
+        pg.draw.rect(self.screen, (136, 0, 21), [Pos_time[0]+60,Pos_time[1],635*(1-self.model.timer/modelConst.initTime),40])
 
     def render_player_status(self, index):
         player = self.model.players[index]
@@ -259,7 +270,9 @@ class GraphicalView(object):
              self.screen.blit(self.player_status_P,(pos_x+150,pos_y + 110))
         elif player.mode == 0:
              self.screen.blit(self.player_status_A,(pos_x+150,pos_y + 110))
-         
+#       render effect
+        effect_type = player_visual_effect[index]
+        self.screen.blit(self.photo_effect[effect_type],(pos_x+20,pos_y+20))       
  #      mana and score and name
         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
@@ -288,11 +301,24 @@ class GraphicalView(object):
             self.blit_at_center(self.take_ball_images[ball], position)
 
         #visual effect
-        
+        visual_temp = self.get_frame() % 12
+        if visual_temp <=2:
+            visual_temp = 0
+        elif visual_temp <= 5:
+            visual_temp = 1
+        elif visual_temp <= 8:
+            visual_temp = 2
+        elif visual_temp <= 11:
+            visual_temp = 3
+            
         if player_visual_effect[index] == 1:
-            self.blit_at_center(self.love_images[self.get_frame() % 4], position)
+            self.blit_at_center(self.love_images[visual_temp], position)
         if player_visual_effect[index] == 2:
-            self.blit_at_center(self.light_images[self.get_frame() % 4], position)
+            self.blit_at_center(self.light_images[visual_temp], position)
+        if player_visual_effect[index] == 3:
+            self.blit_at_center(self.not18_images[visual_temp], position)
+        if player_visual_effect[index] == 5:
+            self.blit_at_center(self.rain_images[visual_temp], position)
             
         # mask
         if player.isMask == True:

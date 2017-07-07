@@ -1,5 +1,5 @@
 import random
-from Model.GameObject.model_const import *
+from Model.const import *
 from Model.GameObject.Ball import *
 
 def cross(a, b):

@@ -1,3 +1,6 @@
+GameCaption = "Challenge 2017"
+ScreenSize = (1200, 800)
+
 # FPS
 FramePerSec = 30
 
@@ -25,6 +28,8 @@ barrier_size = 180
 background_music_volume = 0.8
 menu_music_volume = 0.8
 
+Player_Size = ( 100, 100)
+
 # visual effect
-## none = 0 , love = 1 , light = 2
-player_visual_effect = [0,1,2,0]
+## none = 0 , love = 1 , light = 2 , not18 = 3 , rose = 4 , rain = 5
+player_visual_effect = [3,5,2,1]
