@@ -277,7 +277,7 @@ class GraphicalView(object):
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
         self.not18_images = [pg.image.load('View/image/visual_effect/18/18_'+str(i%4+1)+'.png') for i in range(4) ]
         self.rain_images = [pg.image.load('View/image/visual_effect/rain2/rain2_'+str(i%4+1)+'.png') for i in range(4) ]
-        self.boss_images = [pg.image.load('View/image/visual_effect/boss/boss_'+str(i%4+1)+'.png') for i in range(4) ]
+        self.boss_images = [pg.image.load('View/image/visual_effect/boss2/boss2_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
         
