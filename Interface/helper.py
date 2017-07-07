@@ -29,7 +29,7 @@ class Helper(object):
         My_tan=[100,2.414213,0.414213,-0.414213,-2.414213,2.414213,0.414213,-0.414213,-2.414213]
         Pos1 = self.model.players[self.index].position
         Pos2 = pos
-        tmpTan = self.CountTan(Pos1,Pos2)
+        tmpTan = Helper.CountTan(Pos1,Pos2)
         if Pos2[0] >= Pos1[0] and Pos2[1] >= Pos1[1]:
             if tmpTan >= My_tan[1]:
                 return My_dir[5]
@@ -60,7 +60,7 @@ class Helper(object):
                 return My_dir[5]
 
     def getScoringDir(self, goal_id):
-        x = sqrt2
+        x = math.sqrt(2)
         CoeffX=[9999,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0]
         CoeffY=[9999,1,1,1,1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,1,1,1,1]
         Cons=[9999,130,300,480,650,830,1000,1180,1350,610,440,260,90,-90,-260,-440,-610,110,280,460,630,110,280,460,630]
@@ -112,16 +112,16 @@ class Helper(object):
                 return 6
 
     def getNearestGoal(self, pos):
-        board = [gameRangeLower,cornerGoalRangeLower,gateRangeLower,gateRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
+        board = [gameRangeLower,cornerGoalRangeLower,goalRangeLower,goalRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
         gate = [((board[2]+board[3])/2,board[0]),(board[5],(board[2]+board[3])/2),((board[2]+board[3])/2,board[5]),\
                  (board[0],(board[2]+board[3])/2),((board[4]+board[5])/2,(board[0]+board[1])/2),((board[4]+board[5])/2,(board[4]+board[5])/2),\
-                 ((board[0]+board[1])/2,(board[4]+board[5])/2),((board[0],board[1])/2,(board[0]+board[1])/2)]
+                 ((board[0]+board[1])/2,(board[4]+board[5])/2),((board[0]+board[1])/2,(board[0]+board[1])/2)]
         MinIndex = 0
         Mini = 99999999
         for i in range(8):
             tmp = [gate[i][0],gate[i][1]]
-            if (self.CountDist(tmp,pos) < Mini):
-                Mini = self.CountDist(tmp,pos)
+            if (Helper.CountDist(tmp,pos) < Mini):
+                Mini = Helper.CountDist(tmp,pos)
                 MinIndex = i
         return MinIndex
         

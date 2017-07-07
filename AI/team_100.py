@@ -1,44 +1,50 @@
 from AI.base import *
-import random
 
 class TeamAI( BaseAI ):
     def __init__( self , helper ):
         self.helper = helper
         self.skill = []
 
-    def decide( self ):
-        if self.getMyState == 1 and self.checkMeHold:
-            # has ball but in defense mode
-            return AI_MODECHANGE
-        elif self.checkMeHold() and self.lastDirection in [DIR_RU, DIR_RD, DIR_LD, DIR_LU]:
-            return AI_ACTION_1
-        elif self.checkMeHold():
-            direction = random.choice([DIR_RU, DIR_RD, DIR_LD, DIR_LU])
-            self.lastDirection = direction
-            return direction
-
-        directionList = [DIR_U, DIR_RU, DIR_R, DIR_RD, DIR_D, DIR_LD, DIR_L, DIR_LU]
-        action = None
-
-        selfPos = helper.getMyPos()
-
-        # head towards a free ball near self
-        freeBallPosList = helper.getFreeBallPos()
-        nearestDist = 180
-        nearestBallPos = None
-        for freeBallPos in freeBallList:
-            if dist(freeBallPos, selfPos) <= nearestDist:
-                nearestBallPos = freeBallPos
-                nearestDist = dist(freeBallPos, selfPos)
-       
-        if nearestBallPos != None:
-            action = directionList[helper.getCaptureDir(nearestBallPos)]
-        else:
-            action = directionList[helper.getCaptureDir(370, 370)]
-
-        self.lastDirection = AI_U
-        return AI_U
-
-
     def dist(pos1, pos2):
         return ((pos2[0] - pos1[0])**2 + (pos2[1] - pos1[1])**2) ** 0.5
+
+    def decide( self ):
+        selfPos = self.helper.getMyPos()
+        directionList = [0,AI_U, AI_RU, AI_R, AI_RD, AI_D, AI_LD, AI_L, AI_LU]
+
+        nearestGoalId = self.helper.getNearestGoal(selfPos)
+        dir2NearestGoal = self.helper.getScoringDir(selfPos)
+
+        if self.helper.getMyMode() == 1 and self.helper.checkMeHold():
+            # has ball but in defense mode
+            return AI_MODECHANGE
+        elif self.helper.checkMeHold() and self.lastDirection == directionList[dir2NearestGoal]:
+            return AI_ACTION_1
+        elif self.helper.checkMeHold():
+            direction = directionList[dir2NearestGoal]
+            self.lastDirection = direction
+            return direction
+        elif self.helper.getMyMode() == 0:
+            return AI_MODECHANGE
+
+        action = None
+
+
+        # head towards a free ball near self
+        freeBallPosList = self.helper.getFreeBallPos()
+        nearestDist = 180
+        nearestBallPos = None
+        for freeBallPos in freeBallPosList:
+            if TeamAI.dist(freeBallPos, selfPos) <= nearestDist:
+                nearestBallPos = freeBallPos
+                nearestDist = TeamAI.dist(freeBallPos, selfPos)
+       
+        if nearestBallPos != None:
+            action = directionList[self.helper.getCaptureDir(nearestBallPos)]
+        else:
+            action = directionList[self.helper.getCaptureDir((370, 370))]
+
+        self.lastDirection = action
+        return action
+
+
