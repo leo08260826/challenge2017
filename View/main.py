@@ -41,6 +41,8 @@ class GraphicalView(object):
         self.rain_images = []
         self.boss_images = []
         self.fly_images = []
+
+        self.using_magic = []
         
     def notify(self, event):
         """
@@ -115,6 +117,7 @@ class GraphicalView(object):
             pass
         # draw backgound
         self.render_background()
+            
         self.render_timebar()
 
         for i in range(modelConst.PlayerNum):
@@ -276,6 +279,9 @@ class GraphicalView(object):
         self.player_photo = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-normal-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
         self.player_photo_hurt = [pg.image.load('View/image/'+charactor_name[i]+'/'+charactor_name[i]+'-hurt-'+colors[i]+'.png') for i in range(modelConst.PlayerNum)]
 
+        # using magic
+        self.using_magic = [0,0,0,0]
+        
         # visual effect
         self.love_images = [pg.image.load('View/image/visual_effect/love/love_'+str(i%4+1)+'.png') for i in range(4) ]
         self.light_images = [pg.image.load('View/image/visual_effect/light3/light3_'+str(i%4+1)+'.png') for i in range(4) ]
@@ -429,3 +435,6 @@ class GraphicalView(object):
             self.sound[index_of_music].play(0)
         except:
             pass
+        self.using_magic[index_of_player] = 1
+
+        
