@@ -31,6 +31,8 @@ class GraphicalView(object):
         self.sound = []
         self.menu_music = None
         self.shoot_music = None
+        self.record_music = None
+        self.record_haveplay = 0
 
         self.love_images = []
         self.light_images = []
@@ -98,12 +100,13 @@ class GraphicalView(object):
         """
         Render the game play.
         """
-        try:
-            # music
-            pg.mixer.music.unpause()
-            self.menu_music.stop()
-        except:
-            pass
+        
+        # music
+        pg.mixer.music.unpause()
+        self.menu_music.stop()
+        self.record_music.stop()
+        self.record_haveplay = 0
+
         # draw backgound
         self.render_background()
         self.render_timebar()
@@ -158,6 +161,15 @@ class GraphicalView(object):
         """
         Render the Soreboard
         """
+        try:
+            pg.mixer.music.pause()
+            self.menu_music.stop()
+            if pg.mixer.get_busy() == False and self.record_haveplay == 0:
+                self.record_haveplay =1
+                self.record_music.play(0)
+        except:
+            pass
+        
         self.screen.blit(self.ending_background, (0,0))
         rank = sorted(self.model.players, key=lambda player:-player.score)
         maxscore = max(rank[0].score, 1)
@@ -187,25 +199,31 @@ class GraphicalView(object):
         """
         Set up the pygame graphical display and loads graphical resources.
         """
-        try:
-            #music
-            pg.mixer.init()
-            self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
-            choose_music=random.randint(1,5)
+        
+            
+        #music
+        pg.mixer.init()
+        self.menu_music=pg.mixer.Sound('View/music/harry.ogg')
+        if is_boss_music == 1:
+            self.record_music=pg.mixer.Sound('View/music/laugh.ogg')
+        else:
+            self.record_music=pg.mixer.Sound('View/music/goldenhorse.ogg')
+        choose_music=random.randint(1,4)
+        if is_final_music == 1 or is_boss_music == 1:
+            pg.mixer.music.load('View/music/finalgame.ogg')
+        else:
             pg.mixer.music.load('View/music/playmusic'+str(choose_music)+'.ogg')
-            self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
-            for i in range(5):
-                self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
+        self.shoot_music=pg.mixer.Sound('View/music/shoot.ogg')
+        for i in range(4):
+            self.sound.append(pg.mixer.Sound('View/music/magic'+str(i+1)+'.ogg'))
 
-            self.menu_music.set_volume(menu_music_volume)
-            pg.mixer.music.set_volume(background_music_volume)
+        self.menu_music.set_volume(menu_music_volume)
+        pg.mixer.music.set_volume(background_music_volume)
             
-            #playmusic
-            pg.mixer.music.play(-1)
-            pg.mixer.music.pause()
-            
-        except:
-            pass
+        #playmusic
+        pg.mixer.music.play(-1)
+        pg.mixer.music.pause()
+        
         #playmusic_end
         
         result = pg.init()

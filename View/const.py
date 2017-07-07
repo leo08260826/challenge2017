@@ -22,6 +22,8 @@ Pos_time = (20, 740)
 barrier_size = 180
 
 # music volume
+is_final_music = 0
+is_boss_music = 0
 background_music_volume = 0.8
 menu_music_volume = 0.8
 
