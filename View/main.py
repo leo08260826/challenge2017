@@ -54,6 +54,7 @@ class GraphicalView(object):
                 self.render_play()
             elif cur_state == model.STATE_STOP:
                 self.render_stop()
+                self.render_record()
             elif cur_state == model.STATE_PRERECORD:
                 self.render_prerecord()
             elif cur_state == model.STATE_RECORD:
@@ -176,7 +177,7 @@ class GraphicalView(object):
         lastrank = 0
         for i in range(modelConst.PlayerNum):
             score = ranked[i].score
-            rank = i+1 if score < lastscore else lastrank
+            rank = i if score < lastscore else lastrank
             lastrank = rank
             height = score / maxscore * 400
             color = Player_Colors[ranked[i].index]
