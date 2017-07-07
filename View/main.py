@@ -171,9 +171,6 @@ class GraphicalView(object):
     def render_prerecord(self):
         pass
 
-    def render_record(self):
-        pass
-
     def display_fps(self):
         """Show the programs FPS in the window handle."""
         caption = "{} - FPS: {:.2f}".format(GameCaption, self.clock.get_fps())
