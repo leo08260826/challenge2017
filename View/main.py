@@ -179,7 +179,7 @@ class GraphicalView(object):
             score = ranked[i].score
             rank = i if score < lastscore else lastrank
             lastrank = rank
-            height = score / maxscore * 400
+            height = score / maxscore * 450
             color = Player_Colors[ranked[i].index]
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height+1))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,610-height))
