@@ -133,7 +133,7 @@ class GameEngine(object):
             score, playerIndex, minusScore, beShotPlayer = quaffle.tickCheck()
             if playerIndex in range(PlayerNum):
                 self.players[playerIndex].score += score
-            if beShotPalyer in range(PlayerNum):
+            if beShotPlayer in range(PlayerNum):
                 self.players[beShotPlayer].score += minusScore
                 if self.players[beShotPlayer].score < 0:
                     self.players[beShotPlayer].score = 0
