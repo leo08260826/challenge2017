@@ -80,7 +80,7 @@ class Control(object):
                         self.evManager.Post(Event_Move(player.index, DirHash[DirHashValue]))
                 # change mode 
                 elif event.key == PlayerKeys[player.index][4]:
-                    self.evManager.Post(Event_PlayerModeChange(player.index))
+                    self.evManager.Post(Event_ModeChange(player.index))
                 # use action
                 elif event.key == PlayerKeys[player.index][5]:
                     self.evManager.Post(Event_Action(player.index, ACTION_0))
