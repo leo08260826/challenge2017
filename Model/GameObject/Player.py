@@ -139,6 +139,18 @@ class player(object):
                     targetFreeze = False
             selfNowDir = self.direction
             targetNowDir = target.direction
+
+            if selfNowDir == targetNowDir:
+                if self.mode > target.mode:
+                    selfNowDir = (selfNowDir + 4 )%8
+                    if selfNowDir == 0:
+                        selfNowDir = 8
+                elif self.mode < target.mode:
+                    targetNowDir = (targetNowDir + 4 )%8
+                    if targetNowDir == 0:
+                        targetNowDir = 8
+            
+
             if selfFreeze == True and self.isFreeze == False:
                 self.freeze(targetNowDir)   
                 if self.takeball != -1:
