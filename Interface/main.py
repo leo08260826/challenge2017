@@ -39,10 +39,12 @@ class Interface(object):
     def initialize(self):
         for index, player in enumerate(self.model.players):
             if player.name == "manual":
+                print("manual")
                 continue
 
             # load TeamAI .py file
             try:
+                print("trying to load team" + player.name)
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI can't load." )
@@ -51,6 +53,7 @@ class Interface(object):
             print("Load ["+ str(index) +"]team_" + player.name + ".py")
             # init TeamAI class
             try:
+                print("trying to init team" + player.name)
                 player.AI = loadtmp.TeamAI( Helper(self.model, index) )
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI __init__ is crashed." )
