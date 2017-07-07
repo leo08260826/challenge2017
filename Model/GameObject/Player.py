@@ -34,7 +34,7 @@ class player(object):
         self.isFreeze = False
         self.freezeTimer = 0
 
-        #invisible data
+        #inVisible data
         self.isVisible = True
         self.invisibleTimer = 0
 
