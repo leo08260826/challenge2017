@@ -263,13 +263,22 @@ class GameEngine(object):
                 if player.mode == 0 and player.power >= stunPowerCost:
                     player.power -= stunPowerCost
                     for playercheck in self.players:
-                        if playercheck == self.players[playerIndex]:
+                        if playercheck == player:
                             continue
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
                             if distSquare < (stunDistance) ** 2:
                                 if playercheck.isMask == False:
+                                    if playercheck.takeball != -1:
+                                        ballData = playercheck.takeball
+                                        if player.takeball != -1:
+                                            playercheck.takeball = -1
+                                            self.quaffles[ballData].deprive(playercheck.direction, playercheck.position)
+                                        else:
+                                            playercheck.takeball = -1
+                                            player.takeball = ballData
+                                            self.quaffles[ballData].playerIndex = player.index
                                     playercheck.freeze()
                                 else:
                                     playercheck.maskTimer = 0
