@@ -51,7 +51,7 @@ class GraphicalView(object):
             elif cur_state == model.STATE_STOP:
                 self.render_stop()
             elif cur_state == model.STATE_PRERECORD:
-                self.render_play()
+                self.render_prerecord()
             elif cur_state == model.STATE_RECORD:
                 self.render_record()
 
@@ -143,13 +143,9 @@ class GraphicalView(object):
         self.screen.blit(self.map_gray,(0,0))
     
         # display words
-        somewords = self.smallfont.render(
-                    'Pause',
-                    True, (255, 0, 0))
-        (SurfaceX, SurfaceY) = somewords.get_size()
-        pos_x = (ScreenSize[0] - SurfaceX)/2
-        pos_y = (ScreenSize[1] - SurfaceY)/2
-        self.screen.blit(somewords, (pos_x, pos_y))
+        somewords = self.smallfont.render( 'Pause', True, (255, 0, 0))
+        self.blit_at_center(somewords, (ScreenSize[0]/2, ScreenSize[1]/2))
+        
         # update surface
         pg.display.flip()
     
@@ -158,15 +154,19 @@ class GraphicalView(object):
         Render the Soreboard
         """
         self.screen.blit(self.ending_background, (0,0))
-        rank = sorted(self.model.players, key=lambda player:-player.score)
-        maxscore = max(rank[0].score, 1)
+        ranked = sorted(self.model.players, key=lambda player:-player.score)
+        maxscore = max(ranked[0].score, 1)
+        lastscore = maxscore+1
+        lastrank = 0
         for i in range(modelConst.PlayerNum):
-            score = rank[i].score
+            score = ranked[i].score
+            rank = i+1 if score < lastscore else lastrank
+            lastrank = rank
             height = score / maxscore * 400
-            color = Player_Colors[rank[i].index]
+            color = Player_Colors[ranked[i].index]
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height))
-            self.screen.blit(self.pennant_images[rank[i].index], (260+200*i,600-height))
-            self.screen.blit(self.player_photo[rank[i].index], (260+200*i,600))
+            self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,600-height))
+            self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
             score_surface = self.smallfont.render(str(score), True, color)
             self.blit_at_center(score_surface, (320+200*i, 625-height))
 
@@ -175,7 +175,10 @@ class GraphicalView(object):
 
 
     def render_prerecord(self):
-        pass
+        render_play()
+        somewords = self.smallfont.render( 'GameSet', True, (255, 0, 0))
+        self.blit_at_center(somewords, (ScreenSize[0]/2, ScreenSize[1]/2))
+
 
     def display_fps(self):
         """Show the programs FPS in the window handle."""
