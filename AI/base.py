@@ -21,6 +21,7 @@ AI_SKILLCARD_3 = 15
 """
 a base of AI.
 """
+import Interface.helper as helper
 class BaseAI:
     def __init__( self , helper ):
         self.skill = []

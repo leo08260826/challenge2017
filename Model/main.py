@@ -212,7 +212,7 @@ class GameEngine(object):
             player.direction = direction;
 
     def ChangePlayerMode(self, playerIndex):
-        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower:
+        if self.players[playerIndex] != None and self.players[playerIndex].power >= modeChangePower and self.players[playerIndex].isFreeze == False:
             player = self.players[playerIndex]
             player.mode = 1 - player.mode
             player.isMask = False
@@ -223,18 +223,21 @@ class GameEngine(object):
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
-        if self.players[playerIndex] != None and self.AIList[playerIndex].skill:
-            player = self.players[playerIndex]
+        if self.players[playerIndex] != None and skillIndex in self.players[playerIndex].AI.skill:
+            Nowplayer = self.players[playerIndex]
             if skillIndex == 0:
-                player.isvisible = False
-                player.invisibleTimer =  invisibleTim
+                Nowplayer.isvisible = False
+                Nowplayer.invisibleTimer = invisibleTime
             elif skillIndex == 1:
                 for player in self.players:
-                    player.power = 0
+                    if player.index !=  playerIndex:
+                        player.power = 0
             elif skillIndex == 2:
                 for player in self.players:
-                    player.isFreeze = True
-                    player.freezeTimer = 57
+                    if player.index !=  playerIndex:
+                        player.isFreeze = True
+                        player.freezeTimer = 57
+            self.players[playerIndex].AI.skill.remove(skillIndex)
 
 
 
@@ -260,13 +263,22 @@ class GameEngine(object):
                 if player.mode == 0 and player.power >= stunPowerCost:
                     player.power -= stunPowerCost
                     for playercheck in self.players:
-                        if playercheck == self.players[playerIndex]:
+                        if playercheck == player:
                             continue
                         else:
                             distSquare = (playercheck.position[0] - player.position[0]) ** 2 + \
                                     (playercheck.position[1] - player.position[1]) ** 2
                             if distSquare < (stunDistance) ** 2:
                                 if playercheck.isMask == False:
+                                    if playercheck.takeball != -1:
+                                        ballData = playercheck.takeball
+                                        if player.takeball != -1:
+                                            playercheck.takeball = -1
+                                            self.quaffles[ballData].deprive(playercheck.direction, playercheck.position)
+                                        else:
+                                            playercheck.takeball = -1
+                                            player.takeball = ballData
+                                            self.quaffles[ballData].playerIndex = player.index
                                     playercheck.freeze()
                                 else:
                                     playercheck.maskTimer = 0
