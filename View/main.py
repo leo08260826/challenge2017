@@ -270,9 +270,8 @@ class GraphicalView(object):
         self.screen = pg.display.set_mode(ScreenSize)
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
-        self.isinitialized = True
-        self.stuns = [[(0,0),-1] for _ in range(modelConst.PlayerNum)]
-        self.jump_status = [jump_frame for _ in range(modelConst.PlayerNum)]
+        self.stuns = [[(0,0),-1]]*modelConst.PlayerNum
+        self.jump_status = [jump_frame]*modelConst.PlayerNum
         # load images
         ''' backgrounds '''
         directions = ['_leftup', '_left', '_leftdown', '_down']
@@ -326,6 +325,7 @@ class GraphicalView(object):
         self.rose_images = [pg.image.load('View/image/visual_effect/rose/rose_'+str(i%4+1)+'.png') for i in range(4) ]
         
         self.photo_effect = [pg.image.load('View/image/visual_effect/photo_effect/effect_'+str(i)+'.png') for i in range(8)]
+
         
         def get_player_image(colorname, direction, suffix):
             if direction == 0:
@@ -338,6 +338,8 @@ class GraphicalView(object):
                 return pg.image.load('View/image/player/player'+directions[8-direction]+'_'+colorname+suffix+'.png')
         self.player_images = [ [pg.transform.scale(get_player_image(colors[i],direction,''), Player_Size) for direction in range(9)] for i in range(modelConst.PlayerNum) ]
         self.player_invisible_images = [ [pg.transform.scale(get_player_image(colors[i],direction,'_invisible'), Player_Size) for direction in range(9)] for i in range(4) ]
+        
+        self.isinitialized = True
 
     def render_background(self):
         self.screen.blit(self.background,(0,0))
@@ -475,7 +477,6 @@ class GraphicalView(object):
                 self.winner = index_player
             
     def render_magic_effect(self):
-        
         for index in range(modelConst.PlayerNum):
             if not self.using_magic[index] == -1:
                 self.magic_timer[index] = self.magic_timer[index] - 1
@@ -486,5 +487,3 @@ class GraphicalView(object):
             if not self.using_magic[index] == -1:
                 pos_y = 20 + 180*index
                 self.screen.blit(self.magic_effect_image[self.using_magic[index]],(0,pos_y))
-
-        
