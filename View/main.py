@@ -76,6 +76,8 @@ class GraphicalView(object):
             self.play_magic(event.PlayerIndex,event.SkillIndex)
         elif isinstance(event, Event_CallMe):
             self.jump_status[event.PlayerIndex] = 0
+        elif isinstance(event, Event_NoUseSkillCard):
+            self.play_magic(event.PlayerIndex,3)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -204,6 +206,12 @@ class GraphicalView(object):
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height+1))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,610-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
+            #visual effect
+            if i == self.winner:
+                self.screen.blit(self.win_hat,(260+200*i,600))
+            effect_type = player_visual_effect[i]
+            self.screen.blit(self.photo_effect[effect_type],(260+200*i,600))
+            
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 70))
             self.screen.blit(self.rank_images[rank], (260+200*i,600-height))
             score_surface = self.smallfont.render(str(score), True, color)
@@ -456,6 +464,7 @@ class GraphicalView(object):
     def play_magic(self,index_player,index_magic):
         if (index_magic+10) in self.model.players[index_player].AI.skill:
             try:
+                self.sound[index_magic].set_volume(magic_music_volume)
                 self.sound[index_magic].play(0)
             except:
                 pass
