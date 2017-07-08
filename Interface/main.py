@@ -61,15 +61,18 @@ class Interface(object):
                 elif decide == AI_MODECHANGE:
                     self.evManager.Post(Event_ModeChange(player.index))
                 elif decide == AI_SKILLCARD_HIDE:
-                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_0))
+                    if SKILLCARD_0 in self.model.players[player.index].AI.skill:
+                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_0))
                 elif decide == AI_SKILLCARD_DEMENTOR:
-                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_1))
+                    if SKILLCARD_1 in self.model.players[player.index].AI.skill:
+                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_1))
                 elif decide == AI_SKILLCARD_STUNALL:
-                    self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
+                    if SKILLCARD_2 in self.model.players[player.index].AI.skill:
+                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
                 elif decide == AI_CallMe:
-                    self.evManager.Post(Event_CallMe())
+                    self.evManager.Post(Event_CallMe(player.index))
                 elif decide == AI_NoUseSkillCard:
-                    self.evManager.Post(Event_NoUseSkillCard())
+                    self.evManager.Post(Event_NoUseSkillCard(player.index))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):

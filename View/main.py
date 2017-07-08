@@ -73,9 +73,11 @@ class GraphicalView(object):
             if event.ActionIndex == 1 and player.mode == 0:
                 self.stuns[player.index] = [player.position, 0]
         elif isinstance(event, Event_SkillCard):
-            play_magic(Event_SkillCard.PlayerIndex,Event_SkillCard.SkillIndex)
+            self.play_magic(event.PlayerIndex,event.SkillIndex)
         elif isinstance(event, Event_CallMe):
-            jump_status[event.PlayerIndex] = 0
+            self.jump_status[event.PlayerIndex] = 0
+        elif isinstance(event, Event_NoUseSkillCard):
+            self.play_magic(event.PlayerIndex,3)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -204,6 +206,12 @@ class GraphicalView(object):
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height+1))
             self.screen.blit(self.pennant_images[ranked[i].index], (260+200*i,610-height))
             self.screen.blit(self.player_photo[ranked[i].index], (260+200*i,600))
+            #visual effect
+            if i == self.winner:
+                self.screen.blit(self.win_hat,(260+200*i,600))
+            effect_type = player_visual_effect[i]
+            self.screen.blit(self.photo_effect[effect_type],(260+200*i,600))
+            
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 70))
             self.screen.blit(self.rank_images[rank], (260+200*i,600-height))
             score_surface = self.smallfont.render(str(score), True, color)
@@ -351,7 +359,7 @@ class GraphicalView(object):
              self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
         else:
              self.screen.blit(self.player_photo[index],(pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
-        if self.jump_status[index] != jump_frames:
+        if self.jump_status[index] != jump_frame:
             self.jump_status[index] += 1
          
         if index == self.winner:
@@ -454,15 +462,17 @@ class GraphicalView(object):
         return int(pg.time.get_ticks()*FramePerSec/1000)
 
     def play_magic(self,index_player,index_magic):
-        try:
-            self.sound[index_magic].play(0)
-        except:
-            pass
-        if not index_magic == 3:
-            self.using_magic[index_player] = index_magic
-            self.magic_timer[index_player] = 50
-        else:
-            self.winner = index_player
+        if (index_magic+10) in self.model.players[index_player].AI.skill:
+            try:
+                self.sound[index_magic].set_volume(magic_music_volume)
+                self.sound[index_magic].play(0)
+            except:
+                pass
+            if not index_magic == 3:
+                self.using_magic[index_player] = index_magic
+                self.magic_timer[index_player] = 50
+            else:
+                self.winner = index_player
             
     def render_magic_effect(self):
         
