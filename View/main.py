@@ -201,6 +201,7 @@ class GraphicalView(object):
             score = ranked[i].score
             rank = i if score < lastscore else lastrank
             lastrank = rank
+            lastscore = score
             height = score / maxscore * 450
             color = Player_Colors[ranked[i].index]
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, height+1))
