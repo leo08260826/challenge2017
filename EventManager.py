@@ -137,8 +137,9 @@ class Event_NoUseSkillCard():
     """
     NouseSkillCard Event
     """
-    def __init__(self):
+    def __init__(self,PlayerIndex):
         self.name = "NoUseSkillCard event"
+        self.PlayerIndex = PlayerIndex
     def __str__(self):
         return "This is a trash"
 

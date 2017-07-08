@@ -72,7 +72,7 @@ class Interface(object):
                 elif decide == AI_CallMe:
                     self.evManager.Post(Event_CallMe(player.index))
                 elif decide == AI_NoUseSkillCard:
-                    self.evManager.Post(Event_NoUseSkillCard())
+                    self.evManager.Post(Event_NoUseSkillCard(player.index))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):

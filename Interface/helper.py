@@ -259,7 +259,8 @@ class Helper(object):
             myPos[0] = myPos[0] - tmp
             myPos[1] = myPos[1] - tmp
 
-        if goal_id == self.model.quaffles[0].checkWhoseGoal(myPos):
+        barrier = list(self.model.barriers)
+        if goal_id == self.model.quaffles[0].checkWhoseGoal(myPos,barrier):
             return True
         else:
             return False
