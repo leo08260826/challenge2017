@@ -402,14 +402,7 @@ class GraphicalView(object):
             direction = player.direction
             self.blit_at_center(self.player_images[index][direction], position)
 
-        # mode
-        self.blit_at_center(self.mode_images[player.mode], position)
-        # ball
-        ball = player.takeball
-        if ball == 100:
-            self.blit_at_center(self.take_goldenSnitch_image, position)
-        elif ball != -1:
-            self.blit_at_center(self.take_ball_images[ball], position)
+        
 
         #visual effect
         visual_temp = self.get_frame() % 12
@@ -437,6 +430,14 @@ class GraphicalView(object):
         if player_visual_effect[index] == 7:
             self.blit_at_center(self.boss_images[visual_temp], position)
         
+        # mode
+        self.blit_at_center(self.mode_images[player.mode], position)
+        # ball
+        ball = player.takeball
+        if ball == 100:
+            self.blit_at_center(self.take_goldenSnitch_image, position)
+        elif ball != -1:
+            self.blit_at_center(self.take_ball_images[ball], position)
 
         # mask
         if player.isMask == True:
