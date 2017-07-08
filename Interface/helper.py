@@ -372,5 +372,5 @@ class Helper(object):
     def askGodPos(self, god_name):
         pass
 
-    def callme(self)
+    def callme(self):
         pass
