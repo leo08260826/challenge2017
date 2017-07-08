@@ -39,6 +39,6 @@ player_visual_effect = [0,0,0,0]
 
 
 # call me
-jump_frame = 5
-jump_frames = [4,8,9,8,4,0] # up shift pixels
+jump_frame = 7
+jump_frames = [7,11,15,16,15,11,7,0] # up shift pixels
 
