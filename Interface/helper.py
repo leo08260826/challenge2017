@@ -113,7 +113,7 @@ class Helper(object):
             elif Switchdir == 0:
                 return 6
 
-    def getNearestGoal(self, pos):
+    def getNearGoal(self, pos):
         board = [gameRangeLower,cornerGoalRangeLower,goalRangeLower,goalRangeUpper,cornerGoalRangeUpper,gameRangeUpper]
         gate = [
             ((board[2]+board[3])/2,board[0]),
