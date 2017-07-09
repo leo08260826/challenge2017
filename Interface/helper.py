@@ -190,9 +190,6 @@ class Helper(object):
             if self.model.quaffles[i].state == 2:
                 Pos_list.append(tuple(self.model.quaffles[i].position))
         return Pos_list
-
-    def getGoldBallPos(self):
-        return tuple(self.model.goldenSnitch.position)
         
     def getNearBallInfo(self):
         Info_list=[]
