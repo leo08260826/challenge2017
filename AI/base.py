@@ -18,6 +18,12 @@ AI_MODECHANGE = 12
 AI_SKILLCARD_1 = 13
 AI_SKILLCARD_2 = 14
 AI_SKILLCARD_3 = 15
+
+HIDE = 0 # invisible
+DEMENTOR = 1 # empty power
+STUNALL = 2 # stun all enermy
+
+
 """
 a base of AI.
 """
