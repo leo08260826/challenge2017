@@ -1,6 +1,7 @@
 from Model.const import *
 from math import sqrt
 from operator import itemgetter
+import random
 """
 define Application Programming Interface(API) 
 """
@@ -394,7 +395,7 @@ class Helper(object):
 
     #god
     def askGodDir(self, god_name):
-        pass
+        return random.randrange(1, 9)
 
     def askGodPos(self, god_name):
-        pass
+        return [random.randrange(40, 700), random.randrange(40, 700)]
