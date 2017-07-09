@@ -143,32 +143,37 @@ class Helper(object):
         return self.model.timer
  
     # ball info
-    def getBallPos(self, index):
-        if self.model.quaffles[index].state == 1:
-            return tuple(self.model.players[self.model.quaffles[index].playerIndex].position)
+    def getBallPos(self, ball_id):
+        if ball_id == 2:
+            return tuple(self.model.goldenSnitch.position)
+        if self.model.quaffles[ball_id].state == 1:
+            return tuple(self.model.players[self.model.quaffles[ball_id].playerIndex].position)
         else:
-            return tuple(self.model.quaffles[index].position)
+            return tuple(self.model.quaffles[ball_id].position)
 
-    def getBallDir(self, index):
-        return self.model.quaffles[index].direction
+    def getBallDir(self, ball_id):
+        if ball_id == 2:
+            return tuple(self.model.goldenSnitch.direction)
+        else:
+            return self.model.quaffles[ball_id].direction
 
-    def getBallState(self, index):
-        return self.model.quaffles[index].state
+    def getBallState(self, ball_id):
+        if ball_id == 2:
+            return 4
+        else:
+            return self.model.quaffles[ball_id].state
 
-    def getBallPlayer(self, index):
-        if self.model.quaffles[index].playerIndex == -1:
+    def getBallPlayer(self, ball_id):
+        if self.model.quaffles[ball_id].playerIndex == -1 or ball_id == 2:
             return None
         else:
-            return self.model.quaffles[index].playerIndex
+            return self.model.quaffles[ball_id].playerIndex
 
-    def checkBallPower(self, index):
-        return self.model.quaffles[index].isStrengthened
-
-    def getGoldPos(slef):
-        return tuple(self.model.goldenSnitch.position)
-
-    def getGoldDir(slef):
-        return tuple(self.model.goldenSnitch.direction)
+    def checkBallPower(self, ball_id):
+        if ball_id == 2:
+            return None
+        else:
+            return self.model.quaffles[ball_id].isStrengthened
 
     def getFreeBallPos(self):
         Pos_list=[]
@@ -191,6 +196,28 @@ class Helper(object):
                 Pos_list.append(tuple(self.model.quaffles[i].position))
         return Pos_list
         
+    def getNearBall(self):
+        Info_list=[]
+        for i in range(numberOfQuaffles):
+            tmp = [0,0]
+            tmp[0] = self.model.quaffles[i].state
+            tmpDist = 99999999
+            if tmp[0] == 1:
+                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position, self.model.players[self.index].position)
+            elif tmp[0] == 0 or tmp[0] == 2:
+                tmpDist = self.CountDist(self.model.quaffles[i].position, self.model.players[self.index].position)
+            tmp[1] = tmpDist
+            Info_list.append(tmp)
+        tmp2 = [4, self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
+        Info_list.append(tmp2)
+        Sort_Info = sorted(Info_list,key=itemgetter(1))
+
+        result = []
+        for i in range(numberOfQuaffles+1):
+            result.append(Sort_Info[i][0])
+        return result
+
+    """
     def getNearBallInfo(self):
         Info_list=[]
         for i in range(numberOfQuaffles):
@@ -211,7 +238,8 @@ class Helper(object):
                 self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
-        return Sort_Info 
+        return Sort_Info
+    """
 
     # my info
     def getMyIndex(self):
