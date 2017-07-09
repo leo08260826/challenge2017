@@ -344,7 +344,7 @@ class Helper(object):
     def checkPlayerModeChange(self, player_id):
         if self.model.players[player_id].isVisible == True:
             return (self.model.players[player_id].power > modeChangePower)
-         else:
+        else:
             return None
 
     def checkPlayerHold(self, player_id):
