@@ -143,29 +143,53 @@ class Helper(object):
         return self.model.timer
  
     # ball info
+    def getBallPos(self, index):
+        return tuple(self.model.quaffles[index].position)
+
+    def getGoldPos(slef):
+        return tuple(self.model.goldenSnitch.position)
+
+    def getBallState(self, index):
+        return self.model.quaffles[index].state
+
+    def getBallDir(self, index):
+        return self.model.quaffles[index].direction
+
+    def getGoldDir(slef):
+        return tuple(self.model.goldenSnitch.direction)
+
+    def getBallPlayer(self, index):
+        if self.model.quaffles[index].playerIndex == -1:
+            return None
+        else:
+            return self.model.quaffles[index].playerIndex
+
+    def checkBallPower(self, index):
+        return self.model.quaffles[index].isStrengthened
+
     def getFreeBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
             if self.model.quaffles[i].state == 0:
-                Pos_list.append(self.model.quaffles[i].position)
+                Pos_list.append(tuple(self.model.quaffles[i].position))
         return Pos_list
 
     def getHoldBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
             if self.model.quaffles[i].state == 1:
-                Pos_list.append(self.model.players[self.model.quaffles[i].playerIndex].position)
+                Pos_list.append(tuple(self.model.players[self.model.quaffles[i].playerIndex].position))
         return Pos_list
 
     def getFlyBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
             if self.model.quaffles[i].state == 2:
-                Pos_list.append(self.model.quaffles[i].position)
+                Pos_list.append(tuple(self.model.quaffles[i].position))
         return Pos_list
 
     def getGoldBallPos(self):
-        return list(self.model.goldenSnitch.position)
+        return tuple(self.model.goldenSnitch.position)
         
     def getNearBallInfo(self):
         Info_list=[]
@@ -176,12 +200,15 @@ class Helper(object):
             tmp[2] = self.model.quaffles[i].state
             tmpDist = 99999999
             if tmp[2] == 1:
-                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position, self.model.players[self.index].position)
             elif tmp[2] == 0 or tmp[2] == 2:
-                tmpDist = self.CountDist(self.model.quaffles[i].position,self.model.players[self.index].position)
+                tmpDist = self.CountDist(self.model.quaffles[i].position, self.model.players[self.index].position)
             tmp[3] = tmpDist
             Info_list.append(tmp)
-        tmp2 = [self.model.goldenSnitch.position[0],self.model.goldenSnitch.position[1],4,self.CountDist(self.model.goldenSnitch.position,self.model.players[self.index].position)]
+        tmp2 = [self.model.goldenSnitch.position[0],
+                self.model.goldenSnitch.position[1],
+                4,
+                self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(3))
         return Sort_Info 
