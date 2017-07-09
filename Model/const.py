@@ -23,7 +23,7 @@ powerAdd = [2,3]
 
 
 #time const
-freezeTime = 60
+freezeTime = 70
 stunFreezeTime = 60
 maskTime = 100
 invisibleTime = 300

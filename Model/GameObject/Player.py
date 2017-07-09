@@ -40,8 +40,8 @@ class player(object):
 
     def freeze(self, directionIn = 0):
 
-        if self.isFreeze == True and self.freezeTimer < 58:
-             self.freezeTimer = freezeTime
+        if self.isFreeze == True and self.freezeTimer < 50:
+            self.freezeTimer = freezeTime
         else:
             self.isFreeze = True
             self.freezeTimer = freezeTime
@@ -81,7 +81,7 @@ class player(object):
         
         if self.isFreeze == True:
             self.freezeTimer = self.freezeTimer - 1
-            if 0 < self.freezeTimer < 58 :
+            if 10 < self.freezeTimer < 68 :
                 self.direction = 0
             elif self.freezeTimer == 0:
                 self.isFreeze = False
