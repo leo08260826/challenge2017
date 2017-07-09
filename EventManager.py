@@ -133,16 +133,6 @@ class Event_CallMe():
     def __str__(self):
         return "Call me maybe"
 
-class Event_NoUseSkillCard():
-    """
-    NouseSkillCard Event
-    """
-    def __init__(self,PlayerIndex):
-        self.name = "NoUseSkillCard event"
-        self.PlayerIndex = PlayerIndex
-    def __str__(self):
-        return "This is a trash"
-
 class EventManager(object):
     """
     We coordinate communication between the Model, View, and Controller.
