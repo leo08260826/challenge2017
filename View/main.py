@@ -263,7 +263,7 @@ class GraphicalView(object):
         self.render_magic_effect()
         
 
-        somewords = self.smallfont.render( 'GameSet', True, (255, 0, 1))
+        somewords = self.smallfont.render( 'Time\'s up. Press space to see the record.', True, (255, 0, 1))
         self.blit_at_center(somewords, (ScreenSize[0]/2, ScreenSize[1]/2))
 
         # update surface
