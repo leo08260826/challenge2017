@@ -144,7 +144,10 @@ class Helper(object):
  
     # ball info
     def getBallPos(self, index):
-        return tuple(self.model.quaffles[index].position)
+        if self.model.quaffles[index].State == 1:
+            return tuple(self.model.players[self.model.quaffles[index].playerIndex].position)
+        else:
+            return tuple(self.model.quaffles[index].position)
 
     def getGoldPos(slef):
         return tuple(self.model.goldenSnitch.position)
