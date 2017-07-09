@@ -299,7 +299,7 @@ class Helper(object):
         else:
             return False
 
-    def checkUseAction(self, action_id):
+    def checkMeUseAction(self, action_id):
         myMode = self.getMyMode()
         myMana = self.getMyMana()
         if myMode == 0:
@@ -392,6 +392,30 @@ class Helper(object):
             return self.model.players[player_id].isMask
         else:
             return None
+
+    def checkPlayerUseAction(self, player_id, action_id):
+        if self.model.players[player_id].isVisible == False:
+            return None
+        playerMode = self.getPlayerMode()
+        playerMana = self.getPlayerMana()
+        if playerMode == 0:
+            if action_id == 0 and playerMana >= powerShotPowerCost:
+                return True
+            elif action_id == 1 and playerMana >= stunPowerCost:
+                return True
+            elif action_id == 2:
+                return True
+            else:
+                return False
+        elif playerMode == 1:
+            if action_id == 0 and playerMana >= barrierPowerCost:
+                return True
+            elif action_id == 1 and playerMana >= maskPowerCost:
+                return True
+            else:
+                return False
+        else:
+            return False
 
     def getNearPlayer(self):
         myPos = self.model.players[self.index].position
