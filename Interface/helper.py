@@ -204,6 +204,7 @@ class Helper(object):
         for i in range(PlayerNum):
             if i != self.index:
                 tmpPos = self.model.players[i].position
+                myPos = self.getMyPos()
                 if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.checkPlayerProtected(i) == False:
                     result.append(i)
         return result
