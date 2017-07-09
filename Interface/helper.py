@@ -210,7 +210,7 @@ class Helper(object):
             if i != self.index:
                 tmpPos = self.model.players[i].position
                 myPos = self.getMyPos()
-                if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.model.players[i].isVisible = True:
+                if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.model.players[i].isVisible == True:
                     result.append(i)
         return result
 
@@ -312,55 +312,55 @@ class Helper(object):
 
     # player info
     def getPlayerPos(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return tuple(self.model.players[player_id].position)
         else:
             return None
 
     def getPlayerDir(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].direction
         else:
             return None
 
     def getPlayerMode(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].mode
         else:
             return None
 
     def getPlayerScore(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].score
         else:
             return None
 
     def getPlayerMana(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].power
         else:
             return None
 
     def checkPlayerModeChange(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return (self.model.players[player_id].power > modeChangePower)
          else:
             return None
 
     def checkPlayerHold(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].takeball > -1
         else:
             return None
 
     def checkPlayerStun(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].isFreeze
         else:
             return None
 
     def checkPlayerProtected(self, player_id):
-        if self.model.players[player_id].isVisible = True:
+        if self.model.players[player_id].isVisible == True:
             return self.model.players[player_id].isMask
         else:
             return None
