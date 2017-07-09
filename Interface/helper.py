@@ -124,14 +124,19 @@ class Helper(object):
             ((board[0]+board[1])/2,(board[4]+board[5])/2),
             ((board[0]+board[1])/2,(board[0]+board[1])/2)
         ]
-        MinIndex = 0
-        Mini = 99999999
+        
+        AllGoal = []
         for i in range(8):
             tmp = [gate[i][0],gate[i][1]]
-            if (self.CountDist(tmp,pos) < Mini):
-                Mini = self.CountDist(tmp,pos)
-                MinIndex = i
-        return MinIndex
+            tmpDist = self.CountDist(tmp,pos)
+            index = i
+            AllGoal.append((tmpDist,index))
+        SortAllGoal = sorted(AllGoal,key=itemgetter(0))
+
+        IndexList = []    
+        for i in range(8):
+            IndexList.append(SortAllGoal[i][1])
+        return IndexList
         
     def getTimeLeft(self):
         return self.model.timer
@@ -185,7 +190,7 @@ class Helper(object):
         return self.index
 
     def getMyPos(self):
-        return list(self.model.players[self.index].position)
+        return tuple(self.model.players[self.index].position)
 
     def getMyDir(self):
         return self.model.players[self.index].direction
@@ -205,7 +210,7 @@ class Helper(object):
             if i != self.index:
                 tmpPos = self.model.players[i].position
                 myPos = self.getMyPos()
-                if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.checkPlayerProtected(i) == False:
+                if self.CountDist(myPos, tmpPos) < (stunDistance ** 2) and self.model.players[i].isVisible = True:
                     result.append(i)
         return result
 
@@ -222,7 +227,7 @@ class Helper(object):
         return self.model.players[self.index].isMask
 
     def checkScoring(self, goal_id, myDir):
-        myPos = self.getMyPos()
+        myPos = list(self.getMyPos())
         if myDir == 1:#DIR_U
             myPos[1] = gameRangeLower - 1
         elif myDir == 2:#DIR_RU
@@ -266,7 +271,7 @@ class Helper(object):
         else:
             return False
 
-    def useAction(self, action_id):
+    def checkUseAction(self, action_id):
         myMode = self.getMyMode()
         myMana = self.getMyMana()
         if myMode == 0:
@@ -288,23 +293,16 @@ class Helper(object):
         else:
             return False
 
-    def checkDir(self, myDir):
-        """
-        tmpPlayer = self.model.players[self.index]
-        tmpPlayer.direction = myDir
-        speedmode = tmpPlayer.mode + tmpPlayer.isFreeze * 1
-        for barrier in self.model.barriers:
-            if not barrier.playerIndex == self.index and barrier.bump(tmpPlayer, playerSpeed[self.getMyMode()]):
-                return True
-        if tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode] < 47 \
-            or tmpPlayer.position[0] + dirConst[tmpPlayer.direction][0]*playerSpeed[speedmode]> 693 :
+    def checkHitWall(self, myDir):
+        speedmode = self.model.players[self.index].mode + self.model.players[self.index].isFreeze * 1
+        if self.model.players[self.index].position[0] + dirConst[myDir][0]*playerSpeed[speedmode] < 40 \
+            or self.model.players[self.index].position[0] + dirConst[myDir][0]*playerSpeed[speedmode]> 700 :
             return True
-        elif tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] < 47 \
-            or tmpPlayer.position[1] + dirConst[tmpPlayer.direction][1]*playerSpeed[speedmode] > 693 :
+        elif self.model.players[self.index].position[1] + dirConst[myDir][1]*playerSpeed[speedmode] < 40 \
+            or self.model.players[self.index].position[1] + dirConst[myDir][1]*playerSpeed[speedmode] > 700 :
             return True
-        else:
+        else :
             return False
-        """
 
     def getInvDir(self, myDir):
         if myDir < 5:
@@ -314,31 +312,58 @@ class Helper(object):
 
     # player info
     def getPlayerPos(self, player_id):
-        return list(self.model.players[player_id].position)
+        if self.model.players[player_id].isVisible = True:
+            return tuple(self.model.players[player_id].position)
+        else:
+            return None
 
     def getPlayerDir(self, player_id):
-        return self.model.players[player_id].direction
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].direction
+        else:
+            return None
 
     def getPlayerMode(self, player_id):
-        return self.model.players[player_id].mode
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].mode
+        else:
+            return None
 
     def getPlayerScore(self, player_id):
-        return self.model.players[player_id].score
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].score
+        else:
+            return None
 
     def getPlayerMana(self, player_id):
-        return self.model.players[player_id].power
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].power
+        else:
+            return None
 
     def checkPlayerModeChange(self, player_id):
-        return (self.model.players[player_id].power > modeChangePower)
+        if self.model.players[player_id].isVisible = True:
+            return (self.model.players[player_id].power > modeChangePower)
+         else:
+            return None
 
     def checkPlayerHold(self, player_id):
-        return self.model.players[player_id].takeball > -1
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].takeball > -1
+        else:
+            return None
 
     def checkPlayerStun(self, player_id):
-        return self.model.players[player_id].isFreeze
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].isFreeze
+        else:
+            return None
 
     def checkPlayerProtected(self, player_id):
-        return self.model.players[player_id].isMask
+        if self.model.players[player_id].isVisible = True:
+            return self.model.players[player_id].isMask
+        else:
+            return None
 
     def getNearPlayer(self):
         myPos = self.model.players[self.index].position
@@ -372,7 +397,4 @@ class Helper(object):
         pass
 
     def askGodPos(self, god_name):
-        pass
-
-    def callme(self):
         pass

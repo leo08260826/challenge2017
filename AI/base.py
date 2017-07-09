@@ -1,6 +1,7 @@
 """
 const of AI code use.
 """
+#action
 AI_U  = 1
 AI_RU = 2
 AI_R  = 3
@@ -10,19 +11,46 @@ AI_LD = 6
 AI_L  = 7
 AI_LU = 8
 
-AI_ACTION_1 = 9
-AI_ACTION_2 = 10
-AI_ACTION_3 = 11
+AI_ATTACK_POWERTHROW = 9
+AI_ATTACK_STUN = 10
 
+AI_DEFEND_BARRIER = 9
+AI_DEFEND_MASK = 10
+
+AI_THROWBALL = 11
 AI_MODECHANGE = 12
-AI_SKILLCARD_1 = 13
-AI_SKILLCARD_2 = 14
-AI_SKILLCARD_3 = 15
+AI_SKILLCARD_HIDE = 13
+AI_SKILLCARD_DEMENTOR = 14
+AI_SKILLCARD_STUNALL = 15
+AI_SKILLCARD_SPECIAL = 16
+
+AI_CALLME = 17
+
+#parameter
+DIR_U  = 1
+DIR_RU = 2
+DIR_R  = 3
+DIR_RD = 4
+DIR_D  = 5
+DIR_LD = 6
+DIR_L  = 7
+DIR_LU = 8
+
+MODE_ATTACK = 0
+MODE_DEFEND = 1
+
+GOAL_U  = 0
+GOAL_R  = 1
+GOAL_D  = 2
+GOAL_L  = 3
+GOAL_RU = 4
+GOAL_RD = 5
+GOAL_LD = 6
+GOAL_LU = 7
 
 HIDE = 0 # invisible
 DEMENTOR = 1 # empty power
 STUNALL = 2 # stun all enermy
-
 
 """
 a base of AI.

@@ -52,11 +52,11 @@ class Interface(object):
                     self.evManager.Post(Event_Move(player.index, DIR_L))
                 elif decide == AI_LU:
                     self.evManager.Post(Event_Move(player.index, DIR_LU))
-                elif decide == AI_ACTION_1:
+                elif decide == AI_ATTACK_POWERTHROW:
                     self.evManager.Post(Event_Action(player.index, ACTION_0))
-                elif decide == AI_ACTION_2:
+                elif decide == AI_ATTACK_STUN:
                     self.evManager.Post(Event_Action(player.index, ACTION_1))
-                elif decide == AI_THROW:
+                elif decide == AI_THROWBALL:
                     self.evManager.Post(Event_Action(player.index, ACTION_2))
                 elif decide == AI_MODECHANGE:
                     self.evManager.Post(Event_ModeChange(player.index))
@@ -69,10 +69,11 @@ class Interface(object):
                 elif decide == AI_SKILLCARD_STUNALL:
                     if SKILLCARD_2 in self.model.players[player.index].AI.skill:
                         self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
-                elif decide == AI_CallMe:
+                elif decide == AI_SKILLCARD_SPECIAL:
+                    if SKILLCARD_3 in self.model.players[player.index].AI.skill:
+                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_3))
+                elif decide == AI_CALLME:
                     self.evManager.Post(Event_CallMe(player.index))
-                elif decide == AI_NoUseSkillCard:
-                    self.evManager.Post(Event_NoUseSkillCard(player.index))
         
     def initialize(self):
         for index, player in enumerate(self.model.players):

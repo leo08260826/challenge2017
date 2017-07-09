@@ -16,6 +16,7 @@ ACTION_2 = 2 # general throw
 SKILLCARD_0 = 0 # invisible
 SKILLCARD_1 = 1 # empty power
 SKILLCARD_2 = 2 # stun all enermy
+SKILLCARD_3 = 3
 
 # [up, right, down, left, chmod, act0, act1,act2 ]
 PlayerKeys = [
