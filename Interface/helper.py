@@ -333,6 +333,8 @@ class Helper(object):
             return False
 
     def getInvDir(self, myDir):
+        if myDir<1 or myDir>8:
+            return None
         if myDir < 5:
             return myDir+4
         else:
