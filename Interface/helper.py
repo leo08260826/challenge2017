@@ -149,17 +149,11 @@ class Helper(object):
         else:
             return tuple(self.model.quaffles[index].position)
 
-    def getGoldPos(slef):
-        return tuple(self.model.goldenSnitch.position)
-
-    def getBallState(self, index):
-        return self.model.quaffles[index].state
-
     def getBallDir(self, index):
         return self.model.quaffles[index].direction
 
-    def getGoldDir(slef):
-        return tuple(self.model.goldenSnitch.direction)
+    def getBallState(self, index):
+        return self.model.quaffles[index].state
 
     def getBallPlayer(self, index):
         if self.model.quaffles[index].playerIndex == -1:
@@ -169,6 +163,12 @@ class Helper(object):
 
     def checkBallPower(self, index):
         return self.model.quaffles[index].isStrengthened
+
+    def getGoldPos(slef):
+        return tuple(self.model.goldenSnitch.position)
+
+    def getGoldDir(slef):
+        return tuple(self.model.goldenSnitch.direction)
 
     def getFreeBallPos(self):
         Pos_list=[]
