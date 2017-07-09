@@ -271,7 +271,7 @@ class GraphicalView(object):
         self.screen = pg.display.set_mode(ScreenSize)
         self.clock = pg.time.Clock()
         self.smallfont = pg.font.Font(None, 40)
-        self.stuns = [[(0,0),-1]]*modelConst.PlayerNum
+        self.stuns = [[(0,0),-1] for _ in modelConst.PlayerNum]
         self.jump_status = [jump_frame]*modelConst.PlayerNum
         # load images
         ''' backgrounds '''
