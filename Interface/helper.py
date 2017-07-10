@@ -206,9 +206,10 @@ class Helper(object):
                 tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position, self.model.players[self.index].position)
             elif tmp[0] == 0 or tmp[0] == 2:
                 tmpDist = self.CountDist(self.model.quaffles[i].position, self.model.players[self.index].position)
+            tmp[0] = i
             tmp[1] = tmpDist
             Info_list.append(tmp)
-        tmp2 = [4, self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
+        tmp2 = [self.model.goldenSnitch.index, self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(1))
 
