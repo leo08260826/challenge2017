@@ -40,15 +40,15 @@ class player(object):
 
     def freeze(self, directionIn = 0):
 
-        if self.isFreeze == True and self.freezeTimer < 50:
-            self.freezeTimer = freezeTime
-        else:
+        if self.freezeTimer == 0:
             self.isFreeze = True
             self.freezeTimer = freezeTime
             if self.direction != 0:
                 self.direction = ( self.direction + 4 ) % 8
                 if self.direction == 0:
                     self.direction = 8
+                self.position[0] += dirConst[self.direction][0]*playerSpeed[2]
+                self.position[1] += dirConst[self.direction][1]*playerSpeed[2]
             elif directionIn != 0:
                 self.direction = directionIn
             else :
@@ -79,11 +79,11 @@ class player(object):
 
     def tickCheck(self):
         
-        if self.isFreeze == True:
+        if self.freezeTimer > 0:
             self.freezeTimer = self.freezeTimer - 1
             if 10 < self.freezeTimer < 68 :
                 self.direction = 0
-            elif self.freezeTimer == 0:
+            elif self.freezeTimer == 10:
                 self.isFreeze = False
 
         if self.powertmp < ticktime and self.isFreeze == False:
@@ -105,9 +105,9 @@ class player(object):
         elif self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] < 40 \
             or self.position[1] + dirConst[self.direction][1]*playerSpeed[speedmode] > 700 :
             self.direction = dirBounce[1][self.direction]
-        else :
-            self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
-            self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
+
+        self.position[0] += dirConst[self.direction][0]*playerSpeed[speedmode]
+        self.position[1] += dirConst[self.direction][1]*playerSpeed[speedmode]
 
         if self.isMask == True:
             self.maskTimer = self.maskTimer - 1
