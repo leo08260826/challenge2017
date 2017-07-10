@@ -168,14 +168,15 @@ class Quaffle(OriginalBall):
                     self.hasPassed = [[False] * 4 for _ in range(4)]
                     self.tickTime = 60
                     self.state = 3
-                    self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
-                                     random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
+                    self.position = [-1, -1]
                     self.direction = random.randrange(1, 9)
         elif self.state == 3:
             if self.tickTime > 0:
                 self.tickTime -= 1
             elif self.tickTime <= 0:
                 self.state = 0
+                self.position = [random.randrange(mc.ballRandomLower, mc.ballRandomUpper),\
+                                 random.randrange(mc.ballRandomLower, mc.ballRandomUpper)]
                 self.tickTime = -1
         return (tmpScore, tmpPlayerIndex, mc.scoreOfQuaffles[1], checkGoal)
 
