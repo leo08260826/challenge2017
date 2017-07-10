@@ -74,7 +74,7 @@ class GraphicalView(object):
                 self.stuns[player.index] = [player.position, 0]
         elif isinstance(event, Event_SkillCard):
             self.play_magic(event.PlayerIndex,event.SkillIndex)
-        elif isinstance(event, Event_CallMe):
+        elif isinstance(event, Event_CallMe) and self.jump_status[event.PlayerIndex] == jump_frame:
             self.jump_status[event.PlayerIndex] = 0
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
