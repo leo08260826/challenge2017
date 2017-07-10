@@ -209,7 +209,7 @@ class Helper(object):
             tmp[0] = i
             tmp[1] = tmpDist
             Info_list.append(tmp)
-        tmp2 = [self.model.goldenSnitch.index, self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
+        tmp2 = [2, self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
         Info_list.append(tmp2)
         Sort_Info = sorted(Info_list,key=itemgetter(1))
 
