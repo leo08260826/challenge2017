@@ -74,10 +74,8 @@ class GraphicalView(object):
                 self.stuns[player.index] = [player.position, 0]
         elif isinstance(event, Event_SkillCard):
             self.play_magic(event.PlayerIndex,event.SkillIndex)
-        elif isinstance(event, Event_CallMe):
+        elif isinstance(event, Event_CallMe) and self.jump_status[event.PlayerIndex] == jump_frame:
             self.jump_status[event.PlayerIndex] = 0
-        elif isinstance(event, Event_NoUseSkillCard):
-            self.play_magic(event.PlayerIndex,3)
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
@@ -223,9 +221,53 @@ class GraphicalView(object):
 
 
     def render_prerecord(self):
-        self.render_play()
-        somewords = self.smallfont.render( 'GameSet', True, (255, 0, 1))
+        try:
+            
+            # music
+            pg.mixer.music.unpause()
+            self.menu_music.stop()
+            self.record_music.stop()
+            self.record_haveplay = 0
+        except:
+            pass
+        # draw backgound
+        self.render_background()
+            
+        self.render_timebar()
+        self.screen.blit(self.logo,(750,740))
+
+        for i in range(modelConst.PlayerNum):
+            self.render_player_status(i)
+
+        for stun in self.stuns:
+            if stun[1] in range(9):
+                self.blit_at_center(self.stun_images[stun[1]], stun[0])
+                stun[1] += 1
+        for i in range(modelConst.PlayerNum):
+            self.render_player_character(i)
+            
+        for i in range(modelConst.numberOfQuaffles):
+            self.render_quaffle(i)
+        self.render_goldenSnitch()
+
+        for barrier in self.model.barriers:
+            if barrier.playerIndex == 0:
+                self.screen.blit(self.new_barrier_images_horizontal,(280,0))
+            elif barrier.playerIndex == 1:
+                self.screen.blit(self.new_barrier_images_vertical,(720,280))
+            elif barrier.playerIndex == 2:
+                self.screen.blit(self.new_barrier_images_horizontal,(280,720))
+            elif barrier.playerIndex == 3:
+                self.screen.blit(self.new_barrier_images_vertical,(0,280))
+                
+        self.render_magic_effect()
+        
+
+        somewords = self.smallfont.render( 'Time\'s up. Press space to see the record.', True, (255, 0, 1))
         self.blit_at_center(somewords, (ScreenSize[0]/2, ScreenSize[1]/2))
+
+        # update surface
+        pg.display.flip()
 
 
     def display_fps(self):
