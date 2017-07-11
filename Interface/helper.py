@@ -153,7 +153,7 @@ class Helper(object):
 
     def getBallDir(self, ball_id):
         if ball_id == 2:
-            return tuple(self.model.goldenSnitch.direction)
+            return None
         else:
             return self.model.quaffles[ball_id].direction
 
