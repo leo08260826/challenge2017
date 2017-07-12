@@ -1,38 +1,32 @@
-import time
-import random
-import itertools
+import time, random, itertools
 
 from EventManager import *
 from Model.const import *
+# import Model.const as MC
 
 from Model.StateMachine import *
 from Model.GameObject.Player import *
 from Model.GameObject.Ball import *
 from Model.GameObject.Barrier import *
 
-
-
 class GameEngine(object):
-    """
-    Tracks the game state.
-    """
-    def __init__(self, evManager, AIList):
-        """
-        evManager (EventManager): Allows posting messages to the event queue.
+    # Tracks the game state.
+    def __init__(self, evManager, AINames):
+        # evManager (EventManager): Allows posting messages to the event queue.
+        #
+        # Attributes:
+        #     running (bool): True while the engine is online. Changed via Event_Quit().
+        #     state (StateMachine()): control state change, stack data structure.
+        #     AINames (list.str): all AI name list.
+        #     player (list.player()): all player object.
+        #     TurnTo (int): current player
 
-        Attributes:
-            running (bool): True while the engine is online. Changed via Event_Quit().
-            state (StateMachine()): control state change, stack data structure.
-            AIList (list.str): all AI name list.
-            player (list.player()): all player object.
-            TurnTo (int): current player
-        """
         self.evManager = evManager
         evManager.RegisterListener(self)
 
         self.running = False
         self.state = StateMachine()
-        self.AIList = AIList
+        self.AINames = AINames
         self.players = []
         self.quaffles = []
         self.barriers = []
@@ -43,10 +37,30 @@ class GameEngine(object):
         random.seed(time.time())
 
     def notify(self, event):
-        """
-        Called by an event in the message queue.
-        """
-        if isinstance(event, Event_StateChange):
+        # Called by an event in the message queue.
+        if isinstance(event, Event_EveryTick):
+            cur_state = self.state.peek()
+            if cur_state == STATE_PLAY:
+                self.UpdateObjects()
+                self.Bump()
+        elif isinstance(event, Event_EverySec):
+            self.goldenSnitch.decaySpeed()
+            cur_state = self.state.peek()
+            if cur_state == STATE_PLAY:
+                self.timer -= 1
+            if self.timer <= 0:
+                self.evManager.Post(Event_TimeUp())
+        elif isinstance(event, Event_Move):
+            self.SetPlayerDirection(event.PlayerIndex, event.Direction)
+        elif isinstance(event, Event_ModeChange):
+            self.ChangePlayerMode(event.PlayerIndex)
+        elif isinstance(event, Event_SkillCard):
+            self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
+        elif isinstance(event, Event_Action):
+            isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
+            if isConfirmed:
+                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+        elif isinstance(event, Event_StateChange):
             # if event.state is None >> pop state.
             if event.state == None:
                 # false if no more states are left
@@ -58,33 +72,13 @@ class GameEngine(object):
             else:
                 # push a new state on the stack
                 self.state.push(event.state)
-        elif isinstance(event, Event_Quit):
-            self.running = False
+        elif isinstance(event, Event_TimeUp):
+            self.evManager.Post(Event_StateChange(STATE_PRERECORD))
         elif isinstance(event, Event_Initialize) or \
              isinstance(event, Event_Restart):
             self.Initialize()
-        elif isinstance(event, Event_EveryTick):
-            if self.state.peek() == STATE_PLAY:
-                self.UpdateObjects()
-                self.Bump()
-        elif isinstance(event, Event_EverySec):
-            self.goldenSnitch.decaySpeed()
-            if self.state.peek() == STATE_PLAY:
-                self.timer -= 1
-            if self.timer <= 0:
-                self.evManager.Post(Event_TimeUp())
-        elif isinstance(event, Event_Move):
-            self.SetPlayerDirection(event.PlayerIndex, event.Direction)
-        elif isinstance(event, Event_ModeChange):
-            self.ChangePlayerMode(event.PlayerIndex)
-        elif isinstance(event, Event_TimeUp):
-            self.evManager.Post(Event_StateChange(STATE_PRERECORD))
-        elif isinstance(event, Event_SkillCard):
-            self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
-        elif isinstance(event, Event_Action):
-            isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
-            if isConfirmed:
-                self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+        elif isinstance(event, Event_Quit):
+            self.running = False
 
     def Initialize(self):
         self.players = []
@@ -96,25 +90,33 @@ class GameEngine(object):
         self.timer = initTime
 
     def SetPlayer(self):
-        count = 0
-        MinAINum = PlayerNum - MaxManualPlayer
-        DefautAINum = MinAINum - len(self.AIList) if len(self.AIList) < MinAINum else 0
-        for i in range(DefautAINum):
-            self.AIList.append("default")
+        # set AI Names List
+        # "_" ==> default AI, "~" ==> manual player
+        ManualPlayerNum = 0
+        for index in range(PlayerNum):
+            if len(self.AINames) > index:
+                PlayerName = self.AINames[index]
+                if PlayerName == "~":
+                    if ManualPlayerNum < MaxManualPlayerNum:
+                        ManualPlayerNum += 1
+                    else:
+                        self.AINames[index] = "_"
+            else:
+                if ManualPlayerNum < MaxManualPlayerNum:
+                    ManualPlayerNum += 1
+                    self.AINames.append("~")
+                else:
+                    self.AINames.append("_")
 
-        ManualPlayerNum = PlayerNum - len(self.AIList) if len(self.AIList) < PlayerNum else 0
-        for i in range(ManualPlayerNum):
-            Tmp_P = player("manual", count)
-            Tmp_P.IS_AI = False
+        # init Player object
+        for index in range(PlayerNum):
+            if self.AINames[index] == "~":
+                Tmp_P = player("manual", index, False)
+            elif self.AINames[index] == "_":
+                Tmp_P = player("default", index, True)
+            else:
+                Tmp_P = player(self.AINames[index], index, True)
             self.players.append(Tmp_P)
-            count = count + 1
-
-        AINum = len(self.AIList)
-        for i in range(AINum):
-            Tmp_P = player(self.AIList[i], count)
-            Tmp_P.IS_AI = True
-            self.players.append(Tmp_P)
-            count = count + 1
 
     def SetQuaffle(self):
         for quaffleId in range(0, numberOfQuaffles):
@@ -188,32 +190,31 @@ class GameEngine(object):
                         hasCaught = quaffle.catch(playerIndex)
                         if not hasCaught:
                             self.players[playerIndex].score += scoreOfQuaffles[tmpQuaffleState]
-        """
-        # barrier to player
-        for barrier in self.barriers:
-            for player in self.players:
-                if not barrier.playerIndex == player.index and \
-                        barrier.bump(player, playerSpeed[player.mode]):
-                    player.position[0] -= dirConst[player.direction][0]*playerSpeed[player.mode]
-                    player.position[1] -= dirConst[player.direction][1]*playerSpeed[player.mode]
-        # barrier to quaffle
-        for barrier in self.barriers:
-            for quaffle in self.quaffles:
-                if quaffle.state in [0, 2] and barrier.bump(quaffle, quaffle.speed):
-                    if quaffle.isStrengthened:
-                        barrier.inactive()
-                    else:
-                        quaffle.state = 0
-                        quaffle.playerIndex = -1
-                        if barrier.direction in (1,5):
-                            quaffle.direction = dirBounce[1][quaffle.direction]
-                        if barrier.direction in (2,6):
-                            quaffle.direction = dirBounce[2][quaffle.direction]
-                        if barrier.direction in (3,7):
-                            quaffle.direction = dirBounce[0][quaffle.direction]
-                        if barrier.direction in (4,8):
-                            quaffle.direction = dirBounce[3][quaffle.direction]
-    """
+
+        # # barrier to player
+        # for barrier in self.barriers:
+        #     for player in self.players:
+        #         if not barrier.playerIndex == player.index and \
+        #                 barrier.bump(player, playerSpeed[player.mode]):
+        #             player.position[0] -= dirConst[player.direction][0]*playerSpeed[player.mode]
+        #             player.position[1] -= dirConst[player.direction][1]*playerSpeed[player.mode]
+        # # barrier to quaffle
+        # for barrier in self.barriers:
+        #     for quaffle in self.quaffles:
+        #         if quaffle.state in [0, 2] and barrier.bump(quaffle, quaffle.speed):
+        #             if quaffle.isStrengthened:
+        #                 barrier.inactive()
+        #             else:
+        #                 quaffle.state = 0
+        #                 quaffle.playerIndex = -1
+        #                 if barrier.direction in (1,5):
+        #                     quaffle.direction = dirBounce[1][quaffle.direction]
+        #                 if barrier.direction in (2,6):
+        #                     quaffle.direction = dirBounce[2][quaffle.direction]
+        #                 if barrier.direction in (3,7):
+        #                     quaffle.direction = dirBounce[0][quaffle.direction]
+        #                 if barrier.direction in (4,8):
+        #                     quaffle.direction = dirBounce[3][quaffle.direction]
 
     def SetPlayerDirection(self, playerIndex, direction):
         if self.players[playerIndex] != None and self.players[playerIndex].isFreeze != True:

@@ -1,7 +1,7 @@
 from Model.const import *
 
 class player(object):
-    def __init__(self, name, index):
+    def __init__(self, name, index, IS_AI):
         # basic data
         self.name = name
         self.index = index
@@ -14,7 +14,7 @@ class player(object):
         self.score = 0
         self.skillcard = None
         self.takeball = -1
-        self.IS_AI = False
+        self.IS_AI = IS_AI
         self.AI = None
 
         # move data
