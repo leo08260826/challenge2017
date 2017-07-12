@@ -18,7 +18,7 @@ playerInitPos = [[370,70],[670,370],[370,670],[70,370]]
 powerMax = 100
 playerBumpDistance = 25
 PlayerNum = 4
-MaxManualPlayer = 4
+MaxManualPlayerNum = 2
 powerAdd = [2,3]
 
 
