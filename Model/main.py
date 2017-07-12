@@ -38,24 +38,7 @@ class GameEngine(object):
 
     def notify(self, event):
         # Called by an event in the message queue.
-        if isinstance(event, Event_StateChange):
-            # if event.state is None >> pop state.
-            if event.state == None:
-                # false if no more states are left
-                if not self.state.pop():
-                    self.evManager.Post(Event_Quit())
-            elif event.state == STATE_RESTART:
-                self.state.clear()
-                self.state.push(STATE_MENU)
-            else:
-                # push a new state on the stack
-                self.state.push(event.state)
-        elif isinstance(event, Event_Quit):
-            self.running = False
-        elif isinstance(event, Event_Initialize) or \
-             isinstance(event, Event_Restart):
-            self.Initialize()
-        elif isinstance(event, Event_EveryTick):
+        if isinstance(event, Event_EveryTick):
             cur_state = self.state.peek()
             if cur_state == STATE_PLAY:
                 self.UpdateObjects()
@@ -71,14 +54,31 @@ class GameEngine(object):
             self.SetPlayerDirection(event.PlayerIndex, event.Direction)
         elif isinstance(event, Event_ModeChange):
             self.ChangePlayerMode(event.PlayerIndex)
-        elif isinstance(event, Event_TimeUp):
-            self.evManager.Post(Event_StateChange(STATE_PRERECORD))
         elif isinstance(event, Event_SkillCard):
             self.ApplySkillCard(event.PlayerIndex, event.SkillIndex)
         elif isinstance(event, Event_Action):
             isConfirmed = self.ApplyAction(event.PlayerIndex, event.ActionIndex)
             if isConfirmed:
                 self.evManager.Post(Event_ConfirmAction(event.PlayerIndex, event.ActionIndex))
+        elif isinstance(event, Event_StateChange):
+            # if event.state is None >> pop state.
+            if event.state == None:
+                # false if no more states are left
+                if not self.state.pop():
+                    self.evManager.Post(Event_Quit())
+            elif event.state == STATE_RESTART:
+                self.state.clear()
+                self.state.push(STATE_MENU)
+            else:
+                # push a new state on the stack
+                self.state.push(event.state)
+        elif isinstance(event, Event_TimeUp):
+            self.evManager.Post(Event_StateChange(STATE_PRERECORD))
+        elif isinstance(event, Event_Initialize) or \
+             isinstance(event, Event_Restart):
+            self.Initialize()
+        elif isinstance(event, Event_Quit):
+            self.running = False
 
     def Initialize(self):
         self.players = []
@@ -91,9 +91,8 @@ class GameEngine(object):
 
     def SetPlayer(self):
         # set AI Names List
-        # "_" ==> default AI, "#" ==> manual player
+        # "_" ==> default AI, "~" ==> manual player
         ManualPlayerNum = 0
-        print(self.AINames)
         for index in range(PlayerNum):
             if len(self.AINames) > index:
                 PlayerName = self.AINames[index]
@@ -108,7 +107,6 @@ class GameEngine(object):
                     self.AINames.append("~")
                 else:
                     self.AINames.append("_")
-        print(self.AINames)
 
         # init Player object
         for index in range(PlayerNum):
