@@ -85,7 +85,8 @@ class Interface(object):
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI can't load." )
-                player.name, player.IS_AI, player.AI= "Error" , False, None
+                traceback.print_exc()
+                player.name, player.IS_AI, player.AI= "Error", False, None
                 continue
             print("Load ["+ str(index) +"]team_" + player.name + ".py")
             # init TeamAI class
@@ -94,7 +95,7 @@ class Interface(object):
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI __init__ is crashed." )
                 traceback.print_exc()
-                player.name, player.IS_AI, player.AI= "Error" , False, None
+                player.name, player.IS_AI, player.AI= "Error", False, None
                 continue
             print("Successful to Load ["+ str(index) +"]team_" + player.name + ".py")
     
