@@ -5,17 +5,17 @@ from EventManager import *
 from Controller.const import *
 
 class Control(object):
-    """
-    Handles control input.
-    """
+    # Handles control input.
     def __init__(self, evManager, model):
-        """
-        evManager (EventManager): Allows posting messages to the event queue.
-        model (GameEngine): a strong reference to the game Model.
-        """
+        ######################################################################### 
+        # evManager (EventManager): Allows posting messages to the event queue.
+        # model (GameEngine): a strong reference to the game Model.
+        #########################################################################
         self.evManager = evManager
         evManager.RegisterListener(self)
         self.model = model
+
+        self.ControlKeys = {}
 
     def notify(self, event):
         """
@@ -72,28 +72,28 @@ class Control(object):
             for player in self.model.players:
                 if player.IS_AI:
                     continue
-                DirKeys = PlayerKeys[player.index][0:4]
+                DirKeys = self.ControlKeys[player.index][0:4]
                 if event.key in DirKeys:
                     NowPressedKeys = self.Get_KeyPressIn(DirKeys)
                     DirHashValue = self.Get_DirHashValue(NowPressedKeys, DirKeys)
                     if DirHash[DirHashValue] != 0:
                         self.evManager.Post(Event_Move(player.index, DirHash[DirHashValue]))
                 # change mode 
-                elif event.key == PlayerKeys[player.index][4]:
+                elif event.key == self.ControlKeys[player.index][4]:
                     self.evManager.Post(Event_ModeChange(player.index))
                 # use action
-                elif event.key == PlayerKeys[player.index][5]:
+                elif event.key == self.ControlKeys[player.index][5]:
                     self.evManager.Post(Event_Action(player.index, ACTION_0))
-                elif event.key == PlayerKeys[player.index][6]:
+                elif event.key == self.ControlKeys[player.index][6]:
                     self.evManager.Post(Event_Action(player.index, ACTION_1))
-                elif event.key == PlayerKeys[player.index][7]:
+                elif event.key == self.ControlKeys[player.index][7]:
                     self.evManager.Post(Event_Action(player.index, ACTION_2))
         elif event.type == pg.KEYUP:
             # player controler
             for player in self.model.players:
                 if player.IS_AI:
                     continue
-                DirKeys = PlayerKeys[player.index][0:4]
+                DirKeys = self.ControlKeys[player.index][0:4]
                 if event.key in DirKeys:
                     NowPressedKeys = self.Get_KeyPressIn(DirKeys)
                     DirHashValue = self.Get_DirHashValue(NowPressedKeys, DirKeys)
@@ -129,15 +129,20 @@ class Control(object):
                 self.evManager.Post(Event_Restart())
 
     def initialize(self):
-        """
-        init pygame event and set timer
-        
-        # Document
-        pg.event.Event(event_id)
-        pg.time.set_timer(event_id, TimerDelay)
-        """
+        #########################################
+        # init pygame event and set timer
+        # # Document
+        # pg.event.Event(event_id)
+        # pg.time.set_timer(event_id, TimerDelay)
+        #########################################
         pg.time.set_timer(pg.USEREVENT,1000)
-    
+
+        NowManualIndex = 0
+        for index, AIName in enumerate(self.model.AINames):
+            if AIName == "~":
+                self.ControlKeys[index] = ManualPlayerKeys[NowManualIndex]
+                NowManualIndex += 1
+
     def Get_KeyPressIn(self, keylist):
         return [key for key, value in enumerate(pg.key.get_pressed()) if value == 1 and key in keylist]
 
