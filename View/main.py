@@ -8,14 +8,10 @@ from View.const import *
 import Model.const as modelConst
 
 class GraphicalView(object):
-    """
-    Draws the model state onto the screen.
-    """
+    # Draws the model state onto the screen.
     def __init__(self, evManager, model):
-        """
-        evManager (EventManager): Allows posting messages to the event queue.
-        model (GameEngine): a strong reference to the game Model.
-        """
+        # evManager (EventManager): Allows posting messages to the event queue.
+        # model (GameEngine): a strong reference to the game Model.
         self.evManager = evManager
         evManager.RegisterListener(self)
         self.model = model
@@ -49,9 +45,7 @@ class GraphicalView(object):
         self.winner = -1
         
     def notify(self, event):
-        """
-        Receive events posted to the message queue. 
-        """
+        # Receive events posted to the message queue. 
         if isinstance(event, Event_EveryTick) and self.isinitialized:
             cur_state = self.model.state.peek()
             if cur_state == model.STATE_MENU:
@@ -76,17 +70,15 @@ class GraphicalView(object):
             self.play_magic(event.PlayerIndex,event.SkillIndex)
         elif isinstance(event, Event_CallMe) and self.jump_status[event.PlayerIndex] == jump_frame:
             self.jump_status[event.PlayerIndex] = 0
+        elif isinstance(event, Event_Initialize):
+            self.initialize()
         elif isinstance(event, Event_Quit):
             # shut down the pygame graphics
             self.isinitialized = False
             pg.quit()
-        elif isinstance(event, Event_Initialize):
-            self.initialize()
     
     def render_menu(self):
-        """
-        Render the game menu.
-        """
+        # Render the game menu.
         try:
             #music
             pg.mixer.music.pause()
@@ -109,9 +101,7 @@ class GraphicalView(object):
         pg.display.flip()
         
     def render_play(self):
-        """
-        Render the game play.
-        """
+        # Render the game play.
         try:
             
             # music
@@ -158,9 +148,7 @@ class GraphicalView(object):
         
         
     def render_stop(self):
-        """
-        Render the stop screen.
-        """
+        # Render the stop screen.
         try:
             # music
             pg.mixer.music.pause()
@@ -178,9 +166,7 @@ class GraphicalView(object):
         pg.display.flip()
     
     def render_record(self):
-        """
-        Render the Soreboard
-        """
+        # Render the Soreboard
         try:
             pg.mixer.music.pause()
             self.menu_music.stop()
@@ -222,7 +208,6 @@ class GraphicalView(object):
 
     def render_prerecord(self):
         try:
-            
             # music
             pg.mixer.music.unpause()
             self.menu_music.stop()
@@ -271,14 +256,12 @@ class GraphicalView(object):
 
 
     def display_fps(self):
-        """Show the programs FPS in the window handle."""
+        # Show the programs FPS in the window handle.
         caption = "{} - FPS: {:.2f}".format(GameCaption, self.clock.get_fps())
         pg.display.set_caption(caption)
         
     def initialize(self):
-        """
-        Set up the pygame graphical display and loads graphical resources.
-        """
+        # Set up the pygame graphical display and loads graphical resources.
         #music
         try:
             pg.mixer.init()
@@ -395,11 +378,11 @@ class GraphicalView(object):
         player = self.model.players[index]
         pos_x , pos_y = 750 , (20 + 180*index)
             
- #     background display        
+        # background display        
         info = self.playerInfo[index]
         self.screen.blit(info,(pos_x,pos_y))
 
- #      player photo display
+        # player photo display
         if player.isFreeze :
              self.screen.blit(self.player_photo_hurt[index], (pos_x+20,pos_y+20-jump_frames[self.jump_status[index]]))
         else:
@@ -410,7 +393,7 @@ class GraphicalView(object):
         if index == self.winner:
             self.screen.blit(self.win_hat,(pos_x+20,pos_y+20))
             
- #       icon display       
+        # icon display       
         if player.isFreeze:
              self.screen.blit(self.player_status0,(pos_x+150,pos_y + 20))
         if player.isMask:       
@@ -421,10 +404,10 @@ class GraphicalView(object):
              self.screen.blit(self.player_status_P,(pos_x+150,pos_y + 110))
         elif player.mode == 0:
              self.screen.blit(self.player_status_A,(pos_x+150,pos_y + 110))
-#       render effect
+        # render effect
         effect_type = player_visual_effect[index]
         self.screen.blit(self.photo_effect[effect_type],(pos_x+20,pos_y+20))       
- #      mana and score and name
+        # mana and score and name
         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
         name = self.smallfont.render(player.name,True,(255,200,14))
@@ -508,7 +491,7 @@ class GraphicalView(object):
         return int(pg.time.get_ticks()*FramePerSec/1000)
 
     def play_magic(self,index_player,index_magic):
-        if (index_magic+10) in self.model.players[index_player].AI.skill:
+        if self.model.players[index_player].AI.skill[index_magic] >= 0:
             try:
                 self.sound[index_magic].set_volume(magic_music_volume)
                 self.sound[index_magic].play(0)
