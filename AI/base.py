@@ -71,6 +71,7 @@ STATE_GOLD   = 4
 HIDE = 0 # invisible
 DEMENTOR = 1 # empty power
 STUNALL = 2 # stun all enermy
+SPECIAL = 3 # SPECIAL
 
 """
 a base of AI.
@@ -78,7 +79,13 @@ a base of AI.
 import Interface.helper as helper
 class BaseAI:
     def __init__( self , helper ):
-        self.skill = []
+        self.effect = 0
+        self.skill = {
+            HIDE:0,
+            DEMENTOR:0,
+            STUNALL:0,
+            SPECIAL:0
+        }
         self.helper = helper
 
     def decide( self ):

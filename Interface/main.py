@@ -4,15 +4,16 @@ import Model.main as model
 from EventManager import *
 
 from Interface.helper import Helper
-from Interface.const import *
+import Model.const as MC
+import Interface.const as IC
 from Controller.const import *
 
 class Interface(object):
     def __init__(self, evManager, model):
-        """
-        evManager (EventManager): Allows posting messages to the event queue.
-        model (GameEngine): a strong reference to the game Model.
-        """
+
+        # evManager (EventManager): Allows posting messages to the event queue.
+        # model (GameEngine): a strong reference to the game Model.
+
         self.evManager = evManager
         evManager.RegisterListener(self)
         self.model = model
@@ -36,43 +37,43 @@ class Interface(object):
             # print(player.IS_AI)
             if player.IS_AI:
                 decide = player.AI.decide()
-                if decide == AI_U:
+                if decide == IC.AI_U:
                     self.evManager.Post(Event_Move(player.index, DIR_U))
-                elif decide == AI_RU:
+                elif decide == IC.AI_RU:
                     self.evManager.Post(Event_Move(player.index, DIR_RU))
-                elif decide == AI_R:
+                elif decide == IC.AI_R:
                     self.evManager.Post(Event_Move(player.index, DIR_R))
-                elif decide == AI_RD:
+                elif decide == IC.AI_RD:
                     self.evManager.Post(Event_Move(player.index, DIR_RD))
-                elif decide == AI_D:
+                elif decide == IC.AI_D:
                     self.evManager.Post(Event_Move(player.index, DIR_D))
-                elif decide == AI_LD:
+                elif decide == IC.AI_LD:
                     self.evManager.Post(Event_Move(player.index, DIR_LD))
-                elif decide == AI_L:
+                elif decide == IC.AI_L:
                     self.evManager.Post(Event_Move(player.index, DIR_L))
-                elif decide == AI_LU:
+                elif decide == IC.AI_LU:
                     self.evManager.Post(Event_Move(player.index, DIR_LU))
-                elif decide == AI_ATTACK_POWERTHROW:
+                elif decide == IC.AI_ATTACK_POWERTHROW:
                     self.evManager.Post(Event_Action(player.index, ACTION_0))
-                elif decide == AI_ATTACK_STUN:
+                elif decide == IC.AI_ATTACK_STUN:
                     self.evManager.Post(Event_Action(player.index, ACTION_1))
-                elif decide == AI_THROWBALL:
+                elif decide == IC.AI_THROWBALL:
                     self.evManager.Post(Event_Action(player.index, ACTION_2))
-                elif decide == AI_MODECHANGE:
+                elif decide == IC.AI_MODECHANGE:
                     self.evManager.Post(Event_ModeChange(player.index))
-                elif decide == AI_SKILLCARD_HIDE:
-                    if SKILLCARD_0 in self.model.players[player.index].AI.skill:
-                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_0))
-                elif decide == AI_SKILLCARD_DEMENTOR:
-                    if SKILLCARD_1 in self.model.players[player.index].AI.skill:
-                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_1))
-                elif decide == AI_SKILLCARD_STUNALL:
-                    if SKILLCARD_2 in self.model.players[player.index].AI.skill:
-                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_2))
-                elif decide == AI_SKILLCARD_SPECIAL:
-                    if SKILLCARD_3 in self.model.players[player.index].AI.skill:
-                        self.evManager.Post(Event_SkillCard(player.index, SKILLCARD_3))
-                elif decide == AI_CALLME:
+                elif decide == IC.AI_SKILLCARD_HIDE:
+                    if self.model.players[player.index].AI.skill[MC.HIDE] > 0:
+                        self.evManager.Post(Event_SkillCard(player.index, MC.HIDE))
+                elif decide == IC.AI_SKILLCARD_DEMENTOR:
+                    if self.model.players[player.index].AI.skill[MC.DEMENTOR] > 0:
+                        self.evManager.Post(Event_SkillCard(player.index, MC.DEMENTOR))
+                elif decide == IC.AI_SKILLCARD_STUNALL:
+                    if self.model.players[player.index].AI.skill[MC.STUNALL] > 0:
+                        self.evManager.Post(Event_SkillCard(player.index, MC.STUNALL))
+                elif decide == IC.AI_SKILLCARD_SPECIAL:
+                    if self.model.players[player.index].AI.skill[MC.SPECIAL] > 0:
+                        self.evManager.Post(Event_SkillCard(player.index, MC.SPECIAL))
+                elif decide == IC.AI_CALLME:
                     self.evManager.Post(Event_CallMe(player.index))
         
     def initialize(self):
@@ -85,7 +86,8 @@ class Interface(object):
                 loadtmp = imp.load_source('', './AI/team_' + player.name + '.py')
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI can't load." )
-                player.name, player.IS_AI, player.AI= "Error" , False, None
+                traceback.print_exc()
+                player.name, player.IS_AI, player.AI= "Error", False, None
                 continue
             print("Load ["+ str(index) +"]team_" + player.name + ".py")
             # init TeamAI class
@@ -94,7 +96,7 @@ class Interface(object):
             except:
                 print( "player:["+ str(index) +"]team_"+ player.name +"'s AI __init__ is crashed." )
                 traceback.print_exc()
-                player.name, player.IS_AI, player.AI= "Error" , False, None
+                player.name, player.IS_AI, player.AI= "Error", False, None
                 continue
             print("Successful to Load ["+ str(index) +"]team_" + player.name + ".py")
     
