@@ -233,25 +233,24 @@ class GameEngine(object):
         # 1 = empty power
         # 2 = stun all enermy
         # 3 = fake position
-        if self.players[playerIndex] != None and skillIndex in self.players[playerIndex].AI.skill:
-            Nowplayer = self.players[playerIndex]
-            if skillIndex == 0:
-                Nowplayer.isVisible = False
-                Nowplayer.invisibleTimer = invisibleTime
-            elif skillIndex == 1:
-                for player in self.players:
-                    if player.index !=  playerIndex:
-                        player.power = 0
-            elif skillIndex == 2:
-                for player in self.players:
-                    if player.index !=  playerIndex:
-                        player.isFreeze = True
-                        player.freezeTimer = 57
-            addindex = self.players[playerIndex].AI.skill.index(skillIndex)
-            self.players[playerIndex].AI.skill[addindex] += 10
-
-
-
+        Nowplayer = self.players[playerIndex]
+        if skillIndex == 0:
+            Nowplayer.isVisible = False
+            Nowplayer.invisibleTimer = invisibleTime
+            Nowplayer.AI.skill[HIDE] -= 1
+        elif skillIndex == 1:
+            for player in self.players:
+                if player.index !=  playerIndex:
+                    player.power = 0
+            Nowplayer.AI.skill[DEMENTOR] -= 1
+        elif skillIndex == 2:
+            for player in self.players:
+                if player.index !=  playerIndex:
+                    player.isFreeze = True
+                    player.freezeTimer = 57
+            Nowplayer.AI.skill[STUNALL] -= 1
+        elif skillIndex == 3:
+            Nowplayer.AI.skill[SPECIAL] -= 1
 
     def ApplyAction(self, playerIndex, actionIndex):
         #ACTION_0 = 0   power throw / barrier
@@ -316,12 +315,12 @@ class GameEngine(object):
             return False
 
     def run(self):
-        """
-        Starts the game engine loop.
+        ##############################################################
+        # Starts the game engine loop.
 
-        This pumps a Tick event into the message queue for each loop.
-        The loop ends when this object hears a QuitEvent in notify().
-        """
+        # This pumps a Tick event into the message queue for each loop.
+        # The loop ends when this object hears a QuitEvent in notify().
+        ##############################################################
         self.running = True
         self.evManager.Post(Event_Initialize())
         self.state.push(STATE_MENU)

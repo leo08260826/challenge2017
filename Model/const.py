@@ -79,3 +79,9 @@ goldenSnitchSpeedDecayPerSec = (goldenSnitchSpeed - goldenSnitchTerminalSpeed) /
 playerSpeed = [4,5,12]
 shotSpeed = 6
 depriveSpeed = quaffleSpeed
+
+# skillcard index
+HIDE = 0 # invisible
+DEMENTOR = 1 # empty power
+STUNALL = 2 # stun all enermy
+SPECIAL = 3 # SPECIAL

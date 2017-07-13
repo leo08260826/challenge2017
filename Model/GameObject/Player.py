@@ -20,11 +20,7 @@ class player(object):
         # move data
         self.position = list(playerInitPos[index])
 
-        #debug part
-        if index == 2:
-            self.direction = 3
-        else:
-            self.direction = 0
+        self.direction = 0
 
         #mask data
         self.isMask = False
