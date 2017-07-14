@@ -290,6 +290,7 @@ class GraphicalView(object):
             print("no audio")
         #playmusic_end
         
+
         result = pg.init()
         pg.font.init()
         pg.display.set_caption(GameCaption)
@@ -405,8 +406,12 @@ class GraphicalView(object):
         elif player.mode == 0:
              self.screen.blit(self.player_status_A,(pos_x+150,pos_y + 110))
         # render effect
-        effect_type = player_visual_effect[index]
-        self.screen.blit(self.photo_effect[effect_type],(pos_x+20,pos_y+20))       
+        if self.model.players[index].IS_AI:
+            ef = self.model.players[index].AI.effect
+        else:
+            ef = 0
+        self.screen.blit(self.photo_effect[ef],(pos_x+20,pos_y+20))
+        
         # mana and score and name
         score = self.smallfont.render(str(player.score),  True, (255,200, 14))
         mana = self.smallfont.render(str(player.power),  True, (255,200, 14))
@@ -440,22 +445,28 @@ class GraphicalView(object):
             visual_temp = 2
         elif visual_temp <= 11:
             visual_temp = 3
-            
-        if player_visual_effect[index] == 1:
-            self.blit_at_center(self.love_images[visual_temp], position)
-        if player_visual_effect[index] == 2:
-            self.blit_at_center(self.light_images[visual_temp], position)
-        if player_visual_effect[index] == 3:
-            self.blit_at_center(self.not18_images[visual_temp], position)
-        if player_visual_effect[index] == 4:
-            self.blit_at_center(self.rose_images[visual_temp], position)
-        if player_visual_effect[index] == 5:
-            self.blit_at_center(self.rain_images[visual_temp], position)
-        if player_visual_effect[index] == 6:
-            self.blit_at_center(self.fly_images[visual_temp], position)
-        if player_visual_effect[index] == 7:
-            self.blit_at_center(self.boss_images[visual_temp], position)
         
+        if self.model.players[index].IS_AI:
+            ef = self.model.players[index].AI.effect
+        else:
+            ef = 0
+    
+    
+        if ef == 1:
+            self.blit_at_center(self.love_images[visual_temp], position)
+        elif ef == 2:
+            self.blit_at_center(self.light_images[visual_temp], position)
+        elif ef == 3:
+            self.blit_at_center(self.not18_images[visual_temp], position)
+        elif ef == 4:
+            self.blit_at_center(self.rose_images[visual_temp], position)
+        elif ef == 5:
+            self.blit_at_center(self.rain_images[visual_temp], position)
+        elif ef == 6:
+            self.blit_at_center(self.fly_images[visual_temp], position)
+        elif ef == 7:
+            self.blit_at_center(self.boss_images[visual_temp], position)
+
         # mode
         self.blit_at_center(self.mode_images[player.mode], position)
         # ball
