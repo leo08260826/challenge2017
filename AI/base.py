@@ -73,6 +73,13 @@ DEMENTOR = 1 # empty power
 STUNALL = 2 # stun all enermy
 SPECIAL = 3 # SPECIAL
 
+EF_LOVE = 1
+EF_LIGHT = 2
+EF_NOT18 = 3
+EF_ROSE = 4
+EF_RAIN = 5
+EF_FLY = 6
+
 """
 a base of AI.
 """

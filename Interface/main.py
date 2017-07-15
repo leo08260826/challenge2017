@@ -34,8 +34,9 @@ class Interface(object):
     
     def API_play(self):
         for player in self.model.players:
+            
             # print(player.IS_AI)
-            if player.IS_AI:
+            if player.IS_AI and not player.isFreeze:
                 decide = player.AI.decide()
                 if decide == IC.AI_U:
                     self.evManager.Post(Event_Move(player.index, DIR_U))

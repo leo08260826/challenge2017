@@ -2,7 +2,7 @@ from AI.base import *
 
 class TeamAI( BaseAI ):
     def __init__( self , helper ):
-        self.effect = 5
+        self.effect = EF_ROSE
         self.skill = {
             HIDE:1,
             DEMENTOR:1,
