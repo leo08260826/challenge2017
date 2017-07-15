@@ -162,8 +162,8 @@ class EventManager(object):
         Post a new event to the message queue.
         It will be broadcast to all listeners.
         """
-        # this segment use to debug
-        if not (isinstance(event, Event_EveryTick) or isinstance(event, Event_EverySec)):
-            print( str(event) )
+        # # this segment use to debug
+        # if not (isinstance(event, Event_EveryTick) or isinstance(event, Event_EverySec)):
+        #     print( str(event) )
         for listener in self.listeners.keys():
             listener.notify(event)

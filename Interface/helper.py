@@ -179,22 +179,39 @@ class Helper(object):
         Pos_list=[]
         for i in range(numberOfQuaffles):
             if self.model.quaffles[i].state == 0:
-                Pos_list.append(tuple(self.model.quaffles[i].position))
-        return Pos_list
+                Pos_list.append((self.CountDist(self.model.quaffles[i].position,self.getMyPos()),i))
+        if len(Pos_list) == 0:
+            return None
+        Sort_Pos_list = sorted(Pos_list,key=itemgetter(0))
+        Index_list = []
+        for i in range(len(Sort_Pos_list)):
+            Index_list.append(self.getBallPos(Sort_Pos_list[i][1]))
+        return Index_list
 
     def getHoldBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
             if self.model.quaffles[i].state == 1:
-                Pos_list.append(tuple(self.model.players[self.model.quaffles[i].playerIndex].position))
-        return Pos_list
-
+                Pos_list.append((self.CountDist(self.model.quaffles[i].position,self.getMyPos()),i))
+        if len(Pos_list) == 0:
+            return None
+        Sort_Pos_list = sorted(Pos_list,key=itemgetter(0))
+        Index_list = []
+        for i in range(len(Sort_Pos_list)):
+            Index_list.append(self.getBallPos(Sort_Pos_list[i][1]))
+        return Index_list
     def getFlyBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
-            if self.model.quaffles[i].state == 2:
-                Pos_list.append(tuple(self.model.quaffles[i].position))
-        return Pos_list
+            if self.model.quaffles[i].state == 0:
+                Pos_list.append((self.CountDist(self.model.quaffles[i].position,self.getMyPos()),i))
+        if len(Pos_list) == 0:
+            return None
+        Sort_Pos_list = sorted(Pos_list,key=itemgetter(0))
+        Index_list = []
+        for i in range(len(Sort_Pos_list)):
+            Index_list.append(self.getBallPos(Sort_Pos_list[i][1]))
+        return Index_list
         
     def getNearBall(self):
         Info_list=[]

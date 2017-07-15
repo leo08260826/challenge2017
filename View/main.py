@@ -194,7 +194,12 @@ class GraphicalView(object):
             #visual effect
             if i == self.winner:
                 self.screen.blit(self.win_hat,(260+200*i,600))
-            effect_type = player_visual_effect[i]
+                    # render effect
+            if self.model.players[i].IS_AI:
+                ef = self.model.players[i].AI.effect
+            else:
+                ef = 0
+            effect_type = ef
             self.screen.blit(self.photo_effect[effect_type],(260+200*i,600))
             
             pg.draw.rect(self.screen, Color_White, (260+200*i, 600-height, 120, 70))
