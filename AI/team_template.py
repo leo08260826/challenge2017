@@ -2,14 +2,14 @@ from AI.base import *
 
 class TeamAI( BaseAI ):
     def __init__( self , helper ):
-        self.effect = EF_LOVE
+        self.effect = EF_NONE
         self.skill = {
-            HIDE:1,
-            DEMENTOR:1,
-            STUNALL:1,
-            SPECIAL:1,
+            HIDE:0,
+            DEMENTOR:0,
+            STUNALL:0,
+            SPECIAL:0,
         }
         self.helper = helper
 
     def decide( self ):
-        return AI_SKILLCARD_STUNALL
+        pass

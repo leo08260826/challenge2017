@@ -73,6 +73,7 @@ DEMENTOR = 1 # empty power
 STUNALL = 2 # stun all enermy
 SPECIAL = 3 # SPECIAL
 
+EF_NONE = 0
 EF_LOVE = 1
 EF_LIGHT = 2
 EF_NOT18 = 3
