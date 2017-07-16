@@ -138,15 +138,14 @@ class EventManager(object):
     We coordinate communication between the Model, View, and Controller.
     """
     def __init__(self):
-        from weakref import WeakKeyDictionary
-        self.listeners = WeakKeyDictionary()
+        self.listeners = []
 
     def RegisterListener(self, listener):
         """ 
         Adds a listener to our spam list. 
         It will receive Post()ed events through it's notify(event) call. 
         """
-        self.listeners[listener] = 1
+        self.listeners.append(listener)
 
     def UnregisterListener(self, listener):
         """ 
@@ -154,8 +153,7 @@ class EventManager(object):
         This is implemented but hardly used.
         Our weak ref spam list will auto remove any listeners who stop existing.
         """
-        if listener in self.listeners.keys():
-            del self.listeners[listener]
+        pass
         
     def Post(self, event):
         """
@@ -165,5 +163,5 @@ class EventManager(object):
         # # this segment use to debug
         # if not (isinstance(event, Event_EveryTick) or isinstance(event, Event_EverySec)):
         #     print( str(event) )
-        for listener in self.listeners.keys():
+        for listener in self.listeners:
             listener.notify(event)
