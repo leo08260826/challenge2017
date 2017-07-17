@@ -206,11 +206,29 @@ class GoldenSnitch(OriginalBall):
     def decaySpeed(self):
         self.speed -= mc.goldenSnitchSpeedDecayPerSec
 
+    # multiply 2 matrix. Works only when matrix1 is 2*2 and matrix2 is 2*1
+    def multiply(matrix1, matrix2):
+        answer = [0, 0]
+        answer[0] = matrix1[0][0] * matrix2[0] + matrix1[0][1] * matrix2[1]
+        answer[1] = matrix1[1][0] * matrix2[0] + matrix1[1][1] * matrix2[1]
+        return answer
+
+
+    # calculates the alert score of golden snitch. A high alert score means that the golden snitch is in trouble.
+    def calculateAlertScore(self, players, newGoldenSnitchPos):
+        alertScore = 0
+        for player in players:
+            distance = ((player.position[0] - newGoldenSnitchPos[0])**2 + (player.position[1] - newGoldenSnitchPos[1])**2) ** 0.5
+            if (distance <= mc.goldenSnitchAlertRadius):
+                alertScore += 100000 / (distance**2)
+
+        return alertScore
+
+
     def tickCheck(self, players):
         fleeDirectionList = []
         nearestPlayerDist = 10000
         nearestPlayerIndex = None
-
         for index, player in enumerate(players):
             distance = ((player.position[0] - self.position[0])**2 + (player.position[1] - self.position[1])**2) ** 0.5
             if (distance <= mc.goldenSnitchAlertRadius):
@@ -221,29 +239,51 @@ class GoldenSnitch(OriginalBall):
 
         # if there's no need to flee, don't change the direction. Move with half speed
         if not fleeDirectionList:
+            # scale to half speed
+            scaleFactor = (self.speed /2) / ((self.direction[0] ** 2 + self.direction[1] ** 2) ** 0.5)
+            self.direction[0] *= scaleFactor
+            self.direction[1] *= scaleFactor
+
             self.position = [x + y * 0.5 for x, y in zip(self.position, self.direction)]
             self.modifyPosition()
             return
 
-        # calculate the vector sum of fleeDirectionList
-        vectorSum = [0, 0]
-        for vector in fleeDirectionList:
-            vectorSum[0] += vector[0]
-            vectorSum[1] += vector[1]
+        # scale direction to flee speed
 
+        # if only 1 player is in the alert radius
+        elif len(fleeDirectionList) == 1:
+            self.direction = list(fleeDirectionList[0])
+            # adjust the magnitude of the vector sum
+            scaleFactor = self.speed / ((self.direction[0] ** 2 + self.direction[1] ** 2) ** 0.5)
+            self.direction[0] *= scaleFactor
+            self.direction[1] *= scaleFactor
 
-        # if 2 players are approaching from opposite direction
-        if (len(fleeDirectionList) >= 2 and\
-            (((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5) == 0 or\
-             (fleeDirectionList[0][0] / fleeDirectionList[1][0] == fleeDirectionList[1][0] / fleeDirectionList[1][1]\
-                and fleeDirectionList[0][0] / fleeDirectionList[1][0] < 0))):
-            vectorSum[0] = fleeDirectionList[0][1]
-            vectorSum[1] = fleeDirectionList[0][0]
+        # if more than 1 player is threatening golden snitch, try 8 directions and find the min of the
+        # evaluation function.
+        elif len(fleeDirectionList) >= 2:
+            # adjust the magnitude of the vector sum
+            scaleFactor = self.speed / ((self.direction[0] ** 2 + self.direction[1] ** 2) ** 0.5)
+            self.direction[0] *= scaleFactor
+            self.direction[1] *= scaleFactor
 
-        # adjust the magnitude of the vector sum
-        scaleFactor = self.speed / ((vectorSum[0] ** 2 + vectorSum[1] ** 2) ** 0.5)
-        self.direction[0] = vectorSum[0] * scaleFactor
-        self.direction[1] = vectorSum[1] * scaleFactor
+            newDirection = self.direction
+            bestDirection = self.direction
+            lowestAlertScore = 9999999
+
+            for i in range(8):
+                rotationMatrix45Deg = [[0.7071, -0.7071], [0.7071, 0.7071]];
+                newDirection = GoldenSnitch.multiply(rotationMatrix45Deg, newDirection)
+                newPos = []
+                for k in range(2):
+                    newPos.append(self.position[k] + newDirection[k])
+                
+                newAlertScore = self.calculateAlertScore(players, newPos)
+                if (newAlertScore < lowestAlertScore):
+                    bestDirection = newDirection
+                    lowestAlertScore = newAlertScore
+
+            self.direction = bestDirection
+
 
         pendingPosition = [self.position[0] + self.direction[0], self.position[1] + self.direction[1]]
 
