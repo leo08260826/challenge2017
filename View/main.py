@@ -195,8 +195,8 @@ class GraphicalView(object):
             if i == self.winner:
                 self.screen.blit(self.win_hat,(260+200*i,600))
                     # render effect
-            if self.model.players[i].IS_AI:
-                ef = self.model.players[i].AI.effect
+            if self.model.players[ranked[i].index].IS_AI:
+                ef = self.model.players[ranked[i].index].AI.effect
             else:
                 ef = 0
             effect_type = ef

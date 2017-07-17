@@ -442,8 +442,8 @@ class Helper(object):
     def checkPlayerUseAction(self, player_id, action_id):
         if self.model.players[player_id].isVisible == False:
             return None
-        playerMode = self.getPlayerMode()
-        playerMana = self.getPlayerMana()
+        playerMode = self.getPlayerMode(player_id)
+        playerMana = self.getPlayerMana(player_id)
         if playerMode == 0:
             if action_id == 0 and playerMana >= powerShotPowerCost:
                 return True
