@@ -141,6 +141,15 @@ class Helper(object):
         
     def getTimeLeft(self):
         return self.model.timer
+    def checkBarrier(self, GoalIndex):
+        if not( 4 > GoalIndex >= 0):
+            return None
+        if not len(self.model.barriers):
+            return False
+        for Barrier in self.model.barriers:
+            if Barrier.playerIndex == GoalIndex:
+                return True
+        return False
  
     # ball info
     def getBallPos(self, ball_id):
@@ -203,7 +212,7 @@ class Helper(object):
     def getFlyBallPos(self):
         Pos_list=[]
         for i in range(numberOfQuaffles):
-            if self.model.quaffles[i].state == 0:
+            if self.model.quaffles[i].state == 2:
                 Pos_list.append((self.CountDist(self.model.quaffles[i].position,self.getMyPos()),i))
         if len(Pos_list) == 0:
             return None
@@ -234,30 +243,6 @@ class Helper(object):
         for i in range(numberOfQuaffles+1):
             result.append(Sort_Info[i][0])
         return result
-
-    """
-    def getNearBallInfo(self):
-        Info_list=[]
-        for i in range(numberOfQuaffles):
-            tmp = [0,0,0,0]
-            tmp[0] = self.model.quaffles[i].position[0]
-            tmp[1] = self.model.quaffles[i].position[1]
-            tmp[2] = self.model.quaffles[i].state
-            tmpDist = 99999999
-            if tmp[2] == 1:
-                tmpDist = self.CountDist(self.model.players[self.model.quaffles[i].playerIndex].position, self.model.players[self.index].position)
-            elif tmp[2] == 0 or tmp[2] == 2:
-                tmpDist = self.CountDist(self.model.quaffles[i].position, self.model.players[self.index].position)
-            tmp[3] = tmpDist
-            Info_list.append(tmp)
-        tmp2 = [self.model.goldenSnitch.position[0],
-                self.model.goldenSnitch.position[1],
-                4,
-                self.CountDist(self.model.goldenSnitch.position, self.model.players[self.index].position)]
-        Info_list.append(tmp2)
-        Sort_Info = sorted(Info_list,key=itemgetter(3))
-        return Sort_Info
-    """
 
     # my info
     def getMyIndex(self):
