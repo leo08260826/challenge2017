@@ -76,13 +76,14 @@ class Helper(object):
             if (self.checkScoring(goal_id,i)) == True:
                 return i
 
-        # PlayerObj = self.model.players[self.index]
-        # NowDir = PlayerObj.direction
-        # speedmode = PlayerObj.mode + PlayerObj.isFreeze * 1
-        # fx = PlayerObj.position[0] + dirConst[PlayerObj.direction][0]*playerSpeed[speedmode]
-        # fy = PlayerObj.position[1] + dirConst[PlayerObj.direction][1]*playerSpeed[speedmode]
-        # if self.checkNextScoring(goal_id, NowDir ,(fx,fy)):
-        #     return NowDir
+        PlayerObj = self.model.players[self.index]
+        NowDir = PlayerObj.direction
+        speedmode = PlayerObj.mode + PlayerObj.isFreeze * 1
+        fx = PlayerObj.position[0] + dirConst[PlayerObj.direction][0]*playerSpeed[speedmode]
+        fy = PlayerObj.position[1] + dirConst[PlayerObj.direction][1]*playerSpeed[speedmode]
+        for i in range(1,9):
+            if self.checkNextScoring(goal_id, i ,(fx,fy)) == True:
+                return NowDir
 
         i = goal_id
         MinIndex = 0
