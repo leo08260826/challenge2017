@@ -299,36 +299,36 @@ class Helper(object):
             myPos[1] = gameRangeLower - 1
         elif myDir == 2:#DIR_RU
             if (gameRangeUpper - myPos[0]) > (myPos[1] - gameRangeLower):
-                tmp = myPos[1] - gameRangeLower + 1
+                tmp = myPos[1] - gameRangeLower + 5
             else:
-                tmp = gameRangeUpper - myPos[0] + 1
+                tmp = gameRangeUpper - myPos[0] + 5
             myPos[0] = myPos[0] + tmp
             myPos[1] = myPos[1] - tmp
         elif myDir == 3:#DIR_R
             myPos[0] = gameRangeUpper + 1
         elif myDir == 4:#DIR_RD
             if (gameRangeUpper - myPos[0]) > (gameRangeUpper - myPos[1]):
-                tmp = gameRangeUpper - myPos[1] + 1
+                tmp = gameRangeUpper - myPos[1] + 5
             else:
-                tmp = gameRangeUpper - myPos[0] + 1
+                tmp = gameRangeUpper - myPos[0] + 5
             myPos[0] = myPos[0] + tmp
             myPos[1] = myPos[1] + tmp
         elif myDir == 5:#DIR_D
             myPos[1] = gameRangeUpper + 1
         elif myDir == 6:#DIR_LD
             if (myPos[0] - gameRangeLower) > (gameRangeUpper - myPos[1]):
-                tmp = gameRangeUpper - myPos[1] + 1
+                tmp = gameRangeUpper - myPos[1] + 5
             else:
-                tmp = myPos[0] - gameRangeLower + 1
+                tmp = myPos[0] - gameRangeLower + 5
             myPos[0] = myPos[0] - tmp
             myPos[1] = myPos[1] + tmp
         elif myDir == 7:#DIR_L
             myPos[0] = gameRangeLower - 1
         elif myDir == 8:#DIR_LU
             if (myPos[0] - gameRangeLower) > (myPos[1] - gameRangeLower):
-                tmp = myPos[1] - gameRangeLower + 1
+                tmp = myPos[1] - gameRangeLower + 5
             else:
-                tmp = myPos[0] - gameRangeLower + 1
+                tmp = myPos[0] - gameRangeLower + 5
             myPos[0] = myPos[0] - tmp
             myPos[1] = myPos[1] - tmp
 
@@ -344,36 +344,36 @@ class Helper(object):
             myPos[1] = gameRangeLower - 1
         elif myDir == 2:#DIR_RU
             if (gameRangeUpper - myPos[0]) > (myPos[1] - gameRangeLower):
-                tmp = myPos[1] - gameRangeLower + 1
+                tmp = myPos[1] - gameRangeLower + 5
             else:
-                tmp = gameRangeUpper - myPos[0] + 1
+                tmp = gameRangeUpper - myPos[0] + 5
             myPos[0] = myPos[0] + tmp
             myPos[1] = myPos[1] - tmp
         elif myDir == 3:#DIR_R
             myPos[0] = gameRangeUpper + 1
         elif myDir == 4:#DIR_RD
             if (gameRangeUpper - myPos[0]) > (gameRangeUpper - myPos[1]):
-                tmp = gameRangeUpper - myPos[1] + 1
+                tmp = gameRangeUpper - myPos[1] + 5
             else:
-                tmp = gameRangeUpper - myPos[0] + 1
+                tmp = gameRangeUpper - myPos[0] + 5
             myPos[0] = myPos[0] + tmp
             myPos[1] = myPos[1] + tmp
         elif myDir == 5:#DIR_D
             myPos[1] = gameRangeUpper + 1
         elif myDir == 6:#DIR_LD
             if (myPos[0] - gameRangeLower) > (gameRangeUpper - myPos[1]):
-                tmp = gameRangeUpper - myPos[1] + 1
+                tmp = gameRangeUpper - myPos[1] + 5
             else:
-                tmp = myPos[0] - gameRangeLower + 1
+                tmp = myPos[0] - gameRangeLower + 5
             myPos[0] = myPos[0] - tmp
             myPos[1] = myPos[1] + tmp
         elif myDir == 7:#DIR_L
             myPos[0] = gameRangeLower - 1
         elif myDir == 8:#DIR_LU
             if (myPos[0] - gameRangeLower) > (myPos[1] - gameRangeLower):
-                tmp = myPos[1] - gameRangeLower + 1
+                tmp = myPos[1] - gameRangeLower + 5
             else:
-                tmp = myPos[0] - gameRangeLower + 1
+                tmp = myPos[0] - gameRangeLower + 5
             myPos[0] = myPos[0] - tmp
             myPos[1] = myPos[1] - tmp
 
