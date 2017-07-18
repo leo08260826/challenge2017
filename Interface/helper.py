@@ -72,20 +72,27 @@ class Helper(object):
         Multier=[9999,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,1,1,1,1,1,1,1,1]
         lineToGoal=[[2,3,10,11,18,19],[6,7,10,11,22,23],[6,7,14,15,18,19],[2,3,14,15,22,23],[4,5,9,20,21],[8,12,13,20,24],[4,5,16,17,24],[1,12,13,17,21]]
 
-        for i in range(8):
+        for i in range(1,9):
             if (self.checkScoring(goal_id,i)) == True:
                 return i
 
-        # for i in range(len(lineToGoal)):
-            # if (goal_id == i):
+        # PlayerObj = self.model.players[self.index]
+        # NowDir = PlayerObj.direction
+        # speedmode = PlayerObj.mode + PlayerObj.isFreeze * 1
+        # fx = PlayerObj.position[0] + dirConst[PlayerObj.direction][0]*playerSpeed[speedmode]
+        # fy = PlayerObj.position[1] + dirConst[PlayerObj.direction][1]*playerSpeed[speedmode]
+        # if self.checkNextScoring(goal_id, NowDir ,(fx,fy)):
+        #     return NowDir
+
         i = goal_id
         MinIndex = 0
         Mini = 99999999
         for j in range(len(lineToGoal[i])):
             tmp = self.CountDistToLine(self.getMyPos(),CoeffX[lineToGoal[i][j]],CoeffY[lineToGoal[i][j]],-1*Cons[lineToGoal[i][j]],Multier[lineToGoal[i][j]])    
-            if abs(tmp) < Mini:
+            abstmp = abs(tmp)
+            if abstmp < Mini:
                 MinIndex = lineToGoal[i][j]
-                Mini = tmp
+                Mini = abstmp
                 if tmp<0:
                     Switchdir = 1
                 else:
@@ -107,7 +114,7 @@ class Helper(object):
                 return 4
             elif Switchdir == 0:
                 return 8
-        elif origin[0] == 1 and origin[0] == -1 :
+        elif origin[0] == 1 and origin[1] == -1 :
             if Switchdir == 1:
                 return 2
             elif Switchdir == 0:
@@ -287,6 +294,51 @@ class Helper(object):
 
     def checkScoring(self, goal_id, myDir):
         myPos = list(self.getMyPos())
+        if myDir == 1:#DIR_U
+            myPos[1] = gameRangeLower - 1
+        elif myDir == 2:#DIR_RU
+            if (gameRangeUpper - myPos[0]) > (myPos[1] - gameRangeLower):
+                tmp = myPos[1] - gameRangeLower + 1
+            else:
+                tmp = gameRangeUpper - myPos[0] + 1
+            myPos[0] = myPos[0] + tmp
+            myPos[1] = myPos[1] - tmp
+        elif myDir == 3:#DIR_R
+            myPos[0] = gameRangeUpper + 1
+        elif myDir == 4:#DIR_RD
+            if (gameRangeUpper - myPos[0]) > (gameRangeUpper - myPos[1]):
+                tmp = gameRangeUpper - myPos[1] + 1
+            else:
+                tmp = gameRangeUpper - myPos[0] + 1
+            myPos[0] = myPos[0] + tmp
+            myPos[1] = myPos[1] + tmp
+        elif myDir == 5:#DIR_D
+            myPos[1] = gameRangeUpper + 1
+        elif myDir == 6:#DIR_LD
+            if (myPos[0] - gameRangeLower) > (gameRangeUpper - myPos[1]):
+                tmp = gameRangeUpper - myPos[1] + 1
+            else:
+                tmp = myPos[0] - gameRangeLower + 1
+            myPos[0] = myPos[0] - tmp
+            myPos[1] = myPos[1] + tmp
+        elif myDir == 7:#DIR_L
+            myPos[0] = gameRangeLower - 1
+        elif myDir == 8:#DIR_LU
+            if (myPos[0] - gameRangeLower) > (myPos[1] - gameRangeLower):
+                tmp = myPos[1] - gameRangeLower + 1
+            else:
+                tmp = myPos[0] - gameRangeLower + 1
+            myPos[0] = myPos[0] - tmp
+            myPos[1] = myPos[1] - tmp
+
+        barrier = list(self.model.barriers)
+        if goal_id == self.model.quaffles[0].checkWhoseGoal(myPos,barrier):
+            return True
+        else:
+            return False
+
+    def checkNextScoring(self, goal_id, myDir, npos):
+        myPos = list(npos)
         if myDir == 1:#DIR_U
             myPos[1] = gameRangeLower - 1
         elif myDir == 2:#DIR_RU
