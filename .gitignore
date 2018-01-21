@@ -1,5 +1,13 @@
+# python complied file
 *.pyc
+
+AI/*
+!AI/base.py
+!AI/team_default.py
+!AI/team_template.py
+
+# Editor config
 .vscode/
+
+# system file
 .DS_Store
-*.swp
-.*.un~

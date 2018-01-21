@@ -37,7 +37,11 @@ class Interface(object):
             
             # print(player.IS_AI)
             if player.IS_AI and not player.isFreeze:
-                decide = player.AI.decide()
+                try:
+                    decide = player.AI.decide()
+                except:
+                    decide = IC.AI_CALLME
+
                 if decide == IC.AI_U:
                     self.evManager.Post(Event_Move(player.index, DIR_U))
                 elif decide == IC.AI_RU:
